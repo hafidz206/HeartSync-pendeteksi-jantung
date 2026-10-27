@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HeartSync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --red: #EA3739;
+            --bg: #fff;
+            --grey: #F5F5F5;
+            --text: #000;
+            --muted: #666
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            font-family: 'Poppins', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden
+        }
+
+        button,
+        input {
+            font-family: inherit
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            position: relative
+        }
+
+        .screen.active {
+            display: flex
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--red);
+            line-height: 1
+        }
+
+        .logo svg {
+            width: 100%
+        }
+
+        .logo span {
+            margin-top: 2px
+        }
+
+        /* Landing & Welcome */
+        #landing,
+        #welcome.screen {
+            display: none;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 8vw;
+            background: #fff;
+        }
+
+        #landing.active,
+        #welcome.screen.active {
+            display: flex;
+        }
+
+        .land {
+            display: flex;
+            flex-direction: column;
+            max-width: 1040px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .land .logo {
+            width: 135px;
+            align-items: flex-start;
+        }
+
+        .land .logo svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .land .logo span {
+            display: none;
+        }
+
+        .land h1 {
+            font-size: clamp(34px, 3.2vw, 44px);
+            font-weight: 800;
+            color: var(--red);
+            margin-top: 14px;
+            margin-bottom: 10px;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .land-intro .tagline {
+            font-size: clamp(15.5px, 1.25vw, 17px);
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .land-intro .desc {
+            font-size: clamp(14px, 1.15vw, 15.5px);
+            font-weight: 400;
+            color: #1a1a1a;
+            line-height: 1.55;
+            max-width: 840px;
+            margin-bottom: 26px;
+        }
+
+        .land-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 6px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 16px;
+        }
+
+        .fcard {
+            width: clamp(200px, 18vw, 235px);
+            background: #FFF5F6;
+            border: 1px solid #F5CCD2;
+            border-radius: 16px;
+            padding: 22px 18px 24px;
+            box-shadow: 0 2px 10px rgba(234, 55, 57, 0.03);
+            display: flex;
+            flex-direction: column;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .fcard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(234, 55, 57, 0.08);
+        }
+
+        .fcard h3 {
+            display: flex;
+            gap: 12px;
+            color: var(--red);
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.25;
+            align-items: flex-start;
+        }
+
+        .fcard-icon {
+            width: 26px;
+            height: 26px;
+            flex: none;
+            stroke: var(--red);
+            color: var(--red);
+            margin-top: 1px;
+        }
+
+        .fcard p {
+            font-size: 13.5px;
+            color: #555;
+            margin-top: 14px;
+            line-height: 1.45;
+            font-weight: 400;
+        }
+
+        .btn {
+            background: var(--red);
+            color: #fff;
+            border: 0;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: filter .15s, transform .1s, box-shadow .15s;
+        }
+
+        .btn:hover {
+            filter: brightness(1.05);
+        }
+
+        .btn:active {
+            transform: scale(.98);
+        }
+
+        .btn:focus-visible,
+        .opt:focus-visible,
+        input:focus-visible {
+            outline: 2px solid var(--red);
+            outline-offset: 2px;
+        }
+
+        .btn-start {
+            padding: 13px 38px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 14px;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(234, 55, 57, 0.45);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-start:hover {
+            box-shadow: 0 8px 24px rgba(234, 55, 57, 0.55);
+        }
+
+        /* Auth */
+        .auth {
+            align-items: center;
+            justify-content: center
+        }
+
+        .auth .box {
+            background: #fff;
+            border-radius: 34px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .14);
+            width: min(92vw, 550px);
+            padding: 22px 56px 30px;
+            position: relative;
+            z-index: 2
+        }
+
+        .auth .logo {
+            width: 70px;
+            margin: 0 auto
+        }
+
+        .auth h2 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2
+        }
+
+        .auth h2.sm {
+            font-size: 24px
+        }
+
+        .auth .sub {
+            text-align: center;
+            color: var(--red);
+            font-size: 15px;
+            font-weight: 300
+        }
+
+        .auth label {
+            display: block;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 12px 0 6px
+        }
+
+        .auth input {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 15px;
+            box-shadow: 0 3px 4px rgba(0, 0, 0, .25);
+            background: #fff
+        }
+
+        .auth input::placeholder {
+            color: #8a8a8a;
+            font-weight: 300
+        }
+
+        .forgot {
+            display: block;
+            text-align: right;
+            color: var(--red);
+            font-size: 11.5px;
+            font-weight: 600;
+            margin: 8px 22px 6px 0;
+            text-decoration: none
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            margin-top: 12px
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 16px
+        }
+
+        .switch a {
+            color: var(--red);
+            text-decoration: none;
+            cursor: pointer
+        }
+
+        .or {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #888;
+            font-weight: 300;
+            margin: 6px 0 10px
+        }
+
+        .or:before,
+        .or:after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #bbb
+        }
+
+        .gbtn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0 auto;
+            border: 0;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+            border-radius: 8px;
+            padding: 9px 22px;
+            font-size: 15px;
+            cursor: pointer
+        }
+
+        .gbtn b {
+            font-weight: 600
+        }
+
+        .deco {
+            position: absolute;
+            width: clamp(90px, 9vw, 125px);
+            z-index: 1
+        }
+
+        .deco.tr {
+            top: 12%;
+            right: max(6vw, calc(50% - 450px))
+        }
+
+        .deco.bl {
+            bottom: 12%;
+            left: max(6vw, calc(50% - 560px))
+        }
+
+        .err {
+            color: var(--red);
+            font-size: 12px;
+            text-align: center;
+            min-height: 16px;
+            margin-top: 6px
+        }
+
+        /* Verification & Welcome */
+        .center {
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 20px
+        }
+
+        .center .logo {
+            width: 80px
+        }
+
+        .center h2 {
+            font-size: 38px;
+            font-weight: 700;
+            margin: 6px 0
+        }
+
+        .center h2.red {
+            color: var(--red);
+            font-weight: 800;
+            font-size: 40px
+        }
+
+        .center p {
+            font-size: 15px;
+            color: var(--muted)
+        }
+
+        .center p a,
+        .center p em {
+            color: var(--red);
+            font-style: normal;
+            text-decoration: none;
+            cursor: pointer
+        }
+
+        .vbox {
+            width: min(92vw, 500px);
+            text-align: left
+        }
+
+        .vbox h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 14px 0 10px
+        }
+
+        .codes {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px
+        }
+
+        .codes input {
+            width: 100%;
+            min-width: 0;
+            height: 42px;
+            border: 1px solid #000;
+            border-radius: 22px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600
+        }
+
+        .pill {
+            width: min(92vw, 500px);
+            padding: 11px;
+            font-size: 16px;
+            border-radius: 24px;
+            display: inline-flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center
+        }
+
+        .welcome p.dark {
+            color: #000;
+            font-size: 15px
+        }
+
+        /* Questionnaire */
+        #quiz {
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 6vw 40px
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            gap: clamp(16px, 3vw, 40px);
+            width: min(100%, 1000px)
+        }
+
+        .top .logo {
+            width: 68px;
+            flex: none
+        }
+
+        .bars {
+            flex: 1;
+            display: flex;
+            gap: 6px
+        }
+
+        .bars i {
+            flex: 1;
+            height: 7px;
+            border-radius: 6px;
+            background: #F3F3F3;
+            transition: background .3s
+        }
+
+        .bars i.on {
+            background: var(--red)
+        }
+
+        #qtitle {
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 700;
+            text-align: center;
+            margin-top: 12px;
+            line-height: 1.25
+        }
+
+        .hint {
+            font-size: 12px;
+            text-align: center;
+            margin: 12px 0 16px
+        }
+
+        .qcard {
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .18);
+            width: min(92vw, 550px);
+            padding: 20px 40px 24px;
+            display: flex;
+            flex-direction: column;
+            min-height: 480px
+        }
+
+        .opt {
+            background: var(--grey);
+            border: 1px solid transparent;
+            border-radius: 24px;
+            height: 75px;
+            margin-bottom: 13px;
+            font-size: 20px;
+            font-weight: 400;
+            cursor: pointer;
+            color: #000;
+            transition: border-color .15s, background .15s
+        }
+
+        .opt:hover {
+            border-color: #f5b4b5
+        }
+
+        .opt.sel {
+            border-color: var(--red);
+            background: #fff5f5
+        }
+
+        .qcard .btn {
+            margin-top: auto;
+            height: 75px;
+            border-radius: 24px;
+            font-size: 24px;
+            font-weight: 400;
+            opacity: .55;
+            pointer-events: none
+        }
+
+        .qcard .btn.ready {
+            opacity: 1;
+            pointer-events: auto
+        }
+
+        .qcard .gap {
+            height: 6px
+        }
+
+        .back {
+            background: none;
+            border: 0;
+            color: var(--muted);
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 14px;
+            visibility: hidden
+        }
+
+        .back.show {
+            visibility: visible
+        }
+
+        .done {
+            display: none
+        }
+
+        @media(max-width:820px) {
+
+            #landing,
+            #welcome.screen {
+                padding: 30px 6vw
+            }
+
+            .land-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 20px
+            }
+
+            .cards {
+                flex-direction: column
+            }
+
+            .fcard {
+                width: 100%
+            }
+
+            .btn-start {
+                width: 100%
+            }
+
+            .auth .box {
+                padding: 20px 24px 28px
+            }
+
+            .deco {
+                display: none
+            }
+
+            .qcard {
+                padding: 18px 20px
+            }
+
+            .opt {
+                height: 62px;
+                font-size: 17px
+            }
+
+            .qcard .btn {
+                height: 62px;
+                font-size: 20px
+            }
+
+            .qcard {
+                min-height: 0
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important
+            }
+        }
+
+        /* Hasil */
+        #result {
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 6vw 40px
+        }
+
+        #result .rlogo {
+            align-self: flex-start;
+            width: 68px;
+            margin-left: max(0px, calc((100vw - 1000px)/2 - 6vw))
+        }
+
+        .rbody {
+            margin: auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: min(100%, 760px)
+        }
+
+        .rbody h1 {
+            font-size: clamp(34px, 3.6vw, 48px);
+            font-weight: 700;
+            color: var(--red)
+        }
+
+        .rbody .hint {
+            margin: 6px 0 18px
+        }
+
+        .ring {
+            position: relative;
+            width: 270px;
+            height: 270px
+        }
+
+        .ring svg.r {
+            width: 100%;
+            height: 100%
+        }
+
+        .ring .hrt {
+            position: absolute;
+            inset: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .ring .hrt svg {
+            width: 80%
+        }
+
+        .pill-lv {
+            position: absolute;
+            left: 50%;
+            bottom: -6px;
+            transform: translateX(-50%);
+            padding: 4px 26px;
+            border-radius: 18px;
+            border: 2px solid;
+            font-weight: 700;
+            font-size: 19px;
+            white-space: nowrap
+        }
+
+        .rtext {
+            font-size: 17px;
+            line-height: 1.6;
+            margin: 26px 0 24px;
+            max-width: 640px
+        }
+
+        .rbtn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: min(92vw, 340px);
+            padding: 9px 22px;
+            border-radius: 22px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--red);
+            margin-bottom: 10px
+        }
+
+        .rbtn.fill {
+            background: var(--red);
+            color: #fff
+        }
+
+        .rbtn.line {
+            background: #fff;
+            color: var(--red)
+        }
+
+        .rbtn span:first-child {
+            flex: 1;
+            text-align: center
+        }
+
+        /* Dashboard */
+        #app {
+            display: none;
+            flex-direction: column;
+            background: #fff
+        }
+
+        #app.active {
+            display: flex
+        }
+
+        .wrap {
+            width: min(100%, 1180px);
+            margin: 0 auto;
+            padding: 0 28px
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            padding: 16px 0
+        }
+
+        .nav .brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--red)
+        }
+
+        .nav .brand svg {
+            width: 34px;
+            height: 30px
+        }
+
+        .nav .tabs {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+            max-width: 560px
+        }
+
+        .nav .tab {
+            flex: 1;
+            text-align: center;
+            border: 1px solid #bbb;
+            background: #fff;
+            border-radius: 14px;
+            font-size: 13px;
+            padding: 2px 10px;
+            cursor: pointer
+        }
+
+        .nav .tab.on {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+            font-weight: 600
+        }
+
+        .nav .user {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2
+        }
+
+        .nav .user small {
+            display: block;
+            color: var(--red);
+            font-size: 11px
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #f3d3d3;
+            display: grid;
+            place-items: center;
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .hero {
+            border-radius: 16px;
+            background: linear-gradient(100deg, #000 0%, #2a0608 30%, #EA3739 70%, #c82326 100%);
+            color: #fff;
+            padding: 34px 44px;
+            min-height: 170px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center
+        }
+
+        .hero h2 {
+            font-size: clamp(26px, 2.8vw, 36px);
+            line-height: 1.2;
+            font-weight: 700
+        }
+
+        .hero p {
+            font-size: 14px;
+            max-width: 480px;
+            margin-top: 10px;
+            line-height: 1.5
+        }
+
+        .hero .doc {
+            position: absolute;
+            right: 6%;
+            bottom: 0;
+            width: 170px;
+            opacity: .95
+        }
+
+        .sec {
+            margin-top: 30px
+        }
+
+        .sec h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--red);
+            font-size: 18px;
+            font-weight: 600
+        }
+
+        .sec h3 svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--red);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .sec>p {
+            font-size: 14px;
+            color: #444;
+            margin: 2px 0 14px
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+            padding: 18px 20px
+        }
+
+        .g4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px
+        }
+
+        .vital h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8d0f12;
+            font-size: 15px;
+            font-weight: 700
+        }
+
+        .vital h4 svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--red);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .vital .val {
+            color: var(--red);
+            font-size: 24px;
+            font-weight: 700;
+            margin: 10px 0 8px
+        }
+
+        .vital small {
+            display: block;
+            font-size: 12px;
+            color: #444;
+            margin-top: 10px;
+            line-height: 1.35
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 1px 22px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #b8f0c4;
+            color: #1b6e30
+        }
+
+        .badge.warn {
+            background: #ffe3a6;
+            color: #8a5a00
+        }
+
+        .badge.bad {
+            background: #ffc2c2;
+            color: #9b1c1c
+        }
+
+        .rekap {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr 1fr;
+            gap: 18px
+        }
+
+        .rekap h5 {
+            font-size: 15px;
+            color: var(--red);
+            font-weight: 600
+        }
+
+        .risk-mini {
+            background: #FFF1F2;
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0
+        }
+
+        .risk-mini svg {
+            width: 34px;
+            height: 30px
+        }
+
+        .risk-mini b {
+            color: var(--red);
+            font-size: 15px;
+            display: block
+        }
+
+        .outline {
+            border: 1px solid var(--red);
+            color: var(--red);
+            background: #fff;
+            border-radius: 16px;
+            padding: 4px 22px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .sel-mini {
+            float: right;
+            border: 1px solid var(--red);
+            color: var(--red);
+            border-radius: 12px;
+            font-size: 11px;
+            padding: 1px 12px
+        }
+
+        .avg li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 7px 0;
+            color: #444
+        }
+
+        .avg li b {
+            color: var(--red);
+            font-weight: 600
+        }
+
+        .recs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 18px
+        }
+
+        .recimg {
+            height: 110px;
+            border-radius: 12px;
+            background: #ededed;
+            display: grid;
+            place-items: center;
+            font-size: 36px;
+            margin-bottom: 10px
+        }
+
+        .rc h6 {
+            font-size: 16px;
+            font-weight: 700
+        }
+
+        .rc .tag {
+            float: right;
+            background: #ffd6d6;
+            color: #a22;
+            font-size: 10px;
+            padding: 1px 10px;
+            border-radius: 10px
+        }
+
+        .rc .meta {
+            font-size: 11px;
+            color: #555;
+            margin: 6px 0
+        }
+
+        .sleep {
+            background: linear-gradient(120deg, #000, #EA3739);
+            color: #fff;
+            border: 0
+        }
+
+        .sleep h4 {
+            font-size: 18px;
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .sleep .clock {
+            background: #000;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin: 14px 0
+        }
+
+        .sleep .clock span {
+            font-size: 12px;
+            display: block;
+            letter-spacing: .5px
+        }
+
+        .sleep .clock b {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: block;
+            line-height: 1.2
+        }
+
+        .sleep .row {
+            display: flex;
+            gap: 10px;
+            justify-content: center
+        }
+
+        .sleep button {
+            padding: 4px 18px;
+            border-radius: 8px;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer
+        }
+
+        .sleep button.r {
+            background: var(--red);
+            border-color: var(--red)
+        }
+
+        .sleep .st {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-top: 12px
+        }
+
+        .seg {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            border-radius: 14px;
+            padding: 6px 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap
+        }
+
+        .seg .p {
+            padding: 4px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer
+        }
+
+        .seg .p.on {
+            background: #f1f1f1;
+            font-weight: 600
+        }
+
+        .seg .btn {
+            padding: 8px 18px;
+            font-size: 14px
+        }
+
+        .seg .btn.alt {
+            margin-left: auto
+        }
+
+        .g2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px
+        }
+
+        .chart-t {
+            display: flex;
+            justify-content: space-between;
+            color: var(--red);
+            font-weight: 700;
+            font-size: 15px
+        }
+
+        .legend {
+            display: flex;
+            gap: 14px;
+            font-size: 12px;
+            margin: 6px 0 4px
+        }
+
+        .legend i {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: -1px
+        }
+
+        table.log {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px
+        }
+
+        table.log th {
+            color: var(--red);
+            font-size: 13px;
+            padding: 10px 6px;
+            text-align: center
+        }
+
+        table.log td {
+            text-align: center;
+            padding: 12px 6px;
+            border-top: 1px solid #e0e0e0;
+            color: #333
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr 1fr;
+            gap: 18px
+        }
+
+        .riskcard {
+            background: var(--red);
+            color: #fff;
+            border-radius: 18px;
+            padding: 22px;
+            text-align: center;
+            grid-row: span 2
+        }
+
+        .donut {
+            width: 150px;
+            height: 150px;
+            margin: 6px auto;
+            position: relative
+        }
+
+        .donut div {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-content: center;
+            font-size: 12px
+        }
+
+        .donut b {
+            font-size: 26px;
+            display: block
+        }
+
+        .riskcard .info {
+            background: #fff;
+            color: var(--red);
+            border-radius: 12px;
+            font-size: 12px;
+            padding: 4px;
+            margin: 10px 0
+        }
+
+        .riskcard .btn {
+            background: #fff;
+            color: var(--red);
+            padding: 5px 18px;
+            font-size: 13px;
+            margin-top: 10px
+        }
+
+        .footer {
+            background: var(--red);
+            color: #fff;
+            margin-top: 48px;
+            padding: 36px 0 30px
+        }
+
+        .footer .wrap {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 30px;
+            font-size: 13px;
+            line-height: 1.5
+        }
+
+        .footer b {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            display: none;
+            place-items: center;
+            z-index: 50
+        }
+
+        .modal.open {
+            display: grid
+        }
+
+        .modal form {
+            background: #fff;
+            border-radius: 20px;
+            padding: 26px;
+            width: min(92vw, 400px)
+        }
+
+        .modal h3 {
+            color: var(--red);
+            margin-bottom: 8px
+        }
+
+        .modal label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 10px 0 4px
+        }
+
+        .modal input {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 14px
+        }
+
+        .modal .row {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px
+        }
+
+        .modal .row .btn {
+            flex: 1;
+            padding: 9px
+        }
+
+        .modal .row .outline {
+            flex: 1
+        }
+
+        .profile {
+            max-width: 520px;
+            margin: 10px auto;
+            text-align: center
+        }
+
+        .profile .avatar {
+            width: 84px;
+            height: 84px;
+            font-size: 32px;
+            margin: 0 auto 10px
+        }
+
+        .reclist {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px
+        }
+
+        .reclist li {
+            font-size: 14px;
+            margin: 8px 0 0 18px;
+            line-height: 1.5
+        }
+
+        @media(max-width:980px) {
+            .g4 {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .rekap,
+            .recs,
+            .g2,
+            .risk-grid,
+            .reclist,
+            .footer .wrap {
+                grid-template-columns: 1fr
+            }
+
+            .riskcard {
+                grid-row: auto
+            }
+
+            .nav {
+                flex-wrap: wrap
+            }
+
+            .hero .doc {
+                display: none
+            }
+
+            .sleep .clock b {
+                font-size: 38px
+            }
+        }
+
+        @media print {
+
+            .nav,
+            .seg,
+            .footer,
+            .hero {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="logo" viewBox="0 0 120 100">
+                <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545" />
+                <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB" />
+                <line x1="44" y1="4" x2="44" y2="8" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="38" y1="7" x2="41" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="50" y1="7" x2="47" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9"
+                    stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5"
+                    stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M102 54l6-4M102 54l6 4" fill="none" stroke="#1177B8" stroke-width="3" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <line x1="97" y1="47" x2="110" y2="47" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <line x1="97" y1="61" x2="110" y2="61" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <path d="M44 14v14M37 21h14" stroke="#fff" stroke-width="5" stroke-linecap="round" />
+            </symbol>
+            <symbol id="heart3d" viewBox="0 0 100 90">
+                <defs>
+                    <radialGradient id="hg" cx="35%" cy="30%" r="80%">
+                        <stop offset="0" stop-color="#FF6B6B" />
+                        <stop offset=".6" stop-color="#E5232B" />
+                        <stop offset="1" stop-color="#B3121A" />
+                    </radialGradient>
+                </defs>
+                <path
+                    d="M50 86C20 62 3 46 3 27 3 13 14 4 27 4c10 0 18 5 23 13C55 9 63 4 73 4c13 0 24 9 24 23 0 19-17 35-47 59Z"
+                    fill="url(#hg)" />
+                <path d="M20 46h16l7-18 11 32 9-25 6 11h14" fill="none" stroke="#fff" stroke-width="6"
+                    stroke-linecap="round" stroke-linejoin="round" opacity=".92" />
+            </symbol>
+            <symbol id="g" viewBox="0 0 48 48">
+                <path fill="#EA4335"
+                    d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z" />
+                <path fill="#4285F4"
+                    d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z" />
+                <path fill="#FBBC05"
+                    d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.100 0 24s.9 7.600 2.600 10.800l7.900-6.100z" />
+                <path fill="#34A853"
+                    d="M24 48c6.500 0 11.900-2.100 15.900-5.800l-7.500-5.800c-2.100 1.400-4.800 2.300-8.400 2.300-6.300 0-11.600-4.100-13.500-9.800l-7.900 6.100C6.500 42.600 14.600 48 24 48z" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- 1. LANDING -->
+    <section class="screen active" id="landing">
+        <div class="land">
+            <div class="logo"><svg viewBox="0 0 120 100">
+                    <use href="#logo" />
+                </svg></div>
+            <h1>HeartSync</h1>
+            <div class="land-intro">
+                <p class="tagline">Kenali kondisi jantungmu, mulai dari sekarang.</p>
+                <p class="desc">Dengan HeartSync, kamu dapat mengetahui risiko penyakit jantung berdasarkan data
+                    kesehatanmu dan mendapatkan rekomendasi untuk membantu menjaga kesehatan jantung.</p>
+            </div>
+            <div class="land-row">
+                <div class="cards">
+                    <div class="fcard">
+                        <h3>
+                            <svg viewBox="0 0 28 28" class="fcard-icon" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="2 18 7 12 12 17 18 7 24 11"></polyline>
+                                <circle cx="2" cy="18" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="7" cy="12" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="12" cy="17" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="18" cy="7" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="24" cy="11" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                            </svg>
+                            <span>Rekap Data<br>Kesehatan</span>
+                        </h3>
+                        <p>Membantu pengguna melihat catatan dan perubahan data kesehatan dari waktu ke waktu</p>
+                    </div>
+                    <div class="fcard">
+                        <h3>
+                            <svg viewBox="0 0 28 28" class="fcard-icon" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 22h8"></path>
+                                <path d="M11 25h6"></path>
+                                <path d="M14 2v3"></path>
+                                <path d="M5.5 5.5l2.1 2.1"></path>
+                                <path d="M22.5 5.5l-2.1 2.1"></path>
+                                <path d="M2 14h3"></path>
+                                <path d="M23 14h3"></path>
+                                <path d="M8 14a6 6 0 1 1 12 0c0 2.5-1.5 4.5-2.5 5.5h-7C9.5 18.5 8 16.5 8 14z"></path>
+                            </svg>
+                            <span>Rekomendasi<br>Personal</span>
+                        </h3>
+                        <p>Menyediakan rekomendasi makanan, olahraga, dan waktu tidur bedasarkan data serta kebutuhan.
+                        </p>
+                    </div>
+                </div>
+                <button class="btn btn-start" data-go="login">Mulai Sekarang &rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. LOGIN -->
+    <section class="screen auth" id="login">
+        <svg class="deco tr" viewBox="0 0 100 90">
+            <use href="#heart3d" />
+        </svg>
+        <svg class="deco bl" viewBox="0 0 100 90">
+            <use href="#heart3d" />
+        </svg>
+        <form class="box" data-form="login" novalidate>
+            <div class="logo"><svg viewBox="0 0 120 100">
+                    <use href="#logo" />
+                </svg><span>HeartSync</span></div>
+            <h2>Mulailah Sekarang!</h2>
+            <p class="sub">Silahkan masuk ke akun anda untuk melanjutkan</p>
+            <label for="l-nama">Nama</label><input id="l-nama" placeholder="Masukkan nama anda" autocomplete="name">
+            <label for="l-email">Email</label><input id="l-email" type="email" placeholder="Masukkan email anda"
+                autocomplete="email">
+            <label for="l-pass">Kata Sandi</label><input id="l-pass" type="password"
+                placeholder="Masukkan kata sandi anda...." autocomplete="current-password">
+            <a class="forgot" href="#" onclick="return false">Lupa kata sandi</a>
+            <div class="err"></div>
+            <button class="btn btn-full" type="submit">Masuk</button>
+            <p class="switch">Belum punya akun? <a data-go="register">Daftar sekarang</a></p>
+            <div class="or">Atau</div>
+            <button type="button" class="gbtn" data-go="welcome"><svg width="26" height="26" viewBox="0 0 48 48">
+                    <use href="#g" />
+                </svg>Login with <b>Google</b></button>
+        </form>
+    </section>
+
+    <!-- 3. REGISTER -->
+    <section class="screen auth" id="register">
+        <svg class="deco tr" viewBox="0 0 100 90">
+            <use href="#heart3d" />
+        </svg>
+        <svg class="deco bl" viewBox="0 0 100 90">
+            <use href="#heart3d" />
+        </svg>
+        <form class="box" data-form="register" novalidate>
+            <div class="logo"><svg viewBox="0 0 120 100">
+                    <use href="#logo" />
+                </svg><span>HeartSync</span></div>
+            <h2 class="sm">Buat akun sekarang!</h2>
+            <label for="r-nama">Nama</label><input id="r-nama" placeholder="Masukan nama anda...">
+            <label for="r-email">Email</label><input id="r-email" type="email" placeholder="Masukkan email anda...">
+            <label for="r-pass">Kata sandi</label><input id="r-pass" type="password"
+                placeholder="Masukkan kata sandi anda..">
+            <label for="r-pass2">Konfirmasi Password</label><input id="r-pass2" type="password"
+                placeholder="Masukkan kata sandi anda..">
+            <div class="err"></div>
+            <button class="btn btn-full" type="submit">Buat</button>
+            <div class="or">Or</div>
+            <button type="button" class="gbtn" data-go="welcome"><svg width="26" height="26" viewBox="0 0 48 48">
+                    <use href="#g" />
+                </svg>Login with <b>Google</b></button>
+            <p class="switch" style="margin-top:12px;font-size:14px">Sudah punya akun? <a data-go="login">Masuk</a></p>
+        </form>
+    </section>
+
+    <!-- 4. VERIFIKASI -->
+    <section class="screen center" id="verify">
+        <div class="logo"><svg viewBox="0 0 120 100">
+                <use href="#logo" />
+            </svg><span>HeartSync</span></div>
+        <h2>Kode Verifikasi</h2>
+        <p>Kami telah mengirim kode ke email anda <em id="vemail">nrrhma@gmail.com</em></p>
+        <div class="vbox">
+            <h4>Kode Verifikasi</h4>
+            <div class="codes"><input maxlength="1" inputmode="numeric" aria-label="Digit 1"><input maxlength="1"
+                    inputmode="numeric" aria-label="Digit 2"><input maxlength="1" inputmode="numeric"
+                    aria-label="Digit 3"><input maxlength="1" inputmode="numeric" aria-label="Digit 4"><input
+                    maxlength="1" inputmode="numeric" aria-label="Digit 5"></div>
+            <button class="btn pill" id="vbtn" style="width:100%">Verifikasi Akun</button>
+            <p style="text-align:center;margin-top:18px">Tidak menerima kode ? <a id="resend">Kirim ulang</a></p>
+        </div>
+    </section>
+
+    <!-- 5. SELAMAT DATANG (WELCOME) -->
+    <section class="screen welcome" id="welcome">
+        <div class="land">
+            <div class="logo"><svg viewBox="0 0 120 100">
+                    <use href="#logo" />
+                </svg></div>
+            <h1>HeartSync</h1>
+            <div class="land-intro">
+                <p class="tagline">Kenali kondisi jantungmu, mulai dari sekarang.</p>
+                <p class="desc">Dengan HeartSync, kamu dapat mengetahui risiko penyakit jantung berdasarkan data
+                    kesehatanmu dan mendapatkan rekomendasi untuk membantu menjaga kesehatan jantung.</p>
+            </div>
+            <div class="land-row">
+                <div class="cards">
+                    <div class="fcard">
+                        <h3>
+                            <svg viewBox="0 0 28 28" class="fcard-icon" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="2 18 7 12 12 17 18 7 24 11"></polyline>
+                                <circle cx="2" cy="18" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="7" cy="12" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="12" cy="17" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="18" cy="7" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                                <circle cx="24" cy="11" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2">
+                                </circle>
+                            </svg>
+                            <span>Rekap Data<br>Kesehatan</span>
+                        </h3>
+                        <p>Membantu pengguna melihat catatan dan perubahan data kesehatan dari waktu ke waktu</p>
+                    </div>
+                    <div class="fcard">
+                        <h3>
+                            <svg viewBox="0 0 28 28" class="fcard-icon" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 22h8"></path>
+                                <path d="M11 25h6"></path>
+                                <path d="M14 2v3"></path>
+                                <path d="M5.5 5.5l2.1 2.1"></path>
+                                <path d="M22.5 5.5l-2.1 2.1"></path>
+                                <path d="M2 14h3"></path>
+                                <path d="M23 14h3"></path>
+                                <path d="M8 14a6 6 0 1 1 12 0c0 2.5-1.5 4.5-2.5 5.5h-7C9.5 18.5 8 16.5 8 14z"></path>
+                            </svg>
+                            <span>Rekomendasi<br>Personal</span>
+                        </h3>
+                        <p>Menyediakan rekomendasi makanan, olahraga, dan waktu tidur bedasarkan data serta kebutuhan.
+                        </p>
+                    </div>
+                </div>
+                <button class="btn btn-start" data-go="quiz">Mulai Sekarang &rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. KUESIONER -->
+    <section class="screen" id="quiz">
+        <div class="top">
+            <div class="logo"><svg viewBox="0 0 120 100">
+                    <use href="#logo" />
+                </svg><span>HeartSync</span></div>
+            <div class="bars" id="bars" role="progressbar" aria-label="Progres pengisian"></div>
+        </div>
+        <h1 id="qtitle"></h1>
+        <p class="hint">Jawaban anda akan membantu kami untuk sesuai dengan kebutuhan anda</p>
+        <div class="qcard">
+            <div id="opts" style="display:flex;flex-direction:column"></div><button class="btn"
+                id="next">Berikutnya</button>
+        </div>
+        <button class="back" id="back">← Kembali</button>
+        <div class="done" id="done"></div>
+    </section>
+
+    <!-- 7. HASIL -->
+    <section class="screen" id="result">
+        <div class="logo rlogo"><svg viewBox="0 0 120 100">
+                <use href="#logo" />
+            </svg><span>HeartSync</span></div>
+        <div class="rbody">
+            <h1>Hasil Identifikasi Kesehatanmu</h1>
+            <p class="hint">Berdasarkan data yang kamu isi, berikut hasil estimasi resiko kesehatan jantungmu</p>
+            <div class="ring"><svg class="r" id="rring" viewBox="0 0 300 300"></svg>
+                <div class="hrt"><svg viewBox="0 0 100 90">
+                        <use href="#heart3d" />
+                    </svg></div>
+                <div class="pill-lv" id="rpill"></div>
+            </div>
+            <p class="rtext" id="rtext"></p>
+            <div class="rbtn fill" data-view="beranda"><span>Beranda</span><span>→</span></div>
+            <div class="rbtn line" data-view="rekomendasi"><span>Rekomendasi Aktivitas</span><span>→</span></div>
+        </div>
+    </section>
+
+    <!-- 8. DASHBOARD -->
+    <section class="screen" id="app">
+        <div class="wrap">
+            <div class="nav" id="nav"></div>
+        </div>
+        <main class="wrap" id="view"></main>
+        <footer class="footer">
+            <div class="wrap"><span></span>
+                <div><b>TENTANG APLIKASI</b>HeartSync adalah aplikasi yang di rancang untuk membantu pengguna mengenali
+                    risiko penyakit jantung, memantau data kesehatan, serta mendapatkan rekomendasi pola makan,
+                    aktivitas fisik, dan waktu tidur untuk mendukung gaya hidup yang lebih sehat</div>
+                <div><b>MORE INFORMATION</b>HeartSync@gmail.com<br>@HeartSync_</div>
+            </div>
+        </footer>
+    </section>
+    <div class="modal" id="modal">
+        <form id="mform">
+            <h3>Tambah Data</h3>
+            <label>Detak jantung (bpm)</label><input name="hr" type="number" required min="30" max="220" value="75">
+            <label>Tekanan darah (mmHg)</label><input name="bp" required pattern="\d{2,3}/\d{2,3}" value="110/70"
+                placeholder="110/70">
+            <label>Gula darah (mg/dl)</label><input name="gl" type="number" required min="30" max="600" value="95">
+            <label>Berat badan (kg)</label><input name="wt" type="number" required min="10" max="300" value="52">
+            <div class="row"><button type="button" class="outline" id="mcancel">Batal</button><button
+                    class="btn">Simpan</button></div>
+        </form>
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            { q: "Berapa Usia anda?", o: ["<30 tahun", "30-39 tahun", "40-49 tahun", ">50 tahun"] },
+            { q: "Apa jenis kelamin anda?", o: ["Laki - laki", "Perempuan"] },
+            { q: "Berapa berat badan anda?", o: ["<50 kg", "50-69 kg", "70-89 kg", ">90 kg"] },
+            { q: "Berapa tinggi badan anda?", o: ["<150 cm", "150-169 cm", "170-189 cm", ">190 cm"] },
+            { q: "Bagaimana kondisi tekanan darah anda?", o: ["Normal", "Cendurung rendah", "Cendurung tinggi", "Tidak tahu"] },
+            { q: "Bagaimana kadar kolestrol anda?", o: ["Normal", "Cendurung rendah", "Cendurung tinggi", "Tidak tahu"] },
+            { q: "Apakah anda memiliki riwayat diabetes?", o: ["Tidak ada", "Prediabetes", "Ya, diabetes", "Tidak tahu"] },
+            { q: "Apakah anda memiliki riwayat penyakit jantung?", o: ["Tidak ada", "Ada pada diri sendiri", "Ada pada keluarga", "Tidak tahu"] },
+            { q: "Apakah anda memiliki kebiasaan merokok?", o: ["Tidak pernah", "Mantan perokok", "Kadang - kadang", "Perokok aktif"] },
+            { q: "Seberapa sering anda berolahraga?", o: ["Tidak pernah", "Jarang", "1-2 kali/minggu", "3 kali atau lebih/minggu"] },
+            { q: "Apakah anda pernah merasakan nyeri atau tekanan dada ?", o: ["Tidak pernah", "kadang - kadang", "Sering", "Setiap hari"] },
+            { q: "Kapan anda biasanya merasa sesak nafas?", o: ["Tidak pernah", "Saat beraktivitas ringan", "Saat beraktivitas berat", "Sering tanpa sebab"] },
+            { q: "Apakah anda merasa mudah lelah?", o: ["Tidak pernah", "kadang-kadang", "Saat beraktivitas", "Sering tanpa sebab"] }
+        ];
+        const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+        let step = 0, answers = [];
+
+        function go(id) {
+            $$('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+            window.scrollTo(0, 0);
+            if (id === 'quiz') { step = 0; answers = []; renderQ(); }
+        }
+        document.addEventListener('click', e => {
+            const t = e.target.closest('[data-go]'); if (t) { e.preventDefault(); go(t.dataset.go); }
+        });
+
+        /* Forms */
+        const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        $$('form[data-form]').forEach(f => f.addEventListener('submit', e => {
+            e.preventDefault();
+            const v = [...f.querySelectorAll('input')].map(i => i.value.trim()), err = f.querySelector('.err');
+            if (v.some(x => !x)) { err.textContent = 'Mohon lengkapi semua kolom.'; return; }
+            if (!emailOk(v[1])) { err.textContent = 'Format email tidak valid.'; return; }
+            if (f.dataset.form === 'register') {
+                if (v[2].length < 6) { err.textContent = 'Kata sandi minimal 6 karakter.'; return; }
+                if (v[2] !== v[3]) { err.textContent = 'Konfirmasi kata sandi tidak cocok.'; return; }
+                user.name = v[0]; user.email = v[1]; $('#vemail').textContent = v[1]; err.textContent = ''; go('verify'); $('.codes input').focus();
+            } else { user.name = v[0]; user.email = v[1]; err.textContent = ''; go('welcome'); }
+        }));
+
+        /* Kode verifikasi */
+        const codes = $$('.codes input');
+        codes.forEach((c, i) => {
+            c.addEventListener('input', () => { c.value = c.value.replace(/\D/g, ''); if (c.value && codes[i + 1]) codes[i + 1].focus(); });
+            c.addEventListener('keydown', e => { if (e.key === 'Backspace' && !c.value && codes[i - 1]) codes[i - 1].focus(); });
+        });
+        $('#vbtn').onclick = () => {
+            if (codes.every(c => c.value)) go('welcome');
+            else { codes.find(c => !c.value).focus(); }
+        };
+        $('#resend').onclick = e => { e.target.textContent = 'Terkirim ✓'; setTimeout(() => e.target.textContent = 'Kirim ulang', 2500); };
+
+        /* Kuesioner */
+        $('#bars').innerHTML = QUESTIONS.map(() => '<i></i>').join('');
+        function renderQ() {
+            const d = QUESTIONS[step];
+            $('#qtitle').textContent = d.q;
+            $$('#bars i').forEach((b, i) => b.classList.toggle('on', i <= step));
+            $('#bars').setAttribute('aria-valuenow', step + 1);
+            const opts = $('#opts'); opts.innerHTML = '';
+            d.o.forEach(t => {
+                const b = document.createElement('button');
+                b.className = 'opt' + (answers[step] === t ? ' sel' : ''); b.textContent = t; b.type = 'button';
+                b.onclick = () => { answers[step] = t; $$('.opt').forEach(x => x.classList.toggle('sel', x === b)); $('#next').classList.add('ready'); };
+                opts.appendChild(b);
+            });
+            $('#next').classList.toggle('ready', answers[step] !== undefined);
+            $('#next').textContent = step === QUESTIONS.length - 1 ? 'Selesai' : 'Berikutnya';
+            $('#back').classList.toggle('show', step > 0);
+        }
+        $('#next').onclick = () => {
+            if (answers[step] === undefined) return;
+            if (step < QUESTIONS.length - 1) { step++; renderQ(); }
+            else {
+                localStorage.setItem('heartsync_answers', JSON.stringify(answers));
+                showResult();
+            }
+        };
+        $('#back').onclick = () => { if (step > 0) { step--; renderQ(); } };
+
+        /* ===== Hasil & Dashboard ===== */
+        const user = { name: 'Nurrahmah', email: 'nurrahmah@gmail.com' };
+        let risk = { lv: 'sedang', pct: 40 }, view = 'beranda';
+        const LV = {
+            rendah: { label: 'Rendah', cols: ['#0e8a68'], pale: '#cfe8dc', n: 2, pill: ['#dff3e8', '#5cc596', '#0b6b4f'], txt: 'Kabar baik! Resiko kesehatan jantungmu tergolong rendah bedasarkan data yang kamu berikan. Tetap jaga kesehatan jantungmu dengan menerapkan pola hidup setiap hari.' },
+            sedang: { label: 'Sedang', cols: ['#2fa866'], pale: '#cfe8d6', n: 4, pill: ['#fbdcae', '#e8a14a', '#a35a00'], txt: 'Yuk! mulai lebih peduli dengan kesehatan jantungmu! Hasil menunjukan resiko sedang. Perbaiki pola hidup dan pertimbangkan konsultasi dengan tenaga kesehatan untuk pemeriksaan lebih lanjut.' },
+            tinggi: { label: 'Tinggi', cols: ['#e0902e', '#d9782f', '#c8553a', '#b5324a', '#b5324a', '#b5324a'], pale: '#efd9cf', n: 6, pill: ['#f8d7b0', '#b0412b', '#8a4a00'], txt: 'Kesehatan jantungmu perlu perhatian lebih. Berdasarkan data yang kamu berikan, estimasi resikomu tergolong tinggi. Terapkan rekomendasi yang tersedia di HeartSync secara konsisten, mulai dari pola makan, aktivitas fisik, hingga kebiasaan hidup sehat lainnya.' },
+            terdiagnosa: { label: 'TERDIAGNOSA', cols: ['#8e3a6b'], pale: '#e9d3e2', n: 6, pill: ['#e8cde3', '#a76a9a', '#5c2a52'], txt: 'Berdasarkan informasi yang kamu berikan, kamu menyatakan sudah memiliki penyakit jantung. Jangan berkecil hati ya! kamu tetap bisa berupaya menjaga kualitas hidup dengan menjalankan perawatan yang dianjurkan oleh dokter dan menerapkan pola hidup sehat yang dibantu oleh HeartSync.' }
+        };
+        function calcRisk(a) {
+            const ix = (i) => QUESTIONS[i].o.indexOf(a[i]);
+            if (ix(7) === 1) return { lv: 'terdiagnosa', pct: 100 };
+            let sc = ix(0) + (ix(2) === 3 ? 1 : 0) + (ix(4) === 2 ? 2 : ix(4) === 1 ? 1 : 0) + (ix(5) === 2 ? 2 : ix(5) === 1 ? 1 : 0) + ix(6) + (ix(7) === 2 ? 1 : 0)
+                + [0, 1, 1, 2][ix(8)] + [2, 1, 0, 0][ix(9)] + ix(10) + ix(11) + ix(12);
+            const pct = Math.min(95, Math.max(5, Math.round(sc / 24 * 100)));
+            return { lv: sc <= 5 ? 'rendah' : sc <= 11 ? 'sedang' : 'tinggi', pct, sc };
+        }
+        function ringSVG(cfg) {
+            let out = '<circle cx="150" cy="150" r="146" fill="#f4f4f1"/><circle cx="150" cy="150" r="104" fill="#fff" opacity=".9"/>', R = 125;
+            for (let i = 0; i < 6; i++) {
+                const a0 = (-90 + i * 60 + 5) * Math.PI / 180, a1 = (-90 + (i + 1) * 60 - 5) * Math.PI / 180;
+                const p = (a) => [150 + R * Math.cos(a), 150 + R * Math.sin(a)];
+                const [x0, y0] = p(a0), [x1, y1] = p(a1);
+                const on = i < cfg.n, col = on ? cfg.cols[Math.min(i, cfg.cols.length - 1)] : cfg.pale;
+                out += `<path d="M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="26" stroke-linecap="round"/>`;
+            }
+            return out;
+        }
+        function showResult() {
+            risk = calcRisk(answers); const c = LV[risk.lv];
+            $('#rring').innerHTML = ringSVG(c);
+            const pl = $('#rpill'); pl.textContent = c.label; pl.style.cssText = `background:${c.pill[0]};border-color:${c.pill[1]};color:${c.pill[2]};` + (risk.lv === 'terdiagnosa' ? 'font-size:14px' : '');
+            $('#rtext').textContent = c.txt; go('result');
+        }
+        document.addEventListener('click', e => { const t = e.target.closest('[data-view]'); if (t) { view = t.dataset.view; go('app'); renderApp(); } });
+
+        /* data log */
+        const fmtD = d => { const m = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']; return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
+        let log = [];
+        try { log = JSON.parse(localStorage.getItem('hs_log') || '[]') } catch (e) { }
+        if (!log.length) { const hr = [79, 72, 74, 71, 76, 72, 73], now = Date.now(); log = hr.map((h, i) => ({ t: fmtD(new Date(now - i * 864e5)), hr: h, bp: '110/70', gl: 98 - (i ? 3 : 0), wt: 52 })); }
+        const stat = r => { const [s, d] = r.bp.split('/').map(Number); return (r.hr > 110 || r.hr < 50 || s >= 140 || d >= 90 || r.gl >= 180) ? ['Tinggi', 'bad'] : (r.hr > 100 || r.hr < 60 || s >= 130 || r.gl >= 140 || s < 90) ? ['Waspada', 'warn'] : ['Normal', '']; };
+        const save = () => { try { localStorage.setItem('hs_log', JSON.stringify(log)) } catch (e) { } };
+        const ic = {
+            hr: '<svg viewBox="0 0 24 24"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-1 5 5 0 0 1 10 1c0 4-3 7-10 13z"/><path d="M6 12h3l2-3 2 5 1.5-2H18"/></svg>',
+            bp: '<svg viewBox="0 0 24 24"><path d="M12 2s7 7 7 12a7 7 0 0 1-14 0c0-5 7-12 7-12z"/><path d="M9 14h6M12 11v6"/></svg>',
+            gl: '<svg viewBox="0 0 24 24"><path d="M14 3l7 7-4 4-7-7zM12 8 3 17v4h4l9-9"/></svg>',
+            wt: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 9a5 5 0 0 1 8 0M12 9l2-2"/></svg>',
+            pulse: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>',
+            chart: '<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-6"/></svg>',
+            bulb: '<svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M8 14c-2-1-3-3-3-5a7 7 0 0 1 14 0c0 2-1 4-3 5v1H8z"/></svg>',
+            hist: '<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>',
+            stat: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M18 9v6M15 12h6"/></svg>'
+        };
+        const doc = '<svg class="doc" viewBox="0 0 160 190"><circle cx="80" cy="46" r="30" fill="#f1c9a8"/><path d="M50 40c0-24 60-24 60 0-8-10-52-10-60 0z" fill="#222"/><path d="M10 190c0-45 25-70 70-70s70 25 70 70z" fill="#fff"/><path d="M62 124l18 40 18-40" fill="#EA3739" opacity=".85"/><rect x="100" y="140" width="26" height="16" rx="3" fill="#1E8FCB"/></svg>';
+        const hero = (t, p) => `<div class="hero"><div><p style="font-size:15px;margin:0 0 6px">Halo, ${user.name}</p><h2>${t}</h2><p>${p}</p></div>${doc}</div>`;
+        const lvName = () => LV[risk.lv].label[0] + LV[risk.lv].label.slice(1).toLowerCase();
+        const last = () => log[0];
+        function vitals() {
+            const r = last(), [s, c] = stat(r); const b = `<span class="badge ${c}">${s}</span>`, u = `<small>Terakhir di perbarui<br>${r.t}</small>`;
+            return `<div class="g4">${[['hr', 'Detak Jantung', r.hr + ' Bpm'], ['bp', 'Tekanan Darah', r.bp + ' mmHg'], ['gl', 'Gula Darah', r.gl + ' mg/dl'], ['wt', 'Berat Badan', r.wt + ' kg']].map(x => `<div class="card vital"><h4>${ic[x[0]]}${x[1]}</h4><div class="val">${x[2]}</div>${b}${u}</div>`).join('')}</div>`;
+        }
+        function line(series, cols, ymin, ymax, h = 240) {
+            const W = 520, L = 34, B = 24, T = 8, n = 7, days = ['Ming', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const X = i => L + (W - L - 8) * i / (n - 1), Y = v => T + (h - T - B) * (1 - (v - ymin) / (ymax - ymin));
+            let o = `<svg viewBox="0 0 ${W} ${h}" style="width:100%">`;
+            const st = (ymax - ymin) / (h > 200 ? 9 : 3);
+            for (let v = ymin; v <= ymax + .1; v += h > 200 ? 10 : 30)o += `<line x1="${L}" x2="${W - 8}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e8e8e8"/><text x="${L - 6}" y="${Y(v) + 3}" font-size="9" text-anchor="end" fill="#555">${v}</text>`;
+            days.forEach((d, i) => o += `<text x="${X(i)}" y="${h - 6}" font-size="8" text-anchor="middle" fill="#555">${d}</text>`);
+            series.forEach((s, k) => { const pts = s.slice(0, n).reverse(); const pl = pts.map((v, i) => `${X(i + n - pts.length)},${Y(Math.min(ymax, Math.max(ymin, v)))}`).join(' '); o += `<polyline points="${pl}" fill="none" stroke="${cols[k]}" stroke-width="2"/>` + pts.map((v, i) => `<circle cx="${X(i + n - pts.length)}" cy="${Y(Math.min(ymax, Math.max(ymin, v)))}" r="3" fill="${cols[k]}"/>`).join(''); });
+            return o + '</svg>';
+        }
+        const avg = k => Math.round(log.reduce((a, r) => a + (k === 'sys' ? +r.bp.split('/')[0] : r[k]), 0) / log.length);
+        const avgD = () => Math.round(log.reduce((a, r) => a + +r.bp.split('/')[1], 0) / log.length);
+        function table() { return `<div class="card" style="padding:14px 24px"><table class="log"><tr><th>WAKTU/TANGGAL</th><th>DETAK JANTUNG</th><th>TEKANAN DARAH</th><th>GULA DARAH</th><th>BERAT BADAN</th><th>STATUS</th></tr>${log.slice(0, 10).map(r => { const [s, c] = stat(r); return `<tr><td>${r.t}</td><td>${r.hr} bpm</td><td>${r.bp} mmHg</td><td>${r.gl} mg/dl</td><td>${r.wt} kg</td><td><span class="badge ${c}">${s}</span></td></tr>` }).join('')}</table></div>`; }
+        const exp = '<button class="btn" style="padding:8px 26px;font-size:14px" data-act="pdf">Ekspor PDF</button>';
+        const REC = {
+            rendah: { m: ['Perbanyak sayur, buah, dan biji-bijian', 'Pilih ikan atau protein tanpa lemak', 'Batasi gula dan garam berlebih'], o: ['Olahraga aerobik 150 menit/minggu', 'Jalan kaki 30 menit setiap hari', 'Latihan kekuatan 2x/minggu'], t: ['Tidur 7-9 jam per malam', 'Jam tidur & bangun konsisten', 'Hindari layar 1 jam sebelum tidur'] },
+            sedang: { m: ['Kurangi gorengan dan makanan olahan', 'Utamakan sayur, buah, dan serat', 'Batasi garam di bawah 1 sdt/hari'], o: ['Jalan cepat 30 menit, 5x/minggu', 'Hindari aktivitas berat mendadak', 'Pantau detak jantung saat berolahraga'], t: ['Tidur 7-9 jam per malam', 'Kurangi kafein setelah sore', 'Kelola stres dengan relaksasi'] },
+            tinggi: { m: ['Pola makan rendah lemak jenuh dan garam', 'Hindari gorengan, santan kental, jeroan', 'Perbanyak sayur, buah, dan ikan'], o: ['Mulai jalan ringan 15-20 menit', 'Konsultasikan program olahraga ke dokter', 'Berhenti jika nyeri dada atau sesak'], t: ['Tidur 7-9 jam, posisi kepala lebih tinggi bila sesak', 'Hindari begadang', 'Periksa ke dokter secara rutin'] },
+            terdiagnosa: { m: ['Ikuti diet yang dianjurkan dokter', 'Batasi garam, gula, dan lemak jenuh', 'Minum obat sesuai resep'], o: ['Aktivitas ringan sesuai izin dokter', 'Jangan memaksakan diri', 'Segera berobat jika gejala memburuk'], t: ['Tidur 7-9 jam per malam', 'Jaga jadwal kontrol rutin', 'Hindari stres berlebih'] }
+        };
+        const nav = () => `<div class="brand"><svg viewBox="0 0 120 100"><use href="#logo"/></svg>HeartSync</div><div class="tabs">${[['beranda', 'Beranda'], ['data', 'Data'], ['kesehatan', 'Kesehatan'], ['rekomendasi', 'Rekomendasi'], ['profil', 'Profil']].map(t => `<button class="tab ${view === t[0] ? 'on' : ''}" data-view="${t[0]}">${t[1]}</button>`).join('')}</div><div class="user"><div>${user.name}<small>Resiko ${lvName()}</small></div><div class="avatar">${user.name[0].toUpperCase()}</div></div>`;
+        const sec = (i, t, p, b) => `<section class="sec"><h3>${ic[i]}${t}</h3><p>${p}</p>${b}</section>`;
+        const chartCards = () => `<div class="g2"><div class="card"><div class="chart-t"><span>♥ Grafik Tren Detak Jantung<br>dan Tekanan Darah</span><span class="sel-mini">Minggu ini</span></div><p style="font-size:12px;color:#555">Pantau lonjakan dan rata rata periodik anda</p><div class="legend"><span><i style="background:#EA3739"></i>Detak Jantung</span><span><i style="background:#3b82f6"></i>Tekanan Darah</span></div>${line([log.map(r => r.hr), log.map(r => +r.bp.split('/')[0])], ['#EA3739', '#3b82f6'], 50, 140)}</div><div class="card"><div class="chart-t"><span>♥ Grafik Tren Gula Darah</span><span class="sel-mini">Minggu ini</span></div><p style="font-size:12px;color:#555">Perbandingan fluktuasi harian</p><div class="legend"><span><i style="background:#f5b800"></i>Gula Darah</span></div>${line([log.map(r => r.gl)], ['#f5b800'], 50, 140)}</div></div>`;
+        const views = {
+            beranda: () => hero('Jaga Jantungmu,<br>Mulai dari Sekarang!', 'Yuk mulai langkah kecil untuk menjaga kesehatan jantungmu. Kenali kondisi tubuhmu, terapkan pola hidup sehat, dan temukan rekomendasi aktivitas yang sesuai untukmu.')
+                + sec('pulse', 'Ringkasan Kesehatan', 'Pantau indikator kesehatanmu dalam satu tempat', vitals())
+                + sec('chart', 'Rekap Data Kesehatan', 'Lihat perkembangan kesehatanmu dari waktu ke waktu', `<div class="rekap"><div class="card"><h5>Kondisi Kamu</h5><small style="font-size:11px">Bedasarkan hasil klasifikasi terakhir</small><div class="risk-mini"><svg viewBox="0 0 120 100"><use href="#logo"/></svg><div><small style="font-size:10px">Resiko Jantung</small><b>${lvName()}</b></div></div><small style="font-size:11px;color:var(--red)">Update Terakhir<br>${last().t}</small><br><br><button class="outline" data-act="retake">Cek kembali</button></div><div class="card"><div class="chart-t"><span>♥ Detak Jantung (bpm)</span><span class="sel-mini">Mingguini</span></div>${line([log.map(r => r.hr)], ['#EA3739'], 30, 120, 200)}</div><div class="card"><h5>▮ Rata - Rata</h5><ul class="avg" style="margin-top:8px"><li>Detak Jantung <b>${avg('hr')} bpm</b></li><li>Tekanan Darah <b>${avg('sys')}/${avgD()} mmHg</b></li><li>Gula Darah <b>${avg('gl')} mg/dl</b></li><li>Berat Badan <b>${avg('wt')} kg</b></li></ul></div></div>`)
+                + sec('bulb', 'Rekomendasi Untukmu', 'Pilihlah makanan, olahraga, dan waktu tidur yang sesuai dengan kebutuhanmu', `<div class="recs"><div class="card rc"><div class="recimg">🍛</div><span class="tag">Makanan</span><h6>Makan Siang</h6><div class="meta">🥕 Nasi Putih &nbsp; 🥗 Tumisan<br>🥬 Sayur &nbsp; 🍗 Protein</div><div class="meta"><b>Total 520 Calori</b></div><button class="outline" style="width:100%" data-view="rekomendasi">Lihat selengkapnya</button></div><div class="card rc"><div class="recimg">🚶</div><span class="tag">Olahraga</span><h6>Jalan kaki</h6><div class="meta" style="color:var(--red)">${REC[risk.lv].o[0]}</div><br><button class="outline" style="width:100%" data-view="rekomendasi">Lihat selengkapnya</button></div>${sleepCard()}</div>`),
+            data: () => hero('Rekam dan Pantau,<br>Riwayat Kesehatanmu!', 'Lihat perkembangan grafik vitalitas tubuhmu secara teratur untuk keputusan pola hidup yang lebih tepat')
+                + sec('chart', 'Rekap Data Kesehatan', 'Pantau grafik, tren dan log riwayat vitalitas tubuh anda secara aktual', `<div class="seg"><span class="p on">Mingguan</span><span class="p">Bulanan</span><span class="p">Tahunan</span><button class="btn alt" data-act="add">+ Tambah Data</button>${exp}</div>${chartCards()}`)
+                + sec('hist', 'Log Catatan Riwayat Kesehatan', 'Daftar entri pengukuran terbaru yang berhasil dicatat', exp + '<div style="height:12px"></div>' + table()),
+            kesehatan: () => hero('Rekam dan Pantau,<br>Riwayat Kesehatanmu!', 'Lihat perkembangan grafik vitalitas tubuhmu secara teratur untuk keputusan pola hidup yang lebih tepat')
+                + sec('stat', 'Status dan Diagnosis Kesehatan', 'Evaluasi komprehensif indikator vital, skor risiko, dan tren kebugaran', `<div class="risk-grid"><div class="riskcard"><div class="donut"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="58" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="22"/><circle cx="75" cy="75" r="58" fill="none" stroke="#f3ff00" stroke-width="22" stroke-dasharray="${risk.pct * 3.64} 400" transform="rotate(-90 75 75)"/></svg><div>Tingkat Resiko<b>${lvName()}</b><span style="color:#f3ff00">${risk.pct}% Resiko</span></div></div><p style="font-size:12px;margin-top:10px">Bedasarkan algoritma klasifikasi faktor klinis HeartSync</p><div class="info">Update : Hari ini</div><small>Jaga durasi tidur 7-9 jam perhari &amp; lakukan pola hidup sehat</small><br><button class="btn" data-view="rekomendasi">Lihat Rekomendasi</button></div>${vitals().replace('<div class="g4">', '').replace(/<\/div>$/, '')}</div>`)
+                + sec('hist', 'Log Catatan Riwayat Kesehatan', 'Daftar entri pengukuran terbaru yang berhasil dicatat', exp + '<div style="height:12px"></div>' + table()),
+            rekomendasi: () => hero('Rekomendasi Untukmu', 'Saran makanan, olahraga, dan waktu tidur berdasarkan tingkat resiko (' + lvName() + ') dan data kesehatanmu.')
+                + sec('bulb', 'Rekomendasi Aktivitas', 'Terapkan secara konsisten setiap hari', `<div class="reclist">${[['🍛 Makanan', REC[risk.lv].m], ['🚶 Olahraga', REC[risk.lv].o], ['😴 Waktu Tidur', REC[risk.lv].t]].map(x => `<div class="card"><h6 style="font-size:17px;color:var(--red)">${x[0]}</h6><ul>${x[1].map(i => `<li>${i}</li>`).join('')}</ul></div>`).join('')}</div><div style="height:18px"></div>${sleepCard()}<p style="font-size:12px;color:#777;margin-top:14px">Rekomendasi ini bersifat umum dan bukan pengganti saran dokter.</p>`),
+            profil: () => sec('stat', 'Profil', 'Informasi akun dan hasil identifikasimu', `<div class="card profile"><div class="avatar">${user.name[0].toUpperCase()}</div><h3 style="justify-content:center">${user.name}</h3><p style="margin:6px 0">${user.email}</p><p>Resiko jantung: <b style="color:var(--red)">${lvName()}</b> (${risk.pct}%)</p><br><button class="btn" style="padding:9px 30px" data-act="retake">Isi ulang data</button> <button class="outline" data-act="logout" style="padding:8px 26px">Keluar</button></div>`)
+        };
+        function sleepCard() { return `<div class="card sleep"><h4>🌙 Kulitas &amp; Waktu Tidur</h4><small>Rekomendasi: 7 - 9 jam/hari</small><div class="clock"><span>SLEEP TIMER &amp; STOPWATCH</span><b id="clk">07 : 30 : 00</b><div class="row"><button class="r" data-act="sleep" id="sbtn">▶ Mulai Tidur</button><button data-act="sreset">⟲ Reset</button></div></div><div class="st"><span>Kualitas Tidur Semalam</span><span>94% (Sangat Baik)</span></div></div>`; }
+        function renderApp() { $('#nav').innerHTML = nav(); $('#view').innerHTML = views[view](); window.scrollTo(0, 0); clearInterval(tm); tm = null; }
+        let tm = null, left = 27000;
+        const fmtT = s => [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(x => String(x).padStart(2, '0')).join(' : ');
+        document.addEventListener('click', e => {
+            const a = e.target.closest('[data-act]'); if (!a) return; const k = a.dataset.act;
+            if (k === 'pdf') window.print();
+            if (k === 'add') $('#modal').classList.add('open');
+            if (k === 'retake') go('quiz');
+            if (k === 'logout') { go('login'); }
+            if (k === 'sreset') { clearInterval(tm); tm = null; left = 27000; $('#clk').textContent = fmtT(left); $('#sbtn').textContent = '▶ Mulai Tidur'; }
+            if (k === 'sleep') { if (tm) { clearInterval(tm); tm = null; a.textContent = '▶ Lanjut'; } else { a.textContent = '⏸ Jeda'; tm = setInterval(() => { left = Math.max(0, left - 1); $('#clk').textContent = fmtT(left); if (!left) { clearInterval(tm); tm = null; } }, 1000); } }
+        });
+        $('#mcancel').onclick = () => $('#modal').classList.remove('open');
+        $('#mform').onsubmit = e => {
+            e.preventDefault(); const f = new FormData(e.target);
+            log.unshift({ t: fmtD(new Date()), hr: +f.get('hr'), bp: f.get('bp'), gl: +f.get('gl'), wt: +f.get('wt') }); log = log.slice(0, 30); save();
+            $('#modal').classList.remove('open'); renderApp();
+        };
+        document.addEventListener('click', e => { const p = e.target.closest('.seg .p'); if (p) { $$('.seg .p').forEach(x => x.classList.toggle('on', x === p)); } });
+    </script>
+</body>
+
+</html>
