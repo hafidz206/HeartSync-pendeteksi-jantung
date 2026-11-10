@@ -1,0 +1,231 @@
+/* ========================================================
+   HEARTSYNC - GLOBAL DESIGN SYSTEM TOKENS & STYLES
+   Prinsip UI/UX:
+   1. Hierarki Visual yang Tegas & Jelas
+   2. Konsistensi Elemen & Spacing
+   3. Tipografi Poppins dengan Keterbacaan Tinggi
+   4. Kontras Warna Harmonik (WCAG AA Compliant)
+   5. White Space Lapang, Bersih, dan Tidak Sumpek
+   ======================================================== */
+
+/* Google Fonts preconnect helper - font loaded via HTML link tags */
+
+:root {
+    /* Brand Colors */
+    --primary-red: #EA3739;
+    --primary-red-hover: #D32426;
+    --primary-red-light: #FFF5F6;
+    --primary-red-border: #F5CCD2;
+    --secondary-blue: #1E8FCB;
+
+    /* Neutral & Background Colors */
+    --bg-page: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-muted: #F9FAFB;
+    --bg-subtle: #F3F4F6;
+    
+    /* Text Colors with Strict Contrast Hierarchy */
+    --text-primary: #111827;     /* High contrast black */
+    --text-secondary: #374151;   /* Medium dark gray */
+    --text-muted: #6B7280;       /* Neutral gray for captions & meta */
+    --text-light: #9CA3AF;       /* Light gray for subtle placeholders */
+    
+    /* Borders */
+    --border-color: #E5E7EB;
+    --border-light: #F3F4F6;
+    
+    /* Elevation & Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+    --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+    --shadow-red: 0 6px 20px rgba(234, 55, 57, 0.32);
+
+    /* Radii */
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --radius-pill: 9999px;
+
+    /* Typography */
+    --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+a {
+    color: var(--primary-red);
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+a:hover {
+    color: var(--primary-red-hover);
+}
+
+/* ========================================================
+   SHARED BUTTONS & PILLS (CONSISTENT DESIGN)
+   ======================================================== */
+.btn-primary,
+.btn-pill-red {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--primary-red);
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 10px 26px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: var(--shadow-red);
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.btn-primary:hover,
+.btn-pill-red:hover {
+    background: var(--primary-red-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(234, 55, 57, 0.42);
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.btn-primary:active,
+.btn-pill-red:active {
+    transform: translateY(1px);
+}
+
+.btn-outline-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #FFFFFF;
+    color: var(--primary-red);
+    border: 1px solid var(--primary-red);
+    border-radius: var(--radius-pill);
+    padding: 6px 20px;
+    font-weight: 600;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.btn-outline-pill:hover {
+    background: var(--primary-red-light);
+    color: var(--primary-red-hover);
+    text-decoration: none;
+}
+
+/* ========================================================
+   ANIMATIONS
+   ======================================================== */
+@keyframes floatGentle {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-8px) rotate(1.5deg);
+    }
+}
+
+@keyframes floatGentleAlt {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(8px) rotate(-1.5deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================================
+   SHARED BRAND LOGO (MULTI-PAGE CONSISTENT)
+   ======================================================== */
+.brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.brand-logo:hover {
+    transform: translateY(-1px);
+}
+
+.brand-logo svg {
+    width: 44px;
+    height: 38px;
+}
+
+.brand-text {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary-red);
+    letter-spacing: -0.2px;
+}
+
+/* ========================================================
+   SHARED UTILITY CLASSES
+   ======================================================== */
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #FFFFFF;
+    color: #374151;
+    border: 1.5px solid #D1D5DB;
+    border-radius: var(--radius-pill);
+    padding: 8px 20px;
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-outline:hover {
+    border-color: #9CA3AF;
+    background: #F9FAFB;
+    text-decoration: none;
+}
+

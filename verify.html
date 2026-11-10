@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Akun - HeartSync</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+
+    <!-- Global SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="logo" viewBox="0 0 120 100">
+                <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545" />
+                <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB" />
+                <line x1="44" y1="4" x2="44" y2="8" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="38" y1="7" x2="41" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="50" y1="7" x2="47" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M102 54l6-4M102 54l6 4" fill="none" stroke="#1177B8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                <line x1="97" y1="47" x2="110" y2="47" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <line x1="97" y1="61" x2="110" y2="61" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <path d="M44 14v14M37 21h14" stroke="#fff" stroke-width="5" stroke-linecap="round" />
+            </symbol>
+            <symbol id="heart3d" viewBox="0 0 100 90">
+                <defs>
+                    <radialGradient id="hg" cx="35%" cy="30%" r="80%">
+                        <stop offset="0" stop-color="#FF6B6B" />
+                        <stop offset=".6" stop-color="#E5232B" />
+                        <stop offset="1" stop-color="#B3121A" />
+                    </radialGradient>
+                </defs>
+                <path d="M50 86C20 62 3 46 3 27 3 13 14 4 27 4c10 0 18 5 23 13C55 9 63 4 73 4c13 0 24 9 24 23 0 19-17 35-47 59Z" fill="url(#hg)" />
+                <path d="M20 46h16l7-18 11 32 9-25 6 11h14" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".92" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- 3D Heart Floating Elements -->
+    <div class="auth-deco top-right">
+        <svg viewBox="0 0 100 90">
+            <use href="#heart3d" />
+        </svg>
+    </div>
+    <div class="auth-deco bottom-left">
+        <svg viewBox="0 0 100 90">
+            <use href="#heart3d" />
+        </svg>
+    </div>
+
+    <!-- Verification Card -->
+    <main class="auth-card verify-card" role="main">
+        <header class="auth-header">
+            <a href="login.html" class="auth-logo" title="Kembali ke Beranda" style="text-decoration:none">
+                <svg viewBox="0 0 120 100" aria-label="HeartSync Logo">
+                    <use href="#logo" />
+                </svg>
+                <span>HeartSync</span>
+            </a>
+            <h1 class="auth-title">Kode Verifikasi</h1>
+            <p class="auth-sub" style="color:var(--text-secondary)">
+                Kami telah mengirim kode 5-digit ke email anda<br>
+                <b id="vemail" style="color:var(--primary-red);font-weight:600">nurrahmah@gmail.com</b>
+            </p>
+        </header>
+
+        <div class="verify-box">
+            <h4 class="verify-input-label">Masukkan 5 Digit Kode</h4>
+            <div class="codes-grid">
+                <input maxlength="1" inputmode="numeric" aria-label="Digit 1" autofocus>
+                <input maxlength="1" inputmode="numeric" aria-label="Digit 2">
+                <input maxlength="1" inputmode="numeric" aria-label="Digit 3">
+                <input maxlength="1" inputmode="numeric" aria-label="Digit 4">
+                <input maxlength="1" inputmode="numeric" aria-label="Digit 5">
+            </div>
+
+            <button type="button" class="btn-auth" id="vbtn">Verifikasi Akun</button>
+
+            <div class="resend-row">
+                Tidak menerima kode? <a id="resend" href="#">Kirim ulang</a>
+            </div>
+
+            <a href="login.html" class="auth-back-link">&larr; Kembali ke Halaman Login</a>
+        </div>
+    </main>
+
+    <script src="js/global.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

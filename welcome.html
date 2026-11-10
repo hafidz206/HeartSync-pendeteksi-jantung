@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang - HeartSync</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/welcome.css">
+</head>
+<body class="welcome-page">
+
+    <!-- Global SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="logo" viewBox="0 0 120 100">
+                <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545" />
+                <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB" />
+                <line x1="44" y1="4" x2="44" y2="8" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="38" y1="7" x2="41" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="50" y1="7" x2="47" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M102 54l6-4M102 54l6 4" fill="none" stroke="#1177B8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                <line x1="97" y1="47" x2="110" y2="47" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <line x1="97" y1="61" x2="110" y2="61" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <path d="M44 14v14M37 21h14" stroke="#fff" stroke-width="5" stroke-linecap="round" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <main class="welcome-container" role="main">
+        <!-- Logo HeartSync -->
+        <a href="landing.html" class="welcome-logo" title="Kembali ke Beranda">
+            <svg viewBox="0 0 120 100" aria-label="HeartSync Logo">
+                <use href="#logo" />
+            </svg>
+            <span>HeartSync</span>
+        </a>
+
+        <!-- Main Title -->
+        <h1 class="welcome-title">SELAMAT DATANG</h1>
+
+        <!-- Tagline -->
+        <h2 class="welcome-tagline">Yuk, Kenali kesehatan jantungmu!</h2>
+
+        <!-- Description -->
+        <p class="welcome-desc">
+            Lengkapi data dirimu terlebih dahulu agar kami dapat membantu mengenali kondisi kesehatanmu dan memberikan rekomendasi aktivitas yang sesuai dengan kebutuhanmu.
+        </p>
+
+        <!-- CTA Pill Button: Folder Icon + Text + Arrow -->
+        <a href="quiz.html" class="btn-welcome-cta">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+            </svg>
+            <span>Lengkapi data diri</span>
+            <span>&rarr;</span>
+        </a>
+    </main>
+
+    <script src="js/global.js"></script>
+</body>
+</html>

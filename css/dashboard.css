@@ -1,0 +1,1455 @@
+/* ========================================================
+   HEARTSYNC - DASHBOARD PAGE STYLES (POLISHED TO PERFECTION)
+   
+   Prinsip Desain:
+   1. Hierarki Visual: Nav → Hero → Ringkasan → Rekap → Rekomendasi → Footer
+   2. Konsistensi: Card radius 18px-20px, Pill buttons 9999px, Spacing seragam
+   3. Tipografi & Keterbacaan: Poppins, teks kontras tinggi #111827 & #374151
+   4. Pemilihan Warna & Kontras: Merah #EA3739, Hijau Normal #DEF7EC/#03543F
+   5. Ruang Kosong (White Space): Latar bersih putih, bernapas, tidak sumpek
+   ======================================================== */
+
+.dashboard-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #FFFFFF;
+    color: #111827;
+}
+
+.wrap {
+    width: min(100%, 1160px);
+    margin: 0 auto;
+    padding: 0 36px;
+    box-sizing: border-box;
+}
+
+/* ========================================================
+   1. NAVIGATION HEADER
+   ======================================================== */
+.dash-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 0 16px;
+    background: #FFFFFF;
+}
+
+.dash-nav .nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 800;
+    font-size: 21px;
+    color: #EA3739;
+    text-decoration: none;
+    flex-shrink: 0;
+    letter-spacing: -0.3px;
+    transition: transform 0.2s ease;
+}
+
+.dash-nav .nav-brand:hover {
+    transform: translateY(-1px);
+}
+
+.dash-nav .nav-brand svg {
+    width: 32px;
+    height: 28px;
+}
+
+.dash-nav .nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+    max-width: 580px;
+}
+
+.dash-nav .tab-btn {
+    border: 1.5px solid #E5E7EB;
+    background: #FFFFFF;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 20px;
+    cursor: pointer;
+    color: #4B5563;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    font-family: inherit;
+    line-height: 1.35;
+}
+
+.dash-nav .tab-btn:hover {
+    border-color: #EA3739;
+    color: #EA3739;
+    background: #FFF5F6;
+}
+
+.dash-nav .tab-btn.on {
+    background: #EA3739;
+    color: #FFFFFF;
+    border-color: #EA3739;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(234, 55, 57, 0.28);
+}
+
+.dash-nav .nav-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dash-nav .nav-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.dash-nav .nav-user-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+}
+
+.dash-nav .nav-user-status {
+    color: #EA3739;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.nav-avatar-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #FCDEDE;
+    background: #FEE2E2;
+}
+
+/* ========================================================
+   2. HERO BANNER (PRECISE 95%+ MATCH TO REFERENCE IMAGE)
+   - Latar Gradien: Solid hitam di kiri (#000000) -> Transisi Wine/Burgundy -> Radiant Spotlight Glow merah (#FF2A30) di belakang dokter -> Vignette gelap di sudut kanan (#0A0102)
+   - Sudut: 26px radius mulus dan elegan
+   - Posisi Dokter: Tinggi 100% pas dari ujung atas kartu hingga dasar banner (flush bottom)
+   - Tipografi: Kontras putih murni, bobot tegas Poppins
+   - White space: Luas, lapang, proporsional, tidak sumpek
+   ======================================================== */
+/* ========================================================
+   2. HERO BANNER (100% PRECISE MATCH TO USER REFERENCE)
+   ======================================================== */
+.hero-banner {
+    border-radius: 24px;
+    margin-top: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+}
+
+.hero-banner.hero-banner-exact {
+    background: #000000;
+    line-height: 0;
+    display: block;
+}
+
+.hero-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 24px;
+    object-fit: cover;
+}
+
+.hero-banner-content-wrap {
+    background:
+        radial-gradient(ellipse 55% 85% at 75% 50%, rgba(227, 53, 52, 0.7) 0%, rgba(175, 41, 40, 0.4) 38%, rgba(50, 11, 12, 0.15) 65%, transparent 80%),
+        linear-gradient(108deg, #010101 0%, #010101 32%, #1A0507 40%, #4C1113 50%, #8A1A1E 62%, #D03032 75%, #E33534 82%, #7A1C1D 92%, #150505 100%);
+    color: #FFFFFF;
+    padding: 26px 40px;
+    min-height: 210px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-banner-content {
+    max-width: min(530px, calc(100% - 190px));
+    z-index: 2;
+    position: relative;
+}
+
+.hero-greeting {
+    font-size: 14px;
+    font-weight: 500;
+    color: #FFFFFF;
+    opacity: 0.95;
+    margin: 0 0 6px;
+    letter-spacing: 0.2px;
+}
+
+.hero-title {
+    font-size: clamp(23px, 2.6vw, 29px);
+    line-height: 1.18;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin: 0 0 10px;
+    color: #FFFFFF;
+}
+
+.hero-desc {
+    font-size: 12.5px;
+    line-height: 1.58;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0;
+    max-width: 480px;
+    font-weight: 400;
+}
+
+.hero-banner .hero-doc {
+    position: absolute;
+    right: clamp(10px, 8%, 50px);
+    bottom: 0;
+    height: 98%;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ========================================================
+   3. SECTIONS & TYPOGRAPHY
+   ======================================================== */
+.dash-sec {
+    margin-top: 38px;
+}
+
+.dash-sec-header {
+    margin-bottom: 16px;
+}
+
+.dash-sec-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #EA3739;
+    font-size: 16.5px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.dash-sec-title svg {
+    width: 20px;
+    height: 20px;
+    stroke: #EA3739;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+.dash-sec-subtitle {
+    font-size: 12.5px;
+    color: #6B7280;
+    margin: 4px 0 0;
+    font-weight: 400;
+}
+
+/* Base Card */
+.dash-card {
+    background: #FFFFFF;
+    border: 1px solid #ECECEC;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    padding: 20px 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.dash-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+/* ========================================================
+   4. VITALS SUMMARY (4 CARDS)
+   ======================================================== */
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.vital-card {
+    padding: 22px 18px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.vital-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.vital-card-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vital-card-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.vital-card-title {
+    color: #8D0F12;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.vital-card-val {
+    color: #EA3739;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 6px 0 10px;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+}
+
+.badge-status {
+    display: inline-block;
+    padding: 2px 14px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #DEF7EC;
+    color: #03543F;
+    align-self: flex-start;
+}
+
+.badge-status.warn {
+    background: #FEF08A;
+    color: #854D0E;
+}
+
+.badge-status.bad {
+    background: #FDE8E8;
+    color: #9B1C1C;
+}
+
+.vital-card-updated {
+    font-size: 11px;
+    color: #6B7280;
+    margin-top: 12px;
+    line-height: 1.35;
+}
+
+/* ========================================================
+   5. REKAP DATA KESEHATAN (3 COLUMNS)
+   ======================================================== */
+.rekap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr 1.2fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+/* Column 1: Kondisi Kamu */
+.card-kondisi {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 18px;
+}
+
+.card-kondisi h5 {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #EA3739;
+    margin: 0 0 2px;
+}
+
+.card-kondisi .subtext {
+    font-size: 11px;
+    color: #6B7280;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.risk-mini-banner {
+    background: linear-gradient(135deg, #FFF1F2 0%, #FEE2E2 100%);
+    border: 1px solid #FCDEDE;
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 12px;
+}
+
+.risk-mini-banner svg {
+    width: 32px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.risk-mini-banner .label {
+    font-size: 10.5px;
+    color: #4B5563;
+    display: block;
+    line-height: 1.2;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.risk-mini-banner .value {
+    color: #EA3739;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.2;
+    display: block;
+}
+
+.card-kondisi .update-meta {
+    font-size: 11px;
+    color: #EA3739;
+    font-weight: 600;
+    line-height: 1.45;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.card-kondisi .update-meta span {
+    color: #6B7280;
+    font-weight: 400;
+}
+
+.btn-outline-pill {
+    border: 1.5px solid #EA3739;
+    color: #EA3739;
+    background: #FFFFFF;
+    border-radius: 9999px;
+    padding: 6px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 12px;
+    line-height: 1.4;
+    font-family: inherit;
+}
+
+.btn-outline-pill:hover {
+    background: #FFF5F6;
+    color: #D32426;
+    border-color: #D32426;
+    text-decoration: none;
+}
+
+.card-kondisi .btn-outline-pill {
+    align-self: center;
+    margin: 12px auto 0;
+    padding: 5px 22px;
+    font-size: 11.5px;
+}
+
+/* Column 2: Line Chart */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.chart-header .title-chart {
+    color: #EA3739;
+    font-weight: 700;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-period-pill {
+    border: 1.5px solid #EA3739;
+    color: #EA3739;
+    border-radius: 9999px;
+    font-size: 10.5px;
+    padding: 3px 12px;
+    font-weight: 600;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.badge-period-pill:hover {
+    background: #FFF5F6;
+}
+
+/* Column 3: Rata - Rata */
+.card-avg {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 18px;
+}
+
+.card-avg h5 {
+    color: #EA3739;
+    font-size: 13.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+}
+
+.avg-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.avg-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11.5px;
+    padding: 7px 0;
+    color: #374151;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.avg-list li:last-child {
+    border-bottom: none;
+}
+
+.avg-list li .item-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #4B5563;
+    font-size: 11.5px;
+}
+
+.avg-list li b {
+    color: #EA3739;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+/* ========================================================
+   6. REKOMENDASI UNTUKMU (3 COLUMNS)
+   ======================================================== */
+.recs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.8fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.rec-card {
+    padding: 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 20px;
+}
+
+.rec-img-holder {
+    height: 95px;
+    border-radius: 12px;
+    background: #F3F4F6;
+    margin-bottom: 12px;
+    border: 1px solid #ECECEC;
+}
+
+.rec-card-top {
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+}
+
+.rec-tag {
+    background: #FEE2E2;
+    color: #EA3739;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2.5px 10px;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.rec-card h6 {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #111827;
+    margin: 2px 0 0;
+}
+
+.rec-card .rec-meta {
+    font-size: 11.5px;
+    color: #4B5563;
+    line-height: 1.5;
+    margin: 8px 0 6px;
+    flex: 1;
+}
+
+.rec-food-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 8px;
+    font-size: 11px;
+    color: #4B5563;
+    line-height: 1.45;
+}
+
+.rec-card .rec-meta.red-meta {
+    color: #EA3739;
+    font-weight: 500;
+}
+
+.rec-card .rec-calorie {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #111827;
+    margin: 6px 0 12px;
+}
+
+.rec-card .btn-outline-pill {
+    width: 100%;
+    margin-top: auto;
+    text-align: center;
+    box-sizing: border-box;
+    align-self: stretch;
+}
+
+/* Sleep Card */
+.sleep-card {
+    background:
+        radial-gradient(ellipse 60% 85% at 85% 50%, rgba(240, 42, 48, 0.5) 0%, rgba(180, 20, 25, 0.22) 50%, transparent 80%),
+        linear-gradient(125deg, #000000 0%, #0A0203 30%, #2A0508 55%, #7A1015 78%, #B8181F 92%, #5A0A0E 100%);
+    color: #FFFFFF;
+    border: none;
+    padding: 22px 24px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sleep-header-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sleep-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.sleep-card .sleep-sub {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 2px 0 10px;
+    display: block;
+}
+
+.clock-box {
+    background: rgba(0, 0, 0, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+    margin: 8px 0 12px;
+}
+
+.clock-box .timer-label {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    font-weight: 500;
+}
+
+.clock-box b {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    display: block;
+    line-height: 1.15;
+    margin: 4px 0;
+    color: #FFFFFF;
+    font-family: inherit;
+}
+
+.sleep-btn-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.sleep-btn-row button {
+    padding: 4px 18px;
+    border-radius: 9999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sleep-btn-row button.btn-r {
+    background: #EA3739;
+    border: none;
+    color: #FFFFFF;
+}
+
+.sleep-btn-row button.btn-r:hover {
+    background: #D32426;
+}
+
+.sleep-btn-row button.btn-outline-white {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    color: #FFFFFF;
+}
+
+.sleep-btn-row button.btn-outline-white:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.sleep-stats-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+/* ========================================================
+   7. FOOTER
+   ======================================================== */
+.dash-footer {
+    background: #EA3739;
+    color: #FFFFFF;
+    margin-top: 50px;
+    padding: 38px 0 32px;
+}
+
+.dash-footer .footer-wrap {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    font-size: 12.5px;
+    line-height: 1.6;
+}
+
+.dash-footer b {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.dash-footer p {
+    margin: 0;
+    opacity: 0.95;
+}
+
+/* ========================================================
+   8. MODAL & OTHER VIEWS
+   ======================================================== */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+/* ========================================================
+   DATA DASHBOARD - TOOLBAR & ACTIONS
+   ======================================================== */
+.filter-toolbar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.period-segmented-group {
+    display: inline-flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 9999px;
+    padding: 3px 4px;
+    gap: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.period-segmented-group .period-btn {
+    padding: 6px 20px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4B5563;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    font-family: inherit;
+    line-height: 1.35;
+}
+
+.period-segmented-group .period-btn:hover {
+    color: #111827;
+}
+
+.period-segmented-group .period-btn.on {
+    background: #F3F4F6;
+    color: #111827;
+    font-weight: 700;
+}
+
+.data-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-primary-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #EA3739;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 9999px;
+    padding: 8px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(234, 55, 57, 0.25);
+    font-family: inherit;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.btn-primary-pill:hover {
+    background: #D32426;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(234, 55, 57, 0.35);
+}
+
+.btn-primary-pill svg {
+    width: 14px;
+    height: 14px;
+    stroke: #FFFFFF;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ========================================================
+   DATA DASHBOARD - CHART CARDS
+   ======================================================== */
+.data-chart-card {
+    padding: 24px 24px 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.data-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.data-chart-title {
+    color: #EA3739;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 5px;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.data-chart-icon {
+    width: 15px;
+    height: 15px;
+    fill: #EA3739;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.data-chart-desc {
+    font-size: 11.5px;
+    color: #6B7280;
+    line-height: 1.45;
+    margin: 0;
+    font-weight: 400;
+}
+
+.data-chart-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.badge-period-pill-subtle {
+    border: 1px solid #E5E7EB;
+    color: #4B5563;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 9999px;
+    background: #FFFFFF;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.badge-period-pill-subtle:hover {
+    border-color: #EA3739;
+    color: #EA3739;
+}
+
+.data-legends-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.data-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #4B5563;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.legend-color-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.data-chart-svg-wrap {
+    width: 100%;
+    margin-top: 4px;
+}
+
+/* ========================================================
+   LOG TABLE & KESEHATAN DASHBOARD
+   ======================================================== */
+.log-actions-bar {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 14px;
+}
+
+.btn-export-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #EA3739;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 9999px;
+    padding: 8px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(234, 55, 57, 0.25);
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.btn-export-pdf:hover {
+    background: #D32426;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(234, 55, 57, 0.35);
+}
+
+.btn-export-pdf svg {
+    width: 15px;
+    height: 15px;
+    stroke: #FFFFFF;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.log-table-card {
+    padding: 16px 20px 20px;
+    border-radius: 20px;
+    overflow-x: auto;
+}
+
+table.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+table.log-table th {
+    color: #EA3739;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 14px 10px;
+    text-align: center;
+    background: #FFFFFF;
+    border-bottom: 1.5px solid #F3F4F6;
+    letter-spacing: 0.3px;
+}
+
+table.log-table th:first-child,
+table.log-table td:first-child {
+    text-align: left;
+    padding-left: 24px;
+}
+
+table.log-table th:last-child,
+table.log-table td:last-child {
+    padding-right: 24px;
+}
+
+table.log-table td {
+    text-align: center;
+    padding: 14px 10px;
+    border-top: 1px solid #F3F4F6;
+    color: #374151;
+    font-size: 13px;
+}
+
+table.log-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+table.log-table tbody tr:hover {
+    background: #FFFDFD;
+}
+
+/* KESEHATAN VIEW LAYOUT */
+.kesehatan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.card-diag-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px;
+    border-radius: 24px;
+    height: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    gap: 0;
+}
+
+.diag-red-box {
+    background: linear-gradient(160deg, #FF4A4C 0%, #EA3739 55%, #CC2325 100%);
+    border-radius: 20px;
+    padding: 20px 20px 20px;
+    color: #FFFFFF;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(234, 55, 57, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Donut gauge for diagnosis card */
+.diag-red-box .donut-gauge {
+    width: 145px;
+    height: 145px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.diag-red-box .donut-gauge svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.diag-red-note {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 12px auto 0;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 220px;
+    font-weight: 400;
+}
+
+.diag-meta-box {
+    padding: 14px 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.diag-update-pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #FCA5A5;
+    background: #FFFFFF;
+    color: #EA3739;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 14px;
+    border-radius: 9999px;
+}
+
+.diag-reminder-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #4B5563;
+    font-size: 11.5px;
+    line-height: 1.4;
+}
+
+.diag-reminder-row svg {
+    width: 16px;
+    height: 16px;
+    stroke: #6B7280;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.btn-diag-rekomendasi {
+    align-self: flex-end;
+    background: #EA3739;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 9999px;
+    padding: 7px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(234, 55, 57, 0.25);
+    margin-top: 2px;
+    font-family: inherit;
+    letter-spacing: 0.2px;
+}
+
+.btn-diag-rekomendasi:hover {
+    background: #D32426;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(234, 55, 57, 0.35);
+}
+
+.vitals-grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.vitals-grid-2x2 .vital-card {
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.vitals-grid-2x2 .vital-card .vital-card-val {
+    margin: 8px 0 12px;
+}
+
+.risk-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: 18px;
+}
+
+.riskcard {
+    background: #EA3739;
+    color: #FFFFFF;
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+    grid-row: span 2;
+    box-shadow: 0 6px 20px rgba(234, 55, 57, 0.32);
+}
+
+.donut-gauge {
+    width: 150px;
+    height: 150px;
+    margin: 8px auto;
+    position: relative;
+}
+
+.donut-gauge .gauge-text {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    font-size: 12px;
+}
+
+.donut-gauge .gauge-text b {
+    font-size: 26px;
+    display: block;
+}
+
+.riskcard .info-pill {
+    background: #FFFFFF;
+    color: #EA3739;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 16px;
+    margin: 12px 0;
+    display: inline-block;
+}
+
+.profile-card {
+    max-width: 480px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.profile-card .nav-avatar-img {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px;
+}
+
+/* Modal */
+.dash-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    place-items: center;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+}
+
+.dash-modal.open {
+    display: grid;
+}
+
+.dash-modal form {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 26px;
+    width: min(92vw, 400px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.dash-modal h3 {
+    color: #EA3739;
+    margin-bottom: 12px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.dash-modal label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 10px 0 4px;
+    color: #374151;
+}
+
+.dash-modal input {
+    width: 100%;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.dash-modal input:focus {
+    outline: none;
+    border-color: #EA3739;
+    box-shadow: 0 0 0 3px rgba(234, 55, 57, 0.12);
+}
+
+.dash-modal .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .grid-4 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .kesehatan-grid,
+    .rekap-grid,
+    .recs-grid,
+    .grid-2,
+    .risk-grid,
+    .dash-footer .footer-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .riskcard {
+        grid-row: auto;
+    }
+
+    .dash-nav {
+        flex-wrap: wrap;
+    }
+
+    .hero-banner {
+        padding: 26px 26px;
+        min-height: 200px;
+    }
+
+    .hero-banner-content {
+        max-width: calc(100% - 130px);
+    }
+
+    .hero-banner .hero-doc {
+        height: 100%;
+        max-height: none;
+        right: 14px;
+    }
+}
+
+@media (max-width: 680px) {
+    .vitals-grid-2x2 {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-banner {
+        padding: 24px 20px;
+        border-radius: 20px;
+        min-height: auto;
+    }
+
+    .hero-banner-content {
+        max-width: 100%;
+    }
+
+    .hero-banner .hero-doc {
+        display: none;
+    }
+
+    .filter-toolbar-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .period-segmented-group {
+        justify-content: center;
+    }
+
+    .data-actions-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .data-actions-group .btn-primary-pill {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .data-chart-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .data-chart-meta {
+        align-items: flex-start;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media print {
+    .dash-nav,
+    .filter-toolbar,
+    .filter-toolbar-row,
+    .log-actions-bar,
+    .dash-footer,
+    .hero-banner {
+        display: none !important;
+    }
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Identifikasi Kesehatan - HeartSync</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/result.css">
+</head>
+<body class="result-page">
+
+    <!-- Global SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="logo" viewBox="0 0 120 100">
+                <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545" />
+                <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB" />
+                <line x1="44" y1="4" x2="44" y2="8" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="38" y1="7" x2="41" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="50" y1="7" x2="47" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M102 54l6-4M102 54l6 4" fill="none" stroke="#1177B8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                <line x1="97" y1="47" x2="110" y2="47" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <line x1="97" y1="61" x2="110" y2="61" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <path d="M44 14v14M37 21h14" stroke="#fff" stroke-width="5" stroke-linecap="round" />
+            </symbol>
+            <symbol id="heart3d" viewBox="0 0 100 90">
+                <defs>
+                    <radialGradient id="hg" cx="35%" cy="30%" r="80%">
+                        <stop offset="0" stop-color="#FF6B6B" />
+                        <stop offset=".6" stop-color="#E5232B" />
+                        <stop offset="1" stop-color="#B3121A" />
+                    </radialGradient>
+                </defs>
+                <path d="M50 86C20 62 3 46 3 27 3 13 14 4 27 4c10 0 18 5 23 13C55 9 63 4 73 4c13 0 24 9 24 23 0 19-17 35-47 59Z" fill="url(#hg)" />
+                <path d="M20 46h16l7-18 11 32 9-25 6 11h14" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".92" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Page Header: Logo -->
+    <header class="result-header" role="banner">
+        <a href="dashboard.html" class="brand-logo" title="Pergi ke Dashboard">
+            <svg viewBox="0 0 120 100" aria-label="HeartSync Logo">
+                <use href="#logo" />
+            </svg>
+            <span class="brand-text">HeartSync</span>
+        </a>
+    </header>
+
+    <!-- Result Body -->
+    <main class="result-body" role="main">
+        <h1>Hasil Identifikasi Kesehatanmu</h1>
+        <p class="result-hint">Berdasarkan data yang kamu isi, berikut hasil estimasi risiko kesehatan jantungmu</p>
+
+        <!-- Gauge Ring Indicator -->
+        <div class="ring-container" aria-label="Indikator tingkat risiko kesehatan jantung">
+            <svg class="gauge-ring" id="rring" viewBox="0 0 300 300" aria-hidden="true"></svg>
+            <div class="heart-center">
+                <svg viewBox="0 0 100 90" aria-hidden="true">
+                    <use href="#heart3d" />
+                </svg>
+            </div>
+            <div class="pill-level" id="rpill" role="status" aria-live="polite">Memuat...</div>
+        </div>
+
+        <!-- Result Description -->
+        <p class="result-text" id="rtext"></p>
+
+        <!-- Action Buttons -->
+        <div class="result-actions">
+            <a href="dashboard.html?view=beranda" class="btn-result btn-fill">
+                <span>Lihat Dashboard</span>
+                <span>&rarr;</span>
+            </a>
+            <a href="dashboard.html?view=rekomendasi" class="btn-result btn-line">
+                <span>Rekomendasi Aktivitas</span>
+                <span>&rarr;</span>
+            </a>
+            <a href="quiz.html" style="font-size:13px;color:var(--text-muted);text-decoration:none;margin-top:4px;padding:6px 16px;border-radius:9999px;transition:color 0.2s"
+               onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color='var(--text-muted)'">
+                &larr; Isi Ulang Kuesioner
+            </a>
+        </div>
+    </main>
+
+    <script src="js/global.js"></script>
+    <script src="js/result.js"></script>
+</body>
+</html>

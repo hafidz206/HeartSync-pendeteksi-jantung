@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HeartSync</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- Global SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="logo" viewBox="0 0 120 100">
+                <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545" />
+                <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB" />
+                <line x1="44" y1="4" x2="44" y2="8" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="38" y1="7" x2="41" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="50" y1="7" x2="47" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9"
+                    stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5"
+                    stroke-linejoin="round" stroke-linecap="round" />
+                <path d="M102 54l6-4M102 54l6 4" fill="none" stroke="#1177B8" stroke-width="3" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <line x1="97" y1="47" x2="110" y2="47" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <line x1="97" y1="61" x2="110" y2="61" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round" />
+                <path d="M44 14v14M37 21h14" stroke="#fff" stroke-width="5" stroke-linecap="round" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Top Navigation -->
+    <header class="wrap">
+        <nav class="dash-nav" id="nav"></nav>
+    </header>
+
+    <!-- Main Dynamic Content Views -->
+    <main class="wrap" id="view"></main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+        <div class="wrap footer-wrap">
+            <div>
+                <b>TENTANG APLIKASI</b>
+                <p>HeratSync adalah aplikasi yang di rancang untuk membantu pengguna mengenali risiko kesehatan jantung,
+                    memantau data kesehatan, serta mendapatkan rekomendasi pola makan, aktivitas fisik, dan waktu tidur
+                    untuk mendukung gaya hidup yang lebi sehat</p>
+            </div>
+            <div>
+                <b>MORE INFORMATION</b>
+                <p>HeratSync@gmail.com<br>@HeartSync_</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Tambah Data Pengukuran -->
+    <div class="dash-modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <form id="mform">
+            <h3 id="modalTitle">Tambah Data Pengukuran</h3>
+
+            <label for="m-hr">Detak jantung (bpm)</label>
+            <input id="m-hr" name="hr" type="number" required min="30" max="220" value="75">
+
+            <label for="m-bp">Tekanan darah (mmHg)</label>
+            <input id="m-bp" name="bp" required pattern="\d{2,3}/\d{2,3}" value="110/70" placeholder="110/70">
+
+            <label for="m-gl">Gula darah (mg/dl)</label>
+            <input id="m-gl" name="gl" type="number" required min="30" max="600" value="95">
+
+            <label for="m-wt">Berat badan (kg)</label>
+            <input id="m-wt" name="wt" type="number" required min="10" max="300" value="52">
+
+            <div class="btn-row">
+                <button type="button" class="btn-outline-pill" id="mcancel" style="flex:1">Batal</button>
+                <button type="submit" class="btn-primary" style="flex:1">Simpan Data</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/global.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

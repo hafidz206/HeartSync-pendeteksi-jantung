@@ -1,0 +1,203 @@
+/* ========================================================
+   HEARTSYNC - HASIL IDENTIFIKASI KESEHATAN PAGE STYLES (POLISHED UI/UX)
+   Prinsip Desain:
+   - Hierarki Visual: Header -> Judul Merah -> Gauge Ring Indikator -> Narasi Hasil -> CTA
+   - Konsistensi: Capsule / Pill buttons 9999px, Border radius 20px pada Badge
+   - Tipografi & Keterbacaan: Poppins, deskripsi hasil dengan line-height 1.75
+   - Pemilihan Warna: Aksen Merah #EA3739, Warna Gauge Indikatif
+   - Ruang Kosong (White Space): Lapang, terpusat, fokus tanpa distraksi
+   ======================================================== */
+
+.result-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 24px 48px;
+    background: #FFFFFF;
+}
+
+.result-header {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.result-header .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.result-header .brand-logo:hover {
+    transform: translateY(-1px);
+}
+
+.result-header .brand-logo svg {
+    width: 44px;
+    height: 38px;
+}
+
+.result-body {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: min(100%, 720px);
+}
+
+.result-body h1 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    font-weight: 800;
+    color: var(--primary-red);
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+}
+
+.result-body .result-hint {
+    margin: 10px 0 28px;
+    font-size: 14px;
+    color: #6B7280;
+    max-width: 580px;
+    line-height: 1.5;
+}
+
+/* Gauge Ring Container */
+.ring-container {
+    position: relative;
+    width: 270px;
+    height: 270px;
+    margin: 12px 0 20px;
+}
+
+.ring-container svg.gauge-ring {
+    width: 100%;
+    height: 100%;
+}
+
+.ring-container .heart-center {
+    position: absolute;
+    inset: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ring-container .heart-center svg {
+    width: 82%;
+    filter: drop-shadow(0 10px 20px rgba(229, 35, 43, 0.28));
+}
+
+.pill-level {
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    padding: 6px 30px;
+    border-radius: 9999px;
+    border: 2px solid;
+    font-weight: 700;
+    font-size: 17px;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    background: #FFFFFF;
+}
+
+/* Narrative Result Text */
+.result-text {
+    font-size: 15px;
+    line-height: 1.75;
+    margin: 28px 0 32px;
+    max-width: 620px;
+    color: #374151;
+    font-weight: 400;
+}
+
+/* Action Buttons */
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+
+.btn-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: min(92vw, 360px);
+    height: 50px;
+    padding: 0 28px;
+    border-radius: var(--radius-pill);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--primary-red);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn-result.btn-fill {
+    background: var(--primary-red);
+    color: #FFFFFF;
+    box-shadow: 0 6px 18px rgba(234, 55, 57, 0.35);
+}
+
+.btn-result.btn-fill:hover {
+    background: var(--primary-red-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(234, 55, 57, 0.45);
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.btn-result.btn-line {
+    background: #FFFFFF;
+    color: var(--primary-red);
+}
+
+.btn-result.btn-line:hover {
+    background: var(--primary-red-light);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: var(--primary-red-hover);
+}
+
+.btn-result span:first-child {
+    flex: 1;
+    text-align: center;
+}
+
+.btn-result span:last-child {
+    font-size: 17px;
+}
+
+@media (max-width: 640px) {
+    .result-body h1 {
+        font-size: 26px;
+    }
+
+    .ring-container {
+        width: 230px;
+        height: 230px;
+    }
+
+    .result-text {
+        font-size: 14px;
+        margin: 22px 0 26px;
+    }
+
+    .btn-result {
+        width: 100%;
+        height: 48px;
+        font-size: 14.5px;
+    }
+}
