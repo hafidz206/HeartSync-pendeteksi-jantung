@@ -96,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
                 // Pengguna yang sudah pernah mengisi kuesioner langsung masuk Dashboard
-                // Pengguna baru yang belum pernah kuesioner diarahkan ke Quiz
+                // Pengguna baru yang belum pernah kuesioner diarahkan ke Landing (Selamat Datang)
                 if (result.has_quiz === false) {
-                    window.location.href = 'quiz.html';
+                    window.location.href = 'landing.html';
                 } else {
                     window.location.href = 'dashboard.html';
                 }
@@ -316,9 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     storage.remove('heartsync_pending_email');
 
-                    alert('Verifikasi berhasil! Yuk lengkapi kuesioner kesehatan awal.');
-                    // Pengguna baru setelah verifikasi diarahkan ke Quiz
-                    window.location.href = 'quiz.html';
+                    alert('Verifikasi berhasil! Yuk kenali kesehatan jantungmu.');
+                    // Pengguna baru setelah verifikasi diarahkan ke Landing (Selamat Datang)
+                    window.location.href = 'landing.html';
 
                 } catch (error) {
                     console.error('Verify error:', error);
