@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartSync - Kenali Kondisi Jantungmu, Mulai dari Sekarang</title>
+    <title>Selamat Datang - HeartSync</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/welcome.css">
 </head>
 
-<body class="landing-page">
+<body class="welcome-page">
 
     <!-- Global SVG Definitions -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -37,65 +37,39 @@
         </defs>
     </svg>
 
-    <main class="landing-container" role="main">
-        <!-- Logo & Brand Header -->
-        <a href="landing.html" class="landing-brand" title="HeartSync Beranda">
-            <svg class="landing-brand-icon" viewBox="0 0 120 100" aria-label="HeartSync Logo">
+    <main class="welcome-container" role="main">
+        <!-- Logo HeartSync -->
+        <a href="welcome.html" class="welcome-logo" title="Kembali ke Beranda">
+            <svg viewBox="0 0 120 100" aria-label="HeartSync Logo">
                 <use href="#logo" />
             </svg>
-            <span class="landing-brand-text">HeartSync</span>
+            <span>HeartSync</span>
         </a>
 
-        <!-- Headline & Description -->
-        <h1 class="landing-tagline">Kenali kondisi jantungmu, mulai dari sekarang.</h1>
-        <p class="landing-desc">
-            Dengan HeartSync, kamu dapat mengetahui risiko penyakit jantung berdasarkan data kesehatanmu dan mendapatkan
-            rekomendasi untuk membantu menjaga kesehatan jantung.
+        <!-- Main Title -->
+        <h1 class="welcome-title">SELAMAT DATANG</h1>
+
+        <!-- Tagline -->
+        <h2 class="welcome-tagline">Yuk, Kenali kesehatan jantungmu!</h2>
+
+        <!-- Description -->
+        <p class="welcome-desc">
+            Lengkapi data dirimu terlebih dahulu agar kami dapat membantu mengenali kondisi kesehatanmu dan memberikan rekomendasi aktivitas yang sesuai dengan kebutuhanmu.
         </p>
 
-        <!-- Bottom Row: 2 Feature Cards + CTA Button -->
-        <div class="landing-bottom-row">
-            <div class="landing-cards">
-                <!-- Card 1: Rekap Data Kesehatan -->
-                <div class="fcard">
-                    <div class="fcard-header">
-                        <svg viewBox="0 0 28 28" class="fcard-icon" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="2 18 7 12 12 17 18 7 24 11"></polyline>
-                            <circle cx="2" cy="18" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"></circle>
-                            <circle cx="7" cy="12" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"></circle>
-                            <circle cx="12" cy="17" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"></circle>
-                            <circle cx="18" cy="7" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"></circle>
-                            <circle cx="24" cy="11" r="1.8" fill="#fff" stroke="currentColor" stroke-width="2"></circle>
-                        </svg>
-                        <h3>Rekap Data<br>Kesehatan</h3>
-                    </div>
-                    <p>Membantu pengguna melihat catatan dan perubahan data kesehatan dari waktu ke waktu</p>
-                </div>
+        <!-- CTA Pill Button: Lengkapi Data Diri (Quiz) -->
+        <a href="quiz.html" class="btn-welcome-cta">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            <span>Lengkapi data diri</span>
+            <span>&rarr;</span>
+        </a>
 
-                <!-- Card 2: Rekomendasi Personal -->
-                <div class="fcard">
-                    <div class="fcard-header">
-                        <svg viewBox="0 0 28 28" class="fcard-icon" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10 22h8"></path>
-                            <path d="M11 25h6"></path>
-                            <path d="M14 2v3"></path>
-                            <path d="M5.5 5.5l2.1 2.1"></path>
-                            <path d="M22.5 5.5l-2.1 2.1"></path>
-                            <path d="M2 14h3"></path>
-                            <path d="M23 14h3"></path>
-                            <path d="M8 14a6 6 0 1 1 12 0c0 2.5-1.5 4.5-2.5 5.5h-7C9.5 18.5 8 16.5 8 14z"></path>
-                        </svg>
-                        <h3>Rekomendasi<br>Personal</h3>
-                    </div>
-                    <p>Menyediakan rekomendasi makanan, olahraga, dan waktu tidur bedasarkan data serta kebutuhan.</p>
-                </div>
-            </div>
-
-            <!-- CTA Button on Bottom Right -->
-            <a href="login.html" class="btn-landing-start">Mulai sekarang &rarr;</a>
-        </div>
+        <p style="margin-top:22px;font-size:13.5px;color:#6B7280">
+            Sudah pernah mengisi kuesioner? <a href="dashboard.html"
+                style="color:var(--primary-red);font-weight:600;text-decoration:none">Langsung ke Dashboard</a>
+        </p>
     </main>
 
     <script src="js/global.js"></script>
