@@ -83,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
-                // Arahkan ke halaman selamat datang
-                window.location.href = 'welcome.html';
+                // Arahkan ke kuesioner (Quiz) sesuai alur aplikasi
+                window.location.href = 'quiz.html';
 
             } catch (error) {
                 console.error('Login error:', error);
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setCurrentUser(defaultUser);
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', defaultUser.email);
-            window.location.href = 'welcome.html';
+            window.location.href = 'quiz.html';
         });
     });
 
