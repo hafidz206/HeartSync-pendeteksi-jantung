@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentStep--;
                 renderQuestion();
             } else {
-                window.location.href = 'landing.html';
+                window.location.href = 'welcome.html';
             }
         };
     }
