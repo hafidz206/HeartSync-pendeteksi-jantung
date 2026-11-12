@@ -1443,6 +1443,28 @@ table.log-table tbody tr:hover {
     }
 }
 
+.btn-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: #FFF1F2;
+    color: #E11D48;
+    border: 1px solid #FECDD3;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: #FFE4E6;
+    color: #BE123C;
+    border-color: #FDA4AF;
+}
+
 @media print {
     .dash-nav,
     .filter-toolbar,

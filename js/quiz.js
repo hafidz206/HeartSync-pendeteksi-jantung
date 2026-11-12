@@ -95,6 +95,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function simpanHasilKuesioner(totalSkor, teksHasil) {
+        let userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+            const u = storage.get('heartsync_user');
+            if (u && u.email) userEmail = u.email;
+        }
+
+        if (!userEmail) {
+            alert('Sesi login habis, silakan login ulang.');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        try {
+            if (nextBtn) {
+                nextBtn.disabled = true;
+                nextBtn.textContent = 'Menyimpan...';
+            }
+
+            const response = await fetch('api/save_quiz.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: userEmail,
+                    score: totalSkor,
+                    result_text: teksHasil
+                })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                console.log('Kuesioner tersimpan:', result.message);
+                // Simpan juga sementara di localStorage jika result.html membutuhkannya langsung
+                localStorage.setItem('lastQuizResult', JSON.stringify({ score: totalSkor, text: teksHasil }));
+                window.location.href = 'result.html';
+            } else {
+                alert('Gagal menyimpan kuesioner: ' + result.message);
+                if (nextBtn) {
+                    nextBtn.disabled = false;
+                    nextBtn.textContent = 'Selesai';
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Gagal terhubung ke server.');
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.textContent = 'Selesai';
+            }
+        }
+    }
+
     if (nextBtn) {
         nextBtn.onclick = () => {
             if (userAnswers[currentStep] === undefined) return;
@@ -107,7 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const calculated = calcRisk(userAnswers);
                 storage.set('heartsync_answers', userAnswers);
                 storage.set('heartsync_risk', calculated);
-                window.location.href = 'result.html';
+
+                // Kirim hasil kuesioner ke database
+                simpanHasilKuesioner(calculated.sc, calculated.lv);
             }
         };
     }

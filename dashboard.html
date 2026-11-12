@@ -11,6 +11,11 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <script>
+        if (!localStorage.getItem('isLoggedIn') && !localStorage.getItem('heartsync_user')) {
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 
 <body class="dashboard-page">
@@ -39,7 +44,9 @@
 
     <!-- Top Navigation -->
     <header class="wrap">
-        <nav class="dash-nav" id="nav"></nav>
+        <nav class="dash-nav" id="nav">
+            <button id="logoutBtn" class="btn-logout">Keluar</button>
+        </nav>
     </header>
 
     <!-- Main Dynamic Content Views -->

@@ -3,6 +3,13 @@
    (95%+ Precision Match to Reference Mockup)
    ======================================================== */
 
+// Proteksi Halaman Dashboard: Pastikan pengguna sudah login
+if (!localStorage.getItem('isLoggedIn') && !localStorage.getItem('heartsync_user')) {
+    window.location.href = 'login.html';
+} else if (!localStorage.getItem('isLoggedIn') && localStorage.getItem('heartsync_user')) {
+    localStorage.setItem('isLoggedIn', 'true');
+}
+
 // Sleep timer state
 let sleepInterval = null;
 let sleepSecondsLeft = 27000; // 07:30:00
@@ -235,6 +242,48 @@ function renderVitalsGrid(latest) {
 
 // Main Dashboard Controller
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. PROTEKSI DASHBOARD
+    // Cek apakah pengguna sudah login (berdasarkan localStorage yang diset saat login sukses)
+    if (!localStorage.getItem('userEmail') && localStorage.getItem('heartsync_user')) {
+        const u = storage.get('heartsync_user');
+        if (u && u.email) {
+            localStorage.setItem('userEmail', u.email);
+            localStorage.setItem('isLoggedIn', 'true');
+        }
+    }
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userEmail = localStorage.getItem('userEmail');
+
+    if (!isLoggedIn || !userEmail) {
+        // Jika belum login, tendang/alihkan kembali ke halaman login
+        alert('Silakan login terlebih dahulu!');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // (Opsional) Jika ingin menampilkan email atau nama user di dashboard
+    const userEmailDisplay = document.getElementById('userEmailDisplay');
+    if (userEmailDisplay) {
+        userEmailDisplay.textContent = userEmail;
+    }
+
+    // 2. FITUR LOGOUT
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            // Hapus sesi login dari localStorage
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            storage.remove('heartsync_user');
+
+            // Beritahu pengguna lalu arahkan ke halaman login
+            alert('Anda telah berhasil keluar.');
+            window.location.href = 'login.html';
+        });
+    }
     const navEl = $('#nav');
     const viewEl = $('#view');
     const modalEl = $('#modal');
@@ -278,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="nav-user-status">Resiko ${RISK_LABELS[risk.lv] || 'Rendah'}</span>
                 </div>
                 <img src="img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
+                <button id="logoutBtn" class="btn-logout" title="Keluar">Keluar</button>
             </div>
         `;
     }
@@ -649,14 +699,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="dash-card profile-card">
                     <img src="img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
                     <h3 style="justify-content:center;color:#111827;font-size:20px;font-weight:700">${user.name || 'Nurrahmah'}</h3>
-                    <p style="color:#6B7280;margin:4px 0 12px;font-size:13.5px">${user.email}</p>
+                    <p style="color:#6B7280;margin:4px 0 12px;font-size:13.5px" id="userEmailDisplay">${user.email || userEmail}</p>
                     <div style="background:#FFF5F6;border-radius:14px;padding:12px;margin:16px 0">
                         <span style="font-size:12px;color:#4B5563">Estimasi Resiko Terkini:</span>
                         <b style="color:#EA3739;font-size:16px;display:block;margin-top:2px">${riskLabel} (${risk.pct}%)</b>
                     </div>
                     <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
                         <button class="btn-primary" data-act="retake" style="padding:8px 22px;border-radius:9999px;font-size:13px">Isi Ulang Kuesioner</button>
-                        <button class="btn-outline-pill" data-act="logout" style="padding:7px 22px">Keluar Akun</button>
+                        <button class="btn-outline-pill" id="logoutBtn" data-act="logout" style="padding:7px 22px">Keluar Akun</button>
                     </div>
                 </div>
             `);
@@ -699,6 +749,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (act === 'retake') {
                 window.location.href = 'quiz.html';
             } else if (act === 'logout') {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
                 storage.remove('heartsync_user');
                 window.location.href = 'login.html';
             } else if (act === 'sleep') {
@@ -732,6 +784,97 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Fungsi Pengiriman Pengukuran ke API
+    async function simpanPengukuran(bpm, statusKondisi, bp = null, gl = null, wt = null) {
+        let userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+            const u = storage.get('heartsync_user');
+            if (u && u.email) userEmail = u.email;
+        }
+
+        try {
+            const response = await fetch('api/save_measurement.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: userEmail,
+                    heart_rate: bpm,
+                    status: statusKondisi,
+                    tekanan_darah: bp,
+                    gula_darah: gl,
+                    berat_badan: wt
+                })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Data pengukuran (' + bpm + ' BPM) berhasil disimpan!');
+                // Refresh tabel / tampilan riwayat
+                renderView();
+            } else {
+                alert('Gagal menyimpan pengukuran: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Tidak dapat terhubung ke server.');
+        }
+    }
+    window.simpanPengukuran = simpanPengukuran;
+
+    // Memuat Riwayat Pengukuran dan Kuesioner Pengguna dari Database
+    async function muatRiwayatUser() {
+        let userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+            const u = storage.get('heartsync_user');
+            if (u && u.email) userEmail = u.email;
+        }
+        if (!userEmail) return;
+
+        try {
+            const response = await fetch(`api/get_history.php?email=${encodeURIComponent(userEmail)}`);
+            const result = await response.json();
+
+            if (result.success) {
+                // Menampilkan riwayat ke console
+                console.log('Riwayat Pengukuran:', result.pengukuran);
+                console.log('Riwayat Kuesioner:', result.kuesioner);
+
+                // Sinkronkan data pengukuran database ke riwayat log tabel dashboard
+                if (result.pengukuran && result.pengukuran.length > 0) {
+                    const dbLogs = result.pengukuran.map(item => {
+                        const d = new Date(item.created_at);
+                        const formattedDate = isNaN(d.getTime()) ? item.created_at : formatDate(d);
+                        return {
+                            t: formattedDate,
+                            hr: Number(item.heart_rate) || 72,
+                            bp: item.tekanan_darah || '110/70',
+                            gl: Number(item.gula_darah) || 95,
+                            wt: Number(item.berat_badan) || 52
+                        };
+                    });
+                    logs = dbLogs;
+                    storage.set('hs_log', logs);
+                    renderView();
+                }
+
+                // Sinkronkan hasil kuesioner terkini ke status risiko dashboard
+                if (result.kuesioner && result.kuesioner.length > 0) {
+                    const latestQuiz = result.kuesioner[0];
+                    const sc = Number(latestQuiz.score) || 0;
+                    const lv = (latestQuiz.result_text || 'sedang').toLowerCase();
+                    const pct = Math.min(95, Math.max(5, Math.round(sc / 24 * 100)));
+                    risk = { lv, pct, sc };
+                    storage.set('heartsync_risk', risk);
+                    renderNav();
+                    renderView();
+                }
+            }
+        } catch (error) {
+            console.error('Gagal mengambil riwayat:', error);
+        }
+    }
+    window.muatRiwayatUser = muatRiwayatUser;
+
     // Modal Form Submissions
     if (modalCancel) {
         modalCancel.onclick = () => modalEl.classList.remove('open');
@@ -753,13 +896,31 @@ document.addEventListener('DOMContentLoaded', () => {
             logs = logs.slice(0, 30);
             storage.set('hs_log', logs);
 
+            // Simpan juga ke database melalui API save_measurement.php
+            const [statusText] = getVitalStatus(newEntry);
+            simpanPengukuran(newEntry.hr, statusText || 'Normal', newEntry.bp, newEntry.gl, newEntry.wt);
+
             modalEl.classList.remove('open');
             modalForm.reset();
-            renderView();
         };
     }
+
+    // Delegasi klik tombol logout jika dirender dinamis (misal di tab Profil)
+    document.addEventListener('click', (e) => {
+        if (e.target && (e.target.id === 'logoutBtn' || e.target.closest('#logoutBtn'))) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            storage.remove('heartsync_user');
+            alert('Anda telah berhasil keluar.');
+            window.location.href = 'login.html';
+        }
+    });
 
     // Initialize Page
     renderNav();
     renderView();
+
+    // Muat riwayat pengguna dari database
+    muatRiwayatUser();
 });
