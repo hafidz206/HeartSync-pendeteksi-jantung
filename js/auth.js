@@ -58,7 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     result = JSON.parse(rawText);
                 } catch (parseErr) {
                     console.error('Server response bukan JSON:', rawText);
-                    showError(errBox, 'Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                    if (response.status === 405 || window.location.port === '5500') {
+                        showError(errBox, 'Anda membuka website lewat Live Server VS Code (port 5500) yang tidak mendukung PHP. Silakan buka melalui URL Laragon: http://localhost/HeartSync-pendeteksi-jantung/login.html');
+                    } else {
+                        showError(errBox, 'Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                    }
                     return;
                 }
 
@@ -172,7 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     result = JSON.parse(rawText);
                 } catch (parseErr) {
                     console.error('Server response bukan JSON:', rawText);
-                    showError(errBox, 'Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                    if (response.status === 405 || window.location.port === '5500') {
+                        showError(errBox, 'Anda membuka website lewat Live Server VS Code (port 5500) yang tidak mendukung PHP. Silakan buka melalui URL Laragon: http://localhost/HeartSync-pendeteksi-jantung/login.html');
+                    } else {
+                        showError(errBox, 'Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                    }
                     return;
                 }
 
