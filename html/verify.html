@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/auth.css">
     <style>
         .dev-code-box {
             background: #FFF5F6;
@@ -132,8 +132,8 @@
         </div>
     </main>
 
-    <script src="js/global.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="../js/global.js"></script>
+    <script src="../js/auth.js"></script>
     <script>
         // Ambil dan tampilkan kode verifikasi dari server (hanya mode development Laragon)
         document.addEventListener('DOMContentLoaded', async () => {
@@ -141,7 +141,7 @@
             if (!email) return;
 
             try {
-                const res = await fetch('api/get_code.php?email=' + encodeURIComponent(email));
+                const res = await fetch(getApiUrl('get_code.php?email=' + encodeURIComponent(email)));
                 const data = await res.json();
                 if (data.success && data.code) {
                     const box = document.getElementById('devCodeBox');

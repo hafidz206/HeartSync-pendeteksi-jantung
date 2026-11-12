@@ -47,6 +47,12 @@ function setCurrentUser(user) {
     storage.set('heartsync_user', user);
 }
 
+// Dynamic API URL Helper (works whether page is in root or in /html/)
+function getApiUrl(endpoint) {
+    const isSubfolder = window.location.pathname.includes('/html/');
+    return (isSubfolder ? '../api/' : 'api/') + endpoint.replace(/^(\.\.\/api\/|api\/)/, '');
+}
+
 // Common SVG Icons used throughout the app
 const ICONS = {
     hr: '<svg viewBox="0 0 24 24"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-1 5 5 0 0 1 10 1c0 4-3 7-10 13z"/><path d="M6 12h3l2-3 2 5 1.5-2H18"/></svg>',

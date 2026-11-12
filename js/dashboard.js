@@ -793,7 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('api/save_measurement.php', {
+            const response = await fetch(getApiUrl('save_measurement.php'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -831,7 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!userEmail) return;
 
         try {
-            const response = await fetch(`api/get_history.php?email=${encodeURIComponent(userEmail)}`);
+            const response = await fetch(getApiUrl(`get_history.php?email=${encodeURIComponent(userEmail)}`));
             const result = await response.json();
 
             if (result.success) {

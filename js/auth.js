@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('api/login.php', {
+                const response = await fetch(getApiUrl('login.php'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (submitButton) submitButton.disabled = true;
 
             try {
-                const response = await fetch('api/register.php', {
+                const response = await fetch(getApiUrl('register.php'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 verifyBtn.textContent = 'Memverifikasi...';
 
                 try {
-                    const response = await fetch('api/verify.php', {
+                    const response = await fetch(getApiUrl('verify.php'), {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email: email, code: code })

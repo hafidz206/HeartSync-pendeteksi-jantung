@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nextBtn.textContent = 'Menyimpan...';
             }
 
-            const response = await fetch('api/save_quiz.php', {
+            const response = await fetch(getApiUrl('save_quiz.php'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
