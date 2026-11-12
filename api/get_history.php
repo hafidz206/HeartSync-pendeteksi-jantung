@@ -55,5 +55,3 @@ try {
         'message' => 'Gagal memuat data: ' . $e->getMessage()
     ]);
 }
-?>
-

@@ -36,10 +36,20 @@ try {
             exit;
         }
 
+        // Cek apakah pengguna sudah pernah mengisi kuesioner
+        $stmtQuiz = $pdo->prepare("
+            SELECT id FROM hasil_kuesioner 
+            WHERE email = ? OR user_id = ? 
+            LIMIT 1
+        ");
+        $stmtQuiz->execute([$user['email'], $user['id']]);
+        $hasQuiz = $stmtQuiz->fetch() ? true : false;
+
         echo json_encode([
-            'success' => true,
-            'message' => 'Login berhasil.',
-            'user'    => [
+            'success'  => true,
+            'message'  => 'Login berhasil.',
+            'has_quiz' => $hasQuiz,
+            'user'     => [
                 'id'    => $user['id'] ?? null,
                 'nama'  => $user['nama'],
                 'name'  => $user['nama'],
@@ -59,4 +69,3 @@ try {
         'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
     ]);
 }
-?>

@@ -95,8 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
-                // Arahkan ke kuesioner (Quiz) sesuai alur aplikasi
-                window.location.href = 'quiz.html';
+                // Pengguna yang sudah pernah mengisi kuesioner langsung masuk Dashboard
+                // Pengguna baru yang belum pernah kuesioner diarahkan ke Quiz
+                if (result.has_quiz === false) {
+                    window.location.href = 'quiz.html';
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
 
             } catch (error) {
                 console.error('Login error:', error);
@@ -218,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setCurrentUser(defaultUser);
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', defaultUser.email);
-            window.location.href = 'quiz.html';
+            window.location.href = 'dashboard.html';
         });
     });
 
@@ -303,11 +308,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    // Bersihkan pending email setelah verifikasi berhasil
+                    // Simpan sesi login otomatis untuk pengguna baru
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    if (result.user) {
+                        storage.set('heartsync_user', result.user);
+                    }
                     storage.remove('heartsync_pending_email');
 
-                    alert('Verifikasi berhasil! Silakan login.');
-                    window.location.href = 'login.html';
+                    alert('Verifikasi berhasil! Yuk lengkapi kuesioner kesehatan awal.');
+                    // Pengguna baru setelah verifikasi langsung mengisi kuesioner
+                    window.location.href = 'quiz.html';
 
                 } catch (error) {
                     console.error('Verify error:', error);
