@@ -1,15 +1,17 @@
 <?php
 // api/login.php
-header('Content-Type: application/json');
-require_once 'koneksi.php';
+header('Content-Type: application/json; charset=UTF-8');
+require_once __DIR__ . '/koneksi.php';
 
-// Ambil data JSON dari request body
+// Ambil input JSON atau POST
 $data = json_decode(file_get_contents('php://input'), true);
+if (!is_array($data)) {
+    $data = $_POST;
+}
 
-$email = trim($data['email'] ?? '');
-$password = $data['password'] ?? '';
+$email    = trim($data['email']    ?? '');
+$password =      $data['password'] ?? '';
 
-// Validasi input kosong
 if (empty($email) || empty($password)) {
     echo json_encode([
         'success' => false,
@@ -19,30 +21,26 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    // Cari pengguna berdasarkan email
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    // Verifikasi user dan kecocokan password dengan hash di database
     if ($user && password_verify($password, $user['password'])) {
-        // Cek apakah akun sudah diverifikasi
         if (isset($user['is_verified']) && (int)$user['is_verified'] !== 1) {
             echo json_encode([
-                'success' => false,
+                'success'     => false,
                 'is_verified' => false,
-                'email' => $user['email'],
-                'message' => 'Akun belum diverifikasi. Silakan masukkan kode verifikasi terlebih dahulu.'
+                'email'       => $user['email'],
+                'message'     => 'Akun belum diverifikasi. Silakan masukkan kode verifikasi terlebih dahulu.'
             ]);
             exit;
         }
 
-        // Login berhasil
         echo json_encode([
             'success' => true,
             'message' => 'Login berhasil.',
-            'user' => [
-                'id'    => $user['id'] ?? $user['user_id'] ?? null,
+            'user'    => [
+                'id'    => $user['id'] ?? null,
                 'nama'  => $user['nama'],
                 'name'  => $user['nama'],
                 'email' => $user['email']

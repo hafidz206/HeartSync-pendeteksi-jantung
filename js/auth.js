@@ -52,7 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
 
-                const result = await response.json();
+                const rawText = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(rawText);
+                } catch (parseErr) {
+                    console.error('Server response bukan JSON:', rawText);
+                    showError(errBox, 'Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                    return;
+                }
 
                 if (!response.ok || !result.success) {
                     if (result.is_verified === false) {
@@ -146,17 +154,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (submitButton) submitButton.disabled = true;
 
             try {
-                const formData = new FormData();
-                formData.append('nama', name);
-                formData.append('email', email);
-                formData.append('password', pass);
-
                 const response = await fetch('api/register.php', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nama: name,
+                        email: email,
+                        password: pass
+                    })
                 });
 
-                const result = await response.json();
+                const rawText = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(rawText);
+                } catch (parseErr) {
+                    console.error('Server response bukan JSON:', rawText);
+                    showError(errBox, 'Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                    return;
+                }
 
                 if (!response.ok || !result.success) {
                     showError(errBox, result.message || 'Pendaftaran gagal.');
@@ -259,7 +277,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify({ email: email, code: code })
                     });
 
-                    const result = await response.json();
+                    const rawText = await response.text();
+                    let result;
+                    try {
+                        result = JSON.parse(rawText);
+                    } catch (parseErr) {
+                        console.error('Server response bukan JSON:', rawText);
+                        alert('Respon server tidak valid (' + response.status + '): ' + (rawText ? rawText.substring(0, 100) : 'Response kosong'));
+                        return;
+                    }
 
                     if (!response.ok || !result.success) {
                         alert(result.message || 'Verifikasi gagal. Periksa kode Anda.');
