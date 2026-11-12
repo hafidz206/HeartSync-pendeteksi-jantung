@@ -88,7 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error('Login error:', error);
-                showError(errBox, 'Tidak dapat terhubung ke server. Periksa Laragon.');
+                if (window.location.protocol === 'file:') {
+                    showError(errBox, 'Harap buka via browser: http://localhost/HeartSync-pendeteksi-jantung/login.html (bukan double-click file html).');
+                } else {
+                    showError(errBox, 'Gagal terhubung ke API: ' + (error.message || 'Periksa Laragon'));
+                }
             } finally {
                 if (submitButton) {
                     submitButton.disabled = false;
@@ -169,7 +173,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error('Register error:', error);
-                showError(errBox, 'Tidak dapat terhubung ke server.');
+                if (window.location.protocol === 'file:') {
+                    showError(errBox, 'Harap buka via browser: http://localhost/HeartSync-pendeteksi-jantung/register.html (bukan double-click file html).');
+                } else {
+                    showError(errBox, 'Tidak dapat terhubung ke server: ' + (error.message || 'Periksa Laragon'));
+                }
             } finally {
                 if (submitButton) submitButton.disabled = false;
             }
