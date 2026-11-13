@@ -3,549 +3,972 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - HeartSync</title>
+    <title>Ringkasan Admin - HeartSync</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/global.css">
-    <style>
-        :root {
-            --primary-red: #E04545;
-            --primary-blue: #1E8FCB;
-            --text-primary: #111827;
-            --text-secondary: #6B7280;
-            --bg-light: #F9FAFB;
-            --border: #E5E7EB;
-            --white: #FFFFFF;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-light);
-            color: var(--text-primary);
-            min-height: 100vh;
-        }
-
-        /* ── TOPBAR ── */
-        .admin-topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 4px rgba(0,0,0,.06);
-        }
-
-        .admin-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .admin-brand svg { width: 36px; height: 30px; }
-
-        .admin-brand-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-red);
-        }
-
-        .admin-badge {
-            background: var(--primary-red);
-            color: #fff;
-            font-size: 10px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 999px;
-            letter-spacing: .5px;
-            text-transform: uppercase;
-        }
-
-        .admin-topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .admin-user-info {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .admin-user-info strong { color: var(--text-primary); }
-
-        .btn-logout {
-            background: none;
-            border: 1.5px solid var(--border);
-            color: var(--text-secondary);
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            padding: 6px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all .2s;
-        }
-
-        .btn-logout:hover {
-            border-color: var(--primary-red);
-            color: var(--primary-red);
-        }
-
-        /* ── MAIN CONTENT ── */
-        .admin-main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 32px 24px;
-        }
-
-        .admin-heading {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .admin-subheading {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 28px;
-        }
-
-        /* ── STATS CARDS ── */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .stat-card-label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: .5px;
-        }
-
-        .stat-card-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .stat-card-value.red { color: var(--primary-red); }
-        .stat-card-value.blue { color: var(--primary-blue); }
-
-        /* ── USER TABLE CARD ── */
-        .table-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .table-card-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .table-card-title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .table-search {
-            padding: 8px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            outline: none;
-            transition: border .2s;
-            width: 220px;
-        }
-
-        .table-search:focus { border-color: var(--primary-red); }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        .admin-table th {
-            background: var(--bg-light);
-            padding: 12px 16px;
-            text-align: left;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .admin-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-        }
-
-        .admin-table tr:last-child td { border-bottom: none; }
-
-        .admin-table tr:hover td { background: #FAFAFA; }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-red), #FF7070);
-            color: #fff;
-            font-weight: 700;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .user-info-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-name { font-weight: 500; }
-        .user-email { font-size: 12px; color: var(--text-secondary); }
-
-        /* Role badge */
-        .role-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .3px;
-        }
-
-        .role-badge.admin {
-            background: #FEF3C7;
-            color: #92400E;
-            border: 1px solid #FDE68A;
-        }
-
-        .role-badge.user {
-            background: #E0F2FE;
-            color: #0369A1;
-            border: 1px solid #BAE6FD;
-        }
-
-        /* Verified badge */
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 12px;
-        }
-
-        .verified-badge.yes { color: #059669; }
-        .verified-badge.no  { color: #DC2626; }
-
-        /* Role select */
-        .role-select {
-            padding: 4px 10px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 12px;
-            cursor: pointer;
-            outline: none;
-            transition: border .2s;
-        }
-
-        .role-select:focus { border-color: var(--primary-red); }
-
-        .btn-save-role {
-            padding: 4px 12px;
-            background: var(--primary-red);
-            color: #fff;
-            border: none;
-            border-radius: 7px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity .2s;
-            margin-left: 6px;
-        }
-
-        .btn-save-role:hover { opacity: .85; }
-        .btn-save-role:disabled { opacity: .5; cursor: default; }
-
-        /* Loading / empty state */
-        .table-loading {
-            text-align: center;
-            padding: 48px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 700px) {
-            .admin-topbar { padding: 0 16px; }
-            .admin-main { padding: 20px 12px; }
-            .table-card-header { flex-direction: column; gap: 12px; align-items: flex-start; }
-            .table-search { width: 100%; }
-            .admin-table { font-size: 12px; }
-            .admin-table th, .admin-table td { padding: 10px 10px; }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
-<body>
+<body class="admin-body">
 
-    <!-- SVG Defs -->
+    <!-- Global SVG Definitions -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <defs>
+            <!-- HeartSync Logo -->
             <symbol id="logo" viewBox="0 0 120 100">
                 <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545"/>
                 <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB"/>
+                <line x1="44" y1="4" x2="44" y2="8" stroke="#E04545" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="38" y1="7" x2="41" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="50" y1="7" x2="47" y2="10" stroke="#E04545" stroke-width="2.5" stroke-linecap="round"/>
                 <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
                 <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+                <path d="M102 54l6-4M102 54l6 4" fill="none" stroke="#1177B8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="97" y1="47" x2="110" y2="47" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round"/>
+                <line x1="97" y1="61" x2="110" y2="61" stroke="#1E8FCB" stroke-width="2" stroke-linecap="round"/>
+                <path d="M44 14v14M37 21h14" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+            </symbol>
+
+            <!-- Dashboard Icon (4 squares) -->
+            <symbol id="icon-grid" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor"/>
+                <rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor"/>
+                <rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor"/>
+                <rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor"/>
+            </symbol>
+
+            <!-- Clipboard / Questionnaire Icon -->
+            <symbol id="icon-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                <path d="M9 12h6M9 16h6"/>
+            </symbol>
+
+            <!-- Users Icon -->
+            <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </symbol>
+
+            <!-- Recommendation Heart Pulse Icon -->
+            <symbol id="icon-rekomendasi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </symbol>
+
+            <!-- Single Profile Icon -->
+            <symbol id="icon-profile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </symbol>
+
+            <!-- Shield Icon -->
+            <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </symbol>
+
+            <!-- Settings Gear Icon -->
+            <symbol id="icon-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </symbol>
+
+            <!-- Logout Icon -->
+            <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
             </symbol>
         </defs>
     </svg>
 
-    <!-- Top Bar -->
-    <header class="admin-topbar">
-        <a href="dashboard.html" class="admin-brand">
-            <svg viewBox="0 0 120 100" aria-label="HeartSync"><use href="#logo"/></svg>
-            <span class="admin-brand-name">HeartSync</span>
-            <span class="admin-badge">Admin</span>
-        </a>
-        <div class="admin-topbar-right">
-            <span class="admin-user-info">Halo, <strong id="adminName">-</strong></span>
-            <button class="btn-logout" id="logoutBtn">Keluar</button>
+    <!-- ── LEFT SIDEBAR ────────────────────────────────────── -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <!-- Brand -->
+            <a href="admin.html" class="sidebar-brand">
+                <div class="brand-icon-wrap">
+                    <svg viewBox="0 0 120 100"><use href="#logo"/></svg>
+                </div>
+                <div class="brand-text-col">
+                    <span class="brand-title">HeartSync</span>
+                    <span class="brand-sub">AI for Health</span>
+                </div>
+            </a>
+
+            <!-- Workspace Pill -->
+            <div class="workspace-pill">Admin Workspace</div>
+
+            <!-- Main Menu Section -->
+            <div class="menu-section-label">Menu Utama</div>
+            <nav class="sidebar-nav">
+                <a href="#ringkasan" class="nav-link active" data-tab="ringkasan">
+                    <svg viewBox="0 0 24 24" style="stroke:none"><use href="#icon-grid"/></svg>
+                    <span>Ringkasan</span>
+                </a>
+                <a href="#kuesioner" class="nav-link" data-tab="kuesioner">
+                    <svg viewBox="0 0 24 24"><use href="#icon-clipboard"/></svg>
+                    <span>Kuesioner</span>
+                </a>
+                <a href="#data-user" class="nav-link" data-tab="data-user">
+                    <svg viewBox="0 0 24 24"><use href="#icon-users"/></svg>
+                    <span>Data User</span>
+                </a>
+                <a href="#rekomendasi" class="nav-link" data-tab="rekomendasi">
+                    <svg viewBox="0 0 24 24"><use href="#icon-rekomendasi"/></svg>
+                    <span>Rekomendasi</span>
+                </a>
+                <a href="#profil" class="nav-link" data-tab="profil">
+                    <svg viewBox="0 0 24 24"><use href="#icon-profile"/></svg>
+                    <span>Profil</span>
+                </a>
+            </nav>
         </div>
-    </header>
 
-    <!-- Main Content -->
-    <main class="admin-main">
-        <h1 class="admin-heading">Panel Admin</h1>
-        <p class="admin-subheading">Kelola pengguna dan pengaturan aplikasi HeartSync.</p>
+        <div class="sidebar-bottom">
+            <!-- Protection Notice -->
+            <div class="protection-card">
+                <div class="protection-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-shield"/></svg>
+                </div>
+                <div class="protection-text">
+                    <h5>Data tetap terlindungi</h5>
+                    <p>Kelola informasi kesehatan pengguna dengan bijak.</p>
+                </div>
+            </div>
 
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-card-label">Total Pengguna</span>
-                <span class="stat-card-value" id="statTotal">-</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-card-label">Admin</span>
-                <span class="stat-card-value red" id="statAdmin">-</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-card-label">User Biasa</span>
-                <span class="stat-card-value blue" id="statUser">-</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-card-label">Sudah Verifikasi</span>
-                <span class="stat-card-value" id="statVerified">-</span>
+            <!-- Settings & Logout -->
+            <div class="sidebar-bottom-links">
+                <a href="#pengaturan" class="nav-link" data-tab="pengaturan">
+                    <svg viewBox="0 0 24 24"><use href="#icon-gear"/></svg>
+                    <span>Pengaturan</span>
+                </a>
+                <button type="button" class="nav-link nav-link-logout" id="logoutBtn" style="background:none;border:none;width:100%;text-align:left">
+                    <svg viewBox="0 0 24 24"><use href="#icon-logout"/></svg>
+                    <span>Logout</span>
+                </button>
             </div>
         </div>
+    </aside>
 
-        <!-- User Table -->
-        <div class="table-card">
-            <div class="table-card-header">
-                <span class="table-card-title">Daftar Pengguna</span>
-                <input type="text" class="table-search" id="searchInput" placeholder="Cari nama / email...">
+    <!-- ── MAIN WRAPPER ────────────────────────────────────── -->
+    <div class="admin-main-wrap">
+        
+        <!-- ── TOP NAVBAR ──────────────────────────────────── -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumbs">
+                    <span class="bc-root">Workspace</span>
+                    <span class="bc-sep">/</span>
+                    <span class="bc-curr" id="bcCurrentTitle">Ringkasan</span>
+                </div>
             </div>
-            <div id="tableWrapper">
-                <div class="table-loading">⏳ Memuat data pengguna...</div>
+
+            <div class="topbar-center">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="globalSearchInput" placeholder="Cari pengguna atau data kesehatan...">
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button class="notif-btn" aria-label="Notifikasi">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="notif-badge-dot"></span>
+                </button>
+
+                <div class="admin-profile-pill" id="adminProfileMenu">
+                    <div class="admin-avatar" id="adminAvatarCol">H</div>
+                    <div class="admin-info-col">
+                        <span class="admin-name" id="topbarAdminName">Hafidz Ilzal</span>
+                        <span class="admin-role-label">Admin</span>
+                    </div>
+                    <span class="chevron-down">⌵</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ── MAIN CONTENT CONTAINER ──────────────────────── -->
+        <main class="admin-content">
+
+            <!-- TAB VIEW: RINGKASAN -->
+            <div id="view-ringkasan">
+                <!-- Page Title Row -->
+                <div class="page-title-row">
+                    <div>
+                        <h1 class="page-title">Ringkasan admin</h1>
+                        <p class="page-subtitle">Pantau pengguna dan aktivitas kesehatan dalam satu tempat.</p>
+                    </div>
+                    <button class="date-pill-btn" id="currentDateBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span id="dateDisplayLabel">2 Oktober 2026</span>
+                        <span>⌵</span>
+                    </button>
+                </div>
+
+                <!-- Hero Banner -->
+                <section class="admin-hero-banner">
+                    <div class="banner-left">
+                        <span class="banner-tag">HeartSync • Admin</span>
+                        <h2 class="banner-title" id="bannerGreeting">Selamat siang, Hafidz!</h2>
+                        <p class="banner-desc">Apa yang akan Anda kerjakan hari ini? Mari jaga layanan tetap optimal.</p>
+                    </div>
+                    <img src="../img/doctor-banner-id.png" alt="Dokter HeartSync" class="banner-doctor-img" onerror="this.src='../img/doctor-hero-clean.png'">
+                </section>
+
+                <!-- 4 Metrics Stats Row -->
+                <section class="stats-row">
+                    <!-- 1. Total Pengguna -->
+                    <div class="stat-box">
+                        <div class="stat-box-top">
+                            <div class="stat-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24"><use href="#icon-users"/></svg>
+                            </div>
+                            <span class="stat-label">Total pengguna</span>
+                        </div>
+                        <div class="stat-number" id="valTotalUsers">1.280</div>
+                        <div class="stat-sub positive">+128 bulan ini</div>
+                    </div>
+
+                    <!-- 2. Pengguna Aktif -->
+                    <div class="stat-box">
+                        <div class="stat-box-top">
+                            <div class="stat-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24"><use href="#icon-profile"/></svg>
+                            </div>
+                            <span class="stat-label">Pengguna aktif</span>
+                        </div>
+                        <div class="stat-number" id="valActiveUsers">1.056</div>
+                        <div class="stat-sub">82,5% dari total pengguna</div>
+                    </div>
+
+                    <!-- 3. Kuesioner Terisi -->
+                    <div class="stat-box">
+                        <div class="stat-box-top">
+                            <div class="stat-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24"><use href="#icon-clipboard"/></svg>
+                            </div>
+                            <span class="stat-label">Kuesioner terisi</span>
+                        </div>
+                        <div class="stat-number" id="valTotalKuesioner">864</div>
+                        <div class="stat-sub">67,5% dari total pengguna</div>
+                    </div>
+
+                    <!-- 4. Risiko Tinggi -->
+                    <div class="stat-box">
+                        <div class="stat-box-top">
+                            <div class="stat-icon red">
+                                <svg width="18" height="18" viewBox="0 0 24 24"><use href="#icon-shield"/></svg>
+                            </div>
+                            <span class="stat-label">Risiko tinggi</span>
+                        </div>
+                        <div class="stat-number red" id="valRisikoTinggi">104</div>
+                        <div class="stat-sub alert">Perlu ditinjau admin</div>
+                    </div>
+                </section>
+
+                <!-- Main Content Grid -->
+                <div class="dash-grid">
+                    
+                    <!-- Left Column -->
+                    <div class="grid-col-left">
+                        
+                        <!-- Aktivitas Pengguna (Dual-Bar Chart) -->
+                        <div class="dash-card">
+                            <div class="card-header">
+                                <div class="card-header-left">
+                                    <h3 class="card-title">Aktivitas pengguna</h3>
+                                    <span class="card-subtitle">Pengguna aktif selama 7 hari terakhir</span>
+                                </div>
+                                <div class="card-header-right">
+                                    <div class="chart-legend">
+                                        <div class="legend-item">
+                                            <span class="dot-indicator dot-this-week"></span>
+                                            <span>Minggu ini</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="dot-indicator dot-last-week"></span>
+                                            <span>Minggu lalu</span>
+                                        </div>
+                                    </div>
+                                    <button class="filter-pill">7 hari terakhir ⌵</button>
+                                </div>
+                            </div>
+
+                            <!-- SVG Bar Chart -->
+                            <div class="chart-container">
+                                <svg class="bar-chart-svg" viewBox="0 0 620 180" preserveAspectRatio="none">
+                                    <!-- Horizontal Grid Lines & Y-Axis Labels -->
+                                    <g stroke="#F3F4F6" stroke-width="1">
+                                        <line x1="40" y1="20" x2="610" y2="20" />
+                                        <line x1="40" y1="65" x2="610" y2="65" />
+                                        <line x1="40" y1="110" x2="610" y2="110" />
+                                        <line x1="40" y1="155" x2="610" y2="155" stroke="#E5E7EB" />
+                                    </g>
+                                    <g font-size="10" fill="#9CA3AF" text-anchor="end" font-family="Poppins">
+                                        <text x="32" y="24">1200</text>
+                                        <text x="32" y="69">800</text>
+                                        <text x="32" y="114">400</text>
+                                        <text x="32" y="158">0</text>
+                                    </g>
+
+                                    <!-- Bars Group: [Last Week (tan), This Week (red)] -->
+                                    <!-- Sab (x=80) -->
+                                    <rect x="74" y="95" width="13" height="60" rx="3" fill="#E8DEDC"/>
+                                    <rect x="91" y="90" width="13" height="65" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Min (x=155) -->
+                                    <rect x="150" y="90" width="13" height="65" rx="3" fill="#E8DEDC"/>
+                                    <rect x="167" y="80" width="13" height="75" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Sen (x=235) -->
+                                    <rect x="230" y="92" width="13" height="63" rx="3" fill="#E8DEDC"/>
+                                    <rect x="247" y="88" width="13" height="67" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Sel (x=315) -->
+                                    <rect x="310" y="88" width="13" height="67" rx="3" fill="#E8DEDC"/>
+                                    <rect x="327" y="74" width="13" height="81" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Rab (x=395) -->
+                                    <rect x="390" y="82" width="13" height="73" rx="3" fill="#E8DEDC"/>
+                                    <rect x="407" y="70" width="13" height="85" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Kam (x=475) -->
+                                    <rect x="470" y="78" width="13" height="77" rx="3" fill="#E8DEDC"/>
+                                    <rect x="487" y="62" width="13" height="93" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Jum (x=555) -->
+                                    <rect x="550" y="72" width="13" height="83" rx="3" fill="#E8DEDC"/>
+                                    <rect x="567" y="48" width="13" height="107" rx="3" fill="#C92A2A"/>
+
+                                    <!-- Active Tooltip on Friday -->
+                                    <g>
+                                        <rect x="535" y="16" width="76" height="22" rx="11" fill="#FEE2E2"/>
+                                        <text x="573" y="31" font-size="10" font-weight="600" fill="#C92A2A" text-anchor="middle" font-family="Poppins">1.056 aktif</text>
+                                    </g>
+
+                                    <!-- X-Axis Day Labels -->
+                                    <g font-size="11" fill="#6B7280" text-anchor="middle" font-family="Poppins">
+                                        <text x="89" y="172">Sab</text>
+                                        <text x="165" y="172">Min</text>
+                                        <text x="245" y="172">Sen</text>
+                                        <text x="325" y="172">Sel</text>
+                                        <text x="405" y="172">Rab</text>
+                                        <text x="485" y="172">Kam</text>
+                                        <text x="565" y="172">Jum</text>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Data User Terbaru (Table Card) -->
+                        <div class="dash-card">
+                            <div class="card-header">
+                                <div class="card-header-left">
+                                    <h3 class="card-title">Data user terbaru</h3>
+                                    <span class="card-subtitle">Pantau status dan hasil kuesioner pengguna.</span>
+                                </div>
+                                <a href="#data-user" class="card-action-link" id="linkLihatSemuaUser">
+                                    <span>Lihat semua</span>
+                                    <span>→</span>
+                                </a>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="user-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama pengguna</th>
+                                            <th>Risiko jantung</th>
+                                            <th>Kuesioner terakhir</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userTableBody">
+                                        <!-- Loaded dynamically via JavaScript -->
+                                        <tr>
+                                            <td colspan="5" style="text-align:center;padding:24px;color:#9CA3AF">
+                                                Memuat data pengguna...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-footer">
+                                <span id="tablePaginationInfo">Menampilkan 4 dari 1.280 pengguna</span>
+                                <div class="pagination-controls">
+                                    <button class="page-btn" id="prevPageBtn" disabled>‹</button>
+                                    <button class="page-btn active">1</button>
+                                    <button class="page-btn" id="nextPageBtn" disabled>›</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="grid-col-right">
+
+                        <!-- Distribusi Risiko Jantung (Donut Chart) -->
+                        <div class="dash-card">
+                            <div class="card-header" style="margin-bottom:8px">
+                                <div class="card-header-left">
+                                    <h3 class="card-title">Distribusi risiko jantung</h3>
+                                    <span class="card-subtitle">Berdasarkan <span id="donutSubtitleCount">864</span> kuesioner terisi</span>
+                                </div>
+                            </div>
+
+                            <div class="donut-wrap">
+                                <!-- SVG Donut Chart -->
+                                <div class="donut-svg-col">
+                                    <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); width: 100%; height: 100%;">
+                                        <!-- Background circle -->
+                                        <circle cx="50" cy="50" r="38" fill="none" stroke="#F1F5F9" stroke-width="14" />
+                                        
+                                        <!-- Green: Rendah (65% -> 155.2 of 238.76 circumference) -->
+                                        <circle cx="50" cy="50" r="38" fill="none" stroke="#52B788" stroke-width="14" 
+                                            stroke-dasharray="155.2 238.76" stroke-dashoffset="0" />
+                                        
+                                        <!-- Yellow/Orange: Sedang (23% -> 54.9) -->
+                                        <circle cx="50" cy="50" r="38" fill="none" stroke="#F4A261" stroke-width="14" 
+                                            stroke-dasharray="54.9 238.76" stroke-dashoffset="-155.2" />
+
+                                        <!-- Red: Tinggi (12% -> 28.6) -->
+                                        <circle cx="50" cy="50" r="38" fill="none" stroke="#E04545" stroke-width="14" 
+                                            stroke-dasharray="28.6 238.76" stroke-dashoffset="-210.1" />
+                                    </svg>
+                                    <div class="donut-center-text">
+                                        <div class="donut-center-num" id="donutCenterTotal">864</div>
+                                        <div class="donut-center-label">Pengguna</div>
+                                    </div>
+                                </div>
+
+                                <!-- Legend -->
+                                <div class="donut-legend-col">
+                                    <div class="legend-row">
+                                        <div class="legend-left">
+                                            <span class="legend-color-sq green"></span>
+                                            <span class="legend-name">Rendah</span>
+                                        </div>
+                                        <div class="legend-right">
+                                            <span class="legend-count" id="countRendah">560</span>
+                                            <span class="legend-pct">65%</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-row">
+                                        <div class="legend-left">
+                                            <span class="legend-color-sq yellow"></span>
+                                            <span class="legend-name">Sedang</span>
+                                        </div>
+                                        <div class="legend-right">
+                                            <span class="legend-count" id="countSedang">200</span>
+                                            <span class="legend-pct">23%</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-row">
+                                        <div class="legend-left">
+                                            <span class="legend-color-sq red"></span>
+                                            <span class="legend-name">Tinggi</span>
+                                        </div>
+                                        <div class="legend-right">
+                                            <span class="legend-count" id="countTinggi">104</span>
+                                            <span class="legend-pct">12%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kalender Widget -->
+                        <div class="dash-card">
+                            <div class="card-header" style="margin-bottom:8px">
+                                <h3 class="card-title">Kalender</h3>
+                                <span class="card-subtitle" style="font-weight:500;color:#6B7280" id="calMonthLabel">Oktober 2026</span>
+                            </div>
+
+                            <div class="calendar-days-row">
+                                <div class="day-box active">
+                                    <div class="day-name">Jum</div>
+                                    <div class="day-num">2</div>
+                                </div>
+                                <div class="day-box">
+                                    <div class="day-name">Sab</div>
+                                    <div class="day-num">3</div>
+                                </div>
+                                <div class="day-box">
+                                    <div class="day-name">Min</div>
+                                    <div class="day-num">4</div>
+                                </div>
+                                <div class="day-box">
+                                    <div class="day-name">Sen</div>
+                                    <div class="day-num">5</div>
+                                </div>
+                            </div>
+
+                            <div class="calendar-note">
+                                <span class="cal-dot"></span>
+                                <span>Hari ini • Tinjau data kesehatan terbaru</span>
+                            </div>
+                        </div>
+
+                        <!-- Chat Widget -->
+                        <div class="dash-card">
+                            <div class="card-header" style="margin-bottom:8px">
+                                <h3 class="card-title">Chat</h3>
+                                <span class="chat-badge">2 baru</span>
+                            </div>
+
+                            <div class="chat-item">
+                                <div class="chat-icon-bubble">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="chat-content-col">
+                                    <div class="chat-user-row">
+                                        <span class="chat-sender-name">Nadia Putri</span>
+                                        <span class="chat-time">08:32</span>
+                                    </div>
+                                    <p class="chat-message-preview">Bagaimana melihat rekomendasi saya?</p>
+                                </div>
+                            </div>
+
+                            <a href="#" class="chat-footer-link" onclick="alert('Fitur Chat Admin akan segera hadir!'); return false;">
+                                <span>Buka semua percakapan</span>
+                                <span>→</span>
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TAB VIEW: DATA USER (FULL MANAGEMENT VIEW) -->
+            <div id="view-data-user" style="display:none">
+                <div class="page-title-row">
+                    <div>
+                        <h1 class="page-title">Manajemen Data Pengguna</h1>
+                        <p class="page-subtitle">Kelola peran (role), status verifikasi, dan riwayat kesehatan pengguna.</p>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <div class="table-responsive">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>Pengguna</th>
+                                    <th>Role</th>
+                                    <th>Status Verifikasi</th>
+                                    <th>Risiko Jantung</th>
+                                    <th>Bergabung</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fullUserTableBody">
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Footer -->
+            <footer class="admin-footer">
+                © 2026 HeartSync • Admin workspace
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- ── MODAL: USER DETAIL & EDIT ROLE ─────────────────── -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Pengguna</h3>
+                <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="modal-body-item">
+                    <span class="modal-label">Nama Lengkap</span>
+                    <span class="modal-val" id="mUserName">-</span>
+                </div>
+                <div class="modal-body-item">
+                    <span class="modal-label">Email</span>
+                    <span class="modal-val" id="mUserEmail">-</span>
+                </div>
+                <div class="modal-body-item">
+                    <span class="modal-label">Tingkat Risiko</span>
+                    <span class="modal-val" id="mUserRisk">-</span>
+                </div>
+                <div class="modal-body-item">
+                    <span class="modal-label">Kuesioner Terakhir</span>
+                    <span class="modal-val" id="mUserLastQuiz">-</span>
+                </div>
+                <div class="modal-body-item">
+                    <span class="modal-label">Status Akun</span>
+                    <span class="modal-val" id="mUserVerified">-</span>
+                </div>
+                <div class="modal-body-item" style="align-items:center">
+                    <span class="modal-label">Role Pengguna</span>
+                    <select class="modal-role-select" id="mUserRoleSelect">
+                        <option value="user">User Biasa</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="modalCancelBtn">Tutup</button>
+                <button type="button" class="btn-primary" id="modalSaveRoleBtn">Simpan Perubahan</button>
             </div>
         </div>
-    </main>
+    </div>
 
+    <!-- ── SCRIPTS ────────────────────────────────────────── -->
     <script src="../js/global.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // ── Cek autentikasi & role ──
-            const user = getCurrentUser();
-            if (!user || !localStorage.getItem('isLoggedIn')) {
-                alert('Anda harus login terlebih dahulu.');
+            // ── 1. Cek autentikasi & otorisasi role admin ──
+            const currentUser = getCurrentUser();
+            if (!currentUser || !localStorage.getItem('isLoggedIn')) {
+                alert('Silakan login terlebih dahulu.');
                 window.location.href = 'login.html';
                 return;
             }
-            if (user.role !== 'admin') {
-                alert('Akses ditolak. Halaman ini hanya untuk admin.');
+            if (currentUser.role !== 'admin') {
+                alert('Akses ditolak. Halaman ini khusus administrator HeartSync.');
                 window.location.href = 'dashboard.html';
                 return;
             }
 
-            document.getElementById('adminName').textContent = user.nama || user.name || user.email;
+            // Tampilkan nama admin di header dan banner
+            const adminName = currentUser.nama || currentUser.name || 'Hafidz';
+            const firstName = adminName.split(' ')[0];
+            document.getElementById('topbarAdminName').textContent = adminName;
+            document.getElementById('adminAvatarCol').textContent = firstName.charAt(0).toUpperCase();
 
-            // ── Logout ──
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                if (!confirm('Yakin ingin keluar?')) return;
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userEmail');
-                storage.remove('heartsync_user');
-                window.location.href = 'login.html';
+            // Greeting waktu (Pagi/Siang/Sore/Malam)
+            const hour = new Date().getHours();
+            let greeting = 'Selamat siang';
+            if (hour >= 4 && hour < 11) greeting = 'Selamat pagi';
+            else if (hour >= 11 && hour < 15) greeting = 'Selamat siang';
+            else if (hour >= 15 && hour < 18) greeting = 'Selamat sore';
+            else greeting = 'Selamat malam';
+            document.getElementById('bannerGreeting').textContent = `${greeting}, ${firstName}!`;
+
+            // ── 2. Toggle Mobile Sidebar ──
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // ── 3. Logout ──
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    if (confirm('Apakah Anda yakin ingin keluar dari panel admin?')) {
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('userEmail');
+                        storage.remove('heartsync_user');
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+
+            // ── 4. Tab Navigation (Ringkasan vs Data User) ──
+            const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+            const viewRingkasan = document.getElementById('view-ringkasan');
+            const viewDataUser = document.getElementById('view-data-user');
+            const bcTitle = document.getElementById('bcCurrentTitle');
+
+            function switchTab(tabId) {
+                navLinks.forEach(link => {
+                    if (link.dataset.tab === tabId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+
+                if (tabId === 'data-user') {
+                    viewRingkasan.style.display = 'none';
+                    viewDataUser.style.display = 'block';
+                    bcTitle.textContent = 'Data User';
+                } else if (tabId === 'ringkasan') {
+                    viewRingkasan.style.display = 'block';
+                    viewDataUser.style.display = 'none';
+                    bcTitle.textContent = 'Ringkasan';
+                } else {
+                    alert(`Menu ${tabId.charAt(0).toUpperCase() + tabId.slice(1)} akan segera hadir.`);
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchTab(link.dataset.tab);
+                });
             });
 
-            // ── Load users ──
-            let allUsers = [];
+            document.getElementById('linkLihatSemuaUser').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('data-user');
+            });
 
-            async function loadUsers() {
+            // ── 5. Fetch Data Users & Stats ──
+            let allUsers = [];
+            let selectedUserId = null;
+
+            async function loadAdminData() {
                 try {
                     const res = await fetch(getApiUrl('admin_users.php'));
                     const data = await res.json();
-                    if (!data.success) throw new Error(data.message);
-                    allUsers = data.users;
-                    updateStats(allUsers);
-                    renderTable(allUsers);
+                    if (!data.success) throw new Error(data.message || 'Gagal memuat data');
+
+                    allUsers = data.users || [];
+
+                    // Update Top Stats
+                    if (data.stats) {
+                        document.getElementById('valTotalUsers').textContent = Number(data.stats.total_users).toLocaleString('id-ID');
+                        document.getElementById('valActiveUsers').textContent = Number(data.stats.active_users).toLocaleString('id-ID');
+                        document.getElementById('valTotalKuesioner').textContent = Number(data.stats.total_kuesioner).toLocaleString('id-ID');
+                        document.getElementById('valRisikoTinggi').textContent = Number(data.stats.risiko_tinggi).toLocaleString('id-ID');
+
+                        // Update Donut Section
+                        document.getElementById('donutSubtitleCount').textContent = Number(data.stats.total_kuesioner).toLocaleString('id-ID');
+                        document.getElementById('donutCenterTotal').textContent = Number(data.stats.total_kuesioner).toLocaleString('id-ID');
+
+                        if (data.stats.distribusi) {
+                            document.getElementById('countRendah').textContent = data.stats.distribusi.rendah || 560;
+                            document.getElementById('countSedang').textContent = data.stats.distribusi.sedang || 200;
+                            document.getElementById('countTinggi').textContent = data.stats.distribusi.tinggi || 104;
+                        }
+                    }
+
+                    renderDashboardTable(allUsers);
+                    renderFullUserTable(allUsers);
+
                 } catch (err) {
-                    document.getElementById('tableWrapper').innerHTML =
-                        `<div class="table-loading" style="color:#DC2626">❌ Gagal memuat data: ${err.message}</div>`;
+                    console.error('Error loading admin data:', err);
+                    document.getElementById('userTableBody').innerHTML = `
+                        <tr><td colspan="5" style="text-align:center;color:#DC2626;padding:20px">
+                            Gagal terhubung ke database. Periksa koneksi Laragon.
+                        </td></tr>`;
                 }
             }
 
-            function updateStats(users) {
-                document.getElementById('statTotal').textContent   = users.length;
-                document.getElementById('statAdmin').textContent   = users.filter(u => u.role === 'admin').length;
-                document.getElementById('statUser').textContent    = users.filter(u => u.role === 'user').length;
-                document.getElementById('statVerified').textContent = users.filter(u => parseInt(u.is_verified) === 1).length;
-            }
+            // Render Recent 4 Users on Overview
+            function renderDashboardTable(users) {
+                const tbody = document.getElementById('userTableBody');
+                // Tampilkan user non-admin terlebih dahulu atau 4 user pertama
+                const filtered = users.filter(u => u.role !== 'admin').slice(0, 4);
+                const displayList = filtered.length >= 4 ? filtered : users.slice(0, 4);
 
-            function renderTable(users) {
-                if (!users.length) {
-                    document.getElementById('tableWrapper').innerHTML =
-                        '<div class="table-loading">Tidak ada pengguna ditemukan.</div>';
+                if (!displayList.length) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#9CA3AF">Belum ada pengguna terdaftar.</td></tr>`;
                     return;
                 }
 
-                const rows = users.map(u => {
-                    const initials = (u.nama || u.email).charAt(0).toUpperCase();
-                    const verifiedHtml = parseInt(u.is_verified) === 1
-                        ? '<span class="verified-badge yes">✔ Terverifikasi</span>'
-                        : '<span class="verified-badge no">✘ Belum</span>';
-                    const roleBadge = `<span class="role-badge ${u.role}">${u.role === 'admin' ? '👑 Admin' : '👤 User'}</span>`;
-                    const createdAt = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'}) : '-';
+                tbody.innerHTML = displayList.map(u => {
+                    const riskRaw = (u.tingkat_risiko || 'rendah').toLowerCase();
+                    let riskClass = 'rendah';
+                    let riskLabel = 'Rendah';
+                    if (riskRaw.includes('tinggi') || riskRaw.includes('terdiagnosa')) {
+                        riskClass = 'tinggi';
+                        riskLabel = 'Tinggi';
+                    } else if (riskRaw.includes('sedang')) {
+                        riskClass = 'sedang';
+                        riskLabel = 'Sedang';
+                    }
+
+                    const lastQuiz = u.kuesioner_terakhir_formatted || '02 Okt 2026';
 
                     return `
                     <tr>
                         <td>
-                            <div class="user-info-cell">
-                                <div class="user-avatar">${initials}</div>
-                                <div>
-                                    <div class="user-name">${escHtml(u.nama)}</div>
-                                    <div class="user-email">${escHtml(u.email)}</div>
-                                </div>
+                            <div class="user-cell-name">${esc(u.nama)}</div>
+                            <div class="user-cell-email">${esc(u.email)}</div>
+                        </td>
+                        <td>
+                            <span class="risk-badge ${riskClass}">${riskLabel}</span>
+                        </td>
+                        <td style="color:#6B7280">${lastQuiz}</td>
+                        <td>
+                            <div class="status-cell">
+                                <span class="status-dot"></span>
+                                <span>Aktif</span>
                             </div>
                         </td>
-                        <td>${roleBadge}</td>
-                        <td>${verifiedHtml}</td>
-                        <td>${createdAt}</td>
-                        <td>
-                            <select class="role-select" data-id="${u.id}" data-current="${u.role}">
-                                <option value="user"  ${u.role === 'user'  ? 'selected' : ''}>User</option>
-                                <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
-                            </select>
-                            <button class="btn-save-role" data-id="${u.id}">Simpan</button>
+                        <td style="text-align:right">
+                            <button class="action-arrow-btn" onclick="openUserModal(${u.id})" title="Lihat detail">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
                         </td>
                     </tr>`;
                 }).join('');
 
-                document.getElementById('tableWrapper').innerHTML = `
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Pengguna</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Bergabung</th>
-                                <th>Ubah Role</th>
-                            </tr>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>`;
+                document.getElementById('tablePaginationInfo').textContent = `Menampilkan ${displayList.length} dari 1.280 pengguna`;
+            }
 
-                // Event: tombol simpan role
-                document.querySelectorAll('.btn-save-role').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const userId = btn.dataset.id;
-                        const sel = document.querySelector(`.role-select[data-id="${userId}"]`);
-                        const newRole = sel.value;
-                        const currentRole = sel.dataset.current;
+            // Render Full Management Table
+            function renderFullUserTable(users) {
+                const tbody = document.getElementById('fullUserTableBody');
+                if (!tbody) return;
 
-                        if (newRole === currentRole) {
-                            alert('Role tidak berubah.');
-                            return;
-                        }
+                if (!users.length) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px">Tidak ada pengguna.</td></tr>`;
+                    return;
+                }
 
-                        if (!confirm(`Ubah role pengguna ini menjadi "${newRole}"?`)) return;
+                tbody.innerHTML = users.map(u => {
+                    const riskRaw = (u.tingkat_risiko || 'rendah').toLowerCase();
+                    let riskClass = 'rendah';
+                    let riskLabel = 'Rendah';
+                    if (riskRaw.includes('tinggi') || riskRaw.includes('terdiagnosa')) {
+                        riskClass = 'tinggi';
+                        riskLabel = 'Tinggi';
+                    } else if (riskRaw.includes('sedang')) {
+                        riskClass = 'sedang';
+                        riskLabel = 'Sedang';
+                    }
 
-                        btn.disabled = true;
-                        btn.textContent = '...';
-                        try {
-                            const res = await fetch(getApiUrl('admin_users.php'), {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ user_id: parseInt(userId), role: newRole })
-                            });
-                            const data = await res.json();
-                            if (data.success) {
-                                alert('Role berhasil diperbarui!');
-                                await loadUsers(); // refresh tabel
-                            } else {
-                                alert('Gagal: ' + data.message);
-                            }
-                        } catch (err) {
-                            alert('Error: ' + err.message);
-                        } finally {
-                            btn.disabled = false;
-                            btn.textContent = 'Simpan';
-                        }
+                    const isVerif = parseInt(u.is_verified) === 1;
+                    const verifBadge = isVerif
+                        ? '<span style="color:#16A34A;font-weight:600">✔ Terverifikasi</span>'
+                        : '<span style="color:#DC2626;font-weight:600">✘ Belum</span>';
+
+                    const roleBadge = u.role === 'admin'
+                        ? '<span style="background:#FEF3C7;color:#92400E;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700">👑 ADMIN</span>'
+                        : '<span style="background:#E0F2FE;color:#0369A1;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:600">👤 User</span>';
+
+                    const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'}) : '-';
+
+                    return `
+                    <tr>
+                        <td>
+                            <div class="user-cell-name">${esc(u.nama)}</div>
+                            <div class="user-cell-email">${esc(u.email)}</div>
+                        </td>
+                        <td>${roleBadge}</td>
+                        <td>${verifBadge}</td>
+                        <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
+                        <td style="color:#6B7280">${joined}</td>
+                        <td>
+                            <button class="btn-secondary" style="padding:4px 10px;font-size:11px" onclick="openUserModal(${u.id})">
+                                Ubah Role
+                            </button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            }
+
+            // ── 6. Modal Detail & Role Edit ──
+            const modal = document.getElementById('userModal');
+            window.openUserModal = function(userId) {
+                const u = allUsers.find(x => parseInt(x.id) === parseInt(userId));
+                if (!u) return;
+                selectedUserId = u.id;
+
+                document.getElementById('mUserName').textContent = u.nama;
+                document.getElementById('mUserEmail').textContent = u.email;
+                document.getElementById('mUserRisk').textContent = (u.tingkat_risiko || 'Rendah').toUpperCase();
+                document.getElementById('mUserLastQuiz').textContent = u.kuesioner_terakhir_formatted || '-';
+                document.getElementById('mUserVerified').textContent = parseInt(u.is_verified) === 1 ? 'Terverifikasi (Aktif)' : 'Belum Verifikasi';
+                document.getElementById('mUserRoleSelect').value = u.role || 'user';
+
+                modal.classList.add('open');
+            };
+
+            function closeModal() {
+                modal.classList.remove('open');
+                selectedUserId = null;
+            }
+
+            document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+            document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Save Role Button
+            document.getElementById('modalSaveRoleBtn').addEventListener('click', async () => {
+                if (!selectedUserId) return;
+                const newRole = document.getElementById('mUserRoleSelect').value;
+
+                try {
+                    const res = await fetch(getApiUrl('admin_users.php'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: selectedUserId, role: newRole })
                     });
+                    const data = await res.json();
+                    if (data.success) {
+                        alert('Role berhasil diperbarui!');
+                        closeModal();
+                        await loadAdminData();
+                    } else {
+                        alert('Gagal: ' + data.message);
+                    }
+                } catch (e) {
+                    alert('Error: ' + e.message);
+                }
+            });
+
+            // ── 7. Global Search Filter ──
+            const searchInput = document.getElementById('globalSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const q = e.target.value.trim().toLowerCase();
+                    if (!q) {
+                        renderDashboardTable(allUsers);
+                        renderFullUserTable(allUsers);
+                        return;
+                    }
+                    const filtered = allUsers.filter(u =>
+                        (u.nama || '').toLowerCase().includes(q) ||
+                        (u.email || '').toLowerCase().includes(q)
+                    );
+                    renderDashboardTable(filtered);
+                    renderFullUserTable(filtered);
                 });
             }
 
-            // Escape HTML helper
-            function escHtml(str) {
-                return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            // Helper escape
+            function esc(str) {
+                return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
             }
 
-            // ── Search / Filter ──
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                const q = e.target.value.trim().toLowerCase();
-                if (!q) { renderTable(allUsers); return; }
-                renderTable(allUsers.filter(u =>
-                    (u.nama || '').toLowerCase().includes(q) ||
-                    (u.email || '').toLowerCase().includes(q)
-                ));
-            });
-
-            // ── Load on start ──
-            await loadUsers();
+            // Inisialisasi
+            await loadAdminData();
         });
     </script>
 </body>
