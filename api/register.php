@@ -38,11 +38,14 @@ try {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $verification_code = rand(10000, 99999);
 
+    // Bedakan role berdasarkan email: domain @heartsync.com otomatis admin
+    $role = (stripos($email, '@heartsync.com') !== false) ? 'admin' : 'user';
+
     $stmt = $pdo->prepare(
-        "INSERT INTO users (nama, email, password, verification_code, is_verified)
-         VALUES (?, ?, ?, ?, 0)"
+        "INSERT INTO users (nama, email, password, role, verification_code, is_verified)
+         VALUES (?, ?, ?, ?, ?, 0)"
     );
-    $stmt->execute([$nama, $email, $hashed_password, $verification_code]);
+    $stmt->execute([$nama, $email, $hashed_password, $role, $verification_code]);
 
     @mail(
         $email,

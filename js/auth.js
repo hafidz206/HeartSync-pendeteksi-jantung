@@ -96,10 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
-                // Routing berdasarkan role
-                if (userData.role === 'admin') {
-                    window.location.href = 'admin.html';
-                } else if (result.has_quiz === false) {
+                // Routing: halaman user dan admin menjadi satu di dashboard.html (pembedanya hanya email)
+                if (result.has_quiz === false && userData.role !== 'admin' && !userData.email.toLowerCase().endsWith('@heartsync.com')) {
                     window.location.href = 'landing.html';
                 } else {
                     window.location.href = 'dashboard.html';

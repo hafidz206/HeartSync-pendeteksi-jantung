@@ -240,50 +240,11 @@ function renderVitalsGrid(latest) {
     return `<div class="grid-4">${renderVitalsCards(latest)}</div>`;
 }
 
-// Main Dashboard Controller
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. PROTEKSI DASHBOARD
-    // Cek apakah pengguna sudah login (berdasarkan localStorage yang diset saat login sukses)
-    if (!localStorage.getItem('userEmail') && localStorage.getItem('heartsync_user')) {
-        const u = storage.get('heartsync_user');
-        if (u && u.email) {
-            localStorage.setItem('userEmail', u.email);
-            localStorage.setItem('isLoggedIn', 'true');
-        }
-    }
-
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const userEmail = localStorage.getItem('userEmail');
-
-    if (!isLoggedIn || !userEmail) {
-        // Jika belum login, tendang/alihkan kembali ke halaman login
-        alert('Silakan login terlebih dahulu!');
-        window.location.href = 'login.html';
-        return;
-    }
-
-    // (Opsional) Jika ingin menampilkan email atau nama user di dashboard
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
-    if (userEmailDisplay) {
-        userEmailDisplay.textContent = userEmail;
-    }
-
-    // 2. FITUR LOGOUT
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            // Hapus sesi login dari localStorage
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            storage.remove('heartsync_user');
-
-            // Beritahu pengguna lalu arahkan ke halaman login
-            alert('Anda telah berhasil keluar.');
-            window.location.href = 'login.html';
-        });
-    }
+// ========================================================
+// 1. FUNGSI INISIALISASI USER DASHBOARD (Untuk User Biasa)
+// ========================================================
+function initUserDashboard(user) {
+    user = user || getCurrentUser() || {};
     const navEl = $('#nav');
     const viewEl = $('#view');
     const modalEl = $('#modal');
@@ -291,6 +252,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCancel = $('#mcancel');
 
     if (!navEl || !viewEl) return;
+
+    // Jika pengguna adalah admin yang sedang melihat pratinjau tampilan user,
+    // tampilkan floating banner untuk kembali ke Admin Workspace
+    const userEmail = (localStorage.getItem('userEmail') || '').toLowerCase().trim();
+    const isAdminUser = userEmail.endsWith('@heartsync.com') || ((user.role || '').toLowerCase() === 'admin');
+    let returnAdminBtn = document.getElementById('returnAdminFloatingBtn');
+    if (isAdminUser) {
+        if (!returnAdminBtn) {
+            returnAdminBtn = document.createElement('div');
+            returnAdminBtn.id = 'returnAdminFloatingBtn';
+            returnAdminBtn.innerHTML = `
+                <button type="button" style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#E04545;color:#fff;border:none;padding:10px 20px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;box-shadow:0 4px 15px rgba(224,69,69,0.4);cursor:pointer;display:flex;align-items:center;gap:8px">
+                    ⚙️ Kembali ke Admin Workspace
+                </button>
+            `;
+            document.body.appendChild(returnAdminBtn);
+            returnAdminBtn.querySelector('button').onclick = () => {
+                document.body.classList.remove('mode-user');
+                document.body.classList.add('mode-admin');
+                returnAdminBtn.remove();
+                initAdminDashboard(user);
+            };
+        }
+    } else if (returnAdminBtn) {
+        returnAdminBtn.remove();
+    }
 
     let user = getCurrentUser();
     let risk = storage.get('heartsync_risk', { lv: 'sedang', pct: 40 });
@@ -917,10 +904,352 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize Page
+    // Initialize User Page
     renderNav();
     renderView();
 
     // Muat riwayat pengguna dari database
     muatRiwayatUser();
+}
+
+// ========================================================
+// 2. FUNGSI INISIALISASI ADMIN DASHBOARD (Mockup Precision)
+// ========================================================
+function initAdminDashboard(currentUser) {
+    currentUser = currentUser || getCurrentUser() || {};
+    const adminName = currentUser.nama || currentUser.name || 'Administrator';
+    const firstName = adminName.split(' ')[0];
+    const topbarName = document.getElementById('topbarAdminName');
+    const avatarCol = document.getElementById('adminAvatarCol');
+    const greetingEl = document.getElementById('bannerGreeting');
+
+    if (topbarName) topbarName.textContent = adminName;
+    if (avatarCol) avatarCol.textContent = firstName.charAt(0).toUpperCase();
+
+    // Salam waktu dinamis
+    const hour = new Date().getHours();
+    let greeting = 'Selamat siang';
+    if (hour >= 4 && hour < 11) greeting = 'Selamat pagi';
+    else if (hour >= 11 && hour < 15) greeting = 'Selamat siang';
+    else if (hour >= 15 && hour < 18) greeting = 'Selamat sore';
+    else greeting = 'Selamat malam';
+    if (greetingEl) greetingEl.textContent = `${greeting}, ${firstName}!`;
+
+    // Toggle Sidebar Mobile
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.onclick = () => sidebar.classList.toggle('open');
+    }
+
+    // Admin Logout
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+    if (adminLogoutBtn) {
+        adminLogoutBtn.onclick = () => {
+            if (confirm('Apakah Anda yakin ingin keluar dari panel admin?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                storage.remove('heartsync_user');
+                window.location.href = 'login.html';
+            }
+        };
+    }
+
+    // Tombol Switch Tampilan Pengguna (Khusus Admin)
+    const toggleUserViewBtn = document.getElementById('toggleUserViewBtn');
+    if (toggleUserViewBtn) {
+        toggleUserViewBtn.onclick = () => {
+            document.body.classList.remove('mode-admin');
+            document.body.classList.add('mode-user');
+            initUserDashboard(currentUser);
+        };
+    }
+
+    // Tab Navigasi Admin (Ringkasan vs Data User)
+    const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+    const viewRingkasan = document.getElementById('view-ringkasan');
+    const viewDataUser = document.getElementById('view-data-user');
+    const bcTitle = document.getElementById('bcCurrentTitle');
+
+    function switchAdminTab(tabId) {
+        navLinks.forEach(link => {
+            if (link.dataset.tab === tabId) link.classList.add('active');
+            else link.classList.remove('active');
+        });
+
+        if (tabId === 'data-user') {
+            if (viewRingkasan) viewRingkasan.style.display = 'none';
+            if (viewDataUser) viewDataUser.style.display = 'block';
+            if (bcTitle) bcTitle.textContent = 'Data User';
+        } else if (tabId === 'ringkasan') {
+            if (viewRingkasan) viewRingkasan.style.display = 'block';
+            if (viewDataUser) viewDataUser.style.display = 'none';
+            if (bcTitle) bcTitle.textContent = 'Ringkasan';
+        } else {
+            alert(`Menu ${tabId.charAt(0).toUpperCase() + tabId.slice(1)} akan segera hadir.`);
+        }
+    }
+
+    navLinks.forEach(link => {
+        link.onclick = (e) => {
+            e.preventDefault();
+            switchAdminTab(link.dataset.tab);
+        };
+    });
+
+    const lihatSemuaBtn = document.getElementById('adminLinkLihatSemuaUser');
+    if (lihatSemuaBtn) {
+        lihatSemuaBtn.onclick = (e) => {
+            e.preventDefault();
+            switchAdminTab('data-user');
+        };
+    }
+
+    // Ambil Data Admin & Statistik Real-Time
+    let allUsers = [];
+    let selectedUserId = null;
+
+    async function loadAdminData() {
+        try {
+            const res = await fetch(getApiUrl('admin_users.php'));
+            const data = await res.json();
+            if (!data.success) throw new Error(data.message || 'Gagal');
+
+            allUsers = data.users || [];
+
+            if (data.stats) {
+                const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+                setEl('valTotalUsers', Number(data.stats.total_users).toLocaleString('id-ID'));
+                setEl('valActiveUsers', Number(data.stats.active_users).toLocaleString('id-ID'));
+                setEl('valTotalKuesioner', Number(data.stats.total_kuesioner).toLocaleString('id-ID'));
+                setEl('valRisikoTinggi', Number(data.stats.risiko_tinggi).toLocaleString('id-ID'));
+
+                setEl('adminDonutSubtitleCount', Number(data.stats.total_kuesioner).toLocaleString('id-ID'));
+                setEl('adminDonutCenterTotal', Number(data.stats.total_kuesioner).toLocaleString('id-ID'));
+
+                if (data.stats.distribusi) {
+                    setEl('adminCountRendah', data.stats.distribusi.rendah || 560);
+                    setEl('adminCountSedang', data.stats.distribusi.sedang || 200);
+                    setEl('adminCountTinggi', data.stats.distribusi.tinggi || 104);
+                }
+            }
+
+            renderDashboardTable(allUsers);
+            renderFullUserTable(allUsers);
+        } catch (e) {
+            console.error('Error admin data:', e);
+        }
+    }
+
+    function renderDashboardTable(users) {
+        const tbody = document.getElementById('adminUserTableBody');
+        if (!tbody) return;
+        const filtered = users.filter(u => u.role !== 'admin').slice(0, 4);
+        const displayList = filtered.length >= 4 ? filtered : users.slice(0, 4);
+
+        if (!displayList.length) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#9CA3AF">Belum ada pengguna.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = displayList.map(u => {
+            const riskRaw = (u.tingkat_risiko || 'rendah').toLowerCase();
+            let riskClass = 'rendah', riskLabel = 'Rendah';
+            if (riskRaw.includes('tinggi') || riskRaw.includes('terdiagnosa')) { riskClass = 'tinggi'; riskLabel = 'Tinggi'; }
+            else if (riskRaw.includes('sedang')) { riskClass = 'sedang'; riskLabel = 'Sedang'; }
+            const lastQuiz = u.kuesioner_terakhir_formatted || '02 Okt 2026';
+
+            return `
+            <tr>
+                <td>
+                    <div class="user-cell-name">${esc(u.nama)}</div>
+                    <div class="user-cell-email">${esc(u.email)}</div>
+                </td>
+                <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
+                <td style="color:#6B7280">${lastQuiz}</td>
+                <td>
+                    <div class="status-cell">
+                        <span class="status-dot"></span>
+                        <span>Aktif</span>
+                    </div>
+                </td>
+                <td style="text-align:right">
+                    <button class="action-arrow-btn" onclick="openAdminUserModal(${u.id})" title="Lihat detail">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </td>
+            </tr>`;
+        }).join('');
+
+        const pageInfo = document.getElementById('adminTablePaginationInfo');
+        if (pageInfo) pageInfo.textContent = `Menampilkan ${displayList.length} dari 1.280 pengguna`;
+    }
+
+    function renderFullUserTable(users) {
+        const tbody = document.getElementById('adminFullUserTableBody');
+        if (!tbody) return;
+
+        if (!users.length) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px">Tidak ada pengguna.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = users.map(u => {
+            const riskRaw = (u.tingkat_risiko || 'rendah').toLowerCase();
+            let riskClass = 'rendah', riskLabel = 'Rendah';
+            if (riskRaw.includes('tinggi') || riskRaw.includes('terdiagnosa')) { riskClass = 'tinggi'; riskLabel = 'Tinggi'; }
+            else if (riskRaw.includes('sedang')) { riskClass = 'sedang'; riskLabel = 'Sedang'; }
+
+            const isVerif = parseInt(u.is_verified) === 1;
+            const verifBadge = isVerif
+                ? '<span style="color:#16A34A;font-weight:600">✔ Terverifikasi</span>'
+                : '<span style="color:#DC2626;font-weight:600">✘ Belum</span>';
+
+            const roleBadge = u.role === 'admin'
+                ? '<span style="background:#FEF3C7;color:#92400E;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700">👑 ADMIN</span>'
+                : '<span style="background:#E0F2FE;color:#0369A1;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:600">👤 User</span>';
+
+            const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'}) : '-';
+
+            return `
+            <tr>
+                <td>
+                    <div class="user-cell-name">${esc(u.nama)}</div>
+                    <div class="user-cell-email">${esc(u.email)}</div>
+                </td>
+                <td>${roleBadge}</td>
+                <td>${verifBadge}</td>
+                <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
+                <td style="color:#6B7280">${joined}</td>
+                <td>
+                    <button class="btn-secondary" style="padding:4px 10px;font-size:11px" onclick="openAdminUserModal(${u.id})">
+                        Ubah Role
+                    </button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // Modal Edit Role
+    const modal = document.getElementById('userModal');
+    window.openAdminUserModal = function(userId) {
+        const u = allUsers.find(x => parseInt(x.id) === parseInt(userId));
+        if (!u || !modal) return;
+        selectedUserId = u.id;
+
+        document.getElementById('mUserName').textContent = u.nama;
+        document.getElementById('mUserEmail').textContent = u.email;
+        document.getElementById('mUserRisk').textContent = (u.tingkat_risiko || 'Rendah').toUpperCase();
+        document.getElementById('mUserLastQuiz').textContent = u.kuesioner_terakhir_formatted || '-';
+        document.getElementById('mUserVerified').textContent = parseInt(u.is_verified) === 1 ? 'Terverifikasi (Aktif)' : 'Belum Verifikasi';
+        document.getElementById('mUserRoleSelect').value = u.role || 'user';
+
+        modal.classList.add('open');
+    };
+
+    function closeAdminModal() {
+        if (modal) modal.classList.remove('open');
+        selectedUserId = null;
+    }
+
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    if (modalCloseBtn) modalCloseBtn.onclick = closeAdminModal;
+    if (modalCancelBtn) modalCancelBtn.onclick = closeAdminModal;
+    if (modal) {
+        modal.onclick = (e) => { if (e.target === modal) closeAdminModal(); };
+    }
+
+    const saveRoleBtn = document.getElementById('modalSaveRoleBtn');
+    if (saveRoleBtn) {
+        saveRoleBtn.onclick = async () => {
+            if (!selectedUserId) return;
+            const newRole = document.getElementById('mUserRoleSelect').value;
+            try {
+                const res = await fetch(getApiUrl('admin_users.php'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: selectedUserId, role: newRole })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Role berhasil diperbarui!');
+                    closeAdminModal();
+                    await loadAdminData();
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        };
+    }
+
+    // Live Search
+    const searchInput = document.getElementById('globalSearchInput');
+    if (searchInput) {
+        searchInput.oninput = (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            if (!q) {
+                renderDashboardTable(allUsers);
+                renderFullUserTable(allUsers);
+                return;
+            }
+            const filtered = allUsers.filter(u =>
+                (u.nama || '').toLowerCase().includes(q) ||
+                (u.email || '').toLowerCase().includes(q)
+            );
+            renderDashboardTable(filtered);
+            renderFullUserTable(filtered);
+        };
+    }
+
+    function esc(str) {
+        return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    loadAdminData();
+}
+
+// ========================================================
+// 3. MAIN DASHBOARD CONTROLLER (PEMBEDA HANYA EMAIL)
+// ========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Sinkronisasi status login dari localStorage
+    if (!localStorage.getItem('userEmail') && localStorage.getItem('heartsync_user')) {
+        const u = storage.get('heartsync_user');
+        if (u && u.email) {
+            localStorage.setItem('userEmail', u.email);
+            localStorage.setItem('isLoggedIn', 'true');
+        }
+    }
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userEmail = (localStorage.getItem('userEmail') || '').toLowerCase().trim();
+
+    if (!isLoggedIn || !userEmail) {
+        alert('Silakan login terlebih dahulu!');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    let user = getCurrentUser() || {};
+    
+    // PEMBEDA UTAMA: EMAIL
+    // Jika email berakhiran @heartsync.com atau memiliki role 'admin', tampilkan Admin Workspace.
+    // Jika email biasa (misal @gmail.com), tampilkan User Dashboard biasa.
+    const isAdmin = userEmail.endsWith('@heartsync.com') || ((user.role || '').toLowerCase() === 'admin');
+
+    if (isAdmin) {
+        document.body.classList.add('mode-admin');
+        document.body.classList.remove('mode-user');
+        initAdminDashboard(user);
+    } else {
+        document.body.classList.add('mode-user');
+        document.body.classList.remove('mode-admin');
+        initUserDashboard(user);
+    }
 });

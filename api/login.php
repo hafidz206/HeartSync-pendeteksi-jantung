@@ -45,6 +45,9 @@ try {
         $stmtQuiz->execute([$user['email'], $user['id']]);
         $hasQuiz = $stmtQuiz->fetch() ? true : false;
 
+        // Pembeda role adalah email (domain @heartsync.com = admin, lainnya = user)
+        $userRole = (stripos($user['email'], '@heartsync.com') !== false || ($user['role'] ?? '') === 'admin') ? 'admin' : 'user';
+
         echo json_encode([
             'success'  => true,
             'message'  => 'Login berhasil.',
@@ -54,7 +57,7 @@ try {
                 'nama'  => $user['nama'],
                 'name'  => $user['nama'],
                 'email' => $user['email'],
-                'role'  => $user['role'] ?? 'user'
+                'role'  => $userRole
             ]
         ]);
     } else {
