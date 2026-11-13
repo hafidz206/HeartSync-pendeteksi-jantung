@@ -1244,12 +1244,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const isAdmin = userEmail.endsWith('@heartsync.com') || ((user.role || '').toLowerCase() === 'admin');
 
     if (isAdmin) {
-        document.body.classList.add('mode-admin');
-        document.body.classList.remove('mode-user');
-        initAdminDashboard(user);
-    } else {
-        document.body.classList.add('mode-user');
-        document.body.classList.remove('mode-admin');
-        initUserDashboard(user);
+        // Admin otomatis diarahkan langsung ke Dashboard Admin
+        window.location.replace('admin.html');
+        return;
     }
+
+    initUserDashboard(user);
 });

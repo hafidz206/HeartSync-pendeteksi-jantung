@@ -96,10 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
-                // Routing: halaman user dan admin menjadi satu di dashboard.html (pembedanya hanya email)
-                if (result.has_quiz === false && userData.role !== 'admin' && !userData.email.toLowerCase().endsWith('@heartsync.com')) {
+                // Pembeda role murni dari email (@heartsync.com = Admin, lainnya = User biasa)
+                const isAdmin = (userData.email && userData.email.toLowerCase().endsWith('@heartsync.com')) || userData.role === 'admin';
+
+                if (isAdmin) {
+                    // Admin LANGSUNG masuk ke Dashboard Admin tanpa mengisi quiz/kuesioner
+                    window.location.href = 'admin.html';
+                } else if (result.has_quiz === false) {
+                    // User biasa baru yang belum isi kuesioner diarahkan ke landing kuesioner
                     window.location.href = 'landing.html';
                 } else {
+                    // User biasa yang sudah isi kuesioner langsung ke dashboard user
                     window.location.href = 'dashboard.html';
                 }
 
