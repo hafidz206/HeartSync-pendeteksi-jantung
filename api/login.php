@@ -53,7 +53,8 @@ try {
                 'id'    => $user['id'] ?? null,
                 'nama'  => $user['nama'],
                 'name'  => $user['nama'],
-                'email' => $user['email']
+                'email' => $user['email'],
+                'role'  => $user['role'] ?? 'user'
             ]
         ]);
     } else {

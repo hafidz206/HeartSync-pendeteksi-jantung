@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - HeartSync</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">
+    <style>
+        :root {
+            --primary-red: #E04545;
+            --primary-blue: #1E8FCB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --bg-light: #F9FAFB;
+            --border: #E5E7EB;
+            --white: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* ── TOPBAR ── */
+        .admin-topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .admin-brand svg { width: 36px; height: 30px; }
+
+        .admin-brand-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        .admin-badge {
+            background: var(--primary-red);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 999px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .admin-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-user-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .admin-user-info strong { color: var(--text-primary); }
+
+        .btn-logout {
+            background: none;
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-logout:hover {
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        /* ── MAIN CONTENT ── */
+        .admin-main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .admin-heading {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .admin-subheading {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+
+        /* ── STATS CARDS ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-card-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .stat-card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-card-value.red { color: var(--primary-red); }
+        .stat-card-value.blue { color: var(--primary-blue); }
+
+        /* ── USER TABLE CARD ── */
+        .table-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table-card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .table-search {
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: border .2s;
+            width: 220px;
+        }
+
+        .table-search:focus { border-color: var(--primary-red); }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .admin-table th {
+            background: var(--bg-light);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .admin-table tr:last-child td { border-bottom: none; }
+
+        .admin-table tr:hover td { background: #FAFAFA; }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-red), #FF7070);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-name { font-weight: 500; }
+        .user-email { font-size: 12px; color: var(--text-secondary); }
+
+        /* Role badge */
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .3px;
+        }
+
+        .role-badge.admin {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FDE68A;
+        }
+
+        .role-badge.user {
+            background: #E0F2FE;
+            color: #0369A1;
+            border: 1px solid #BAE6FD;
+        }
+
+        /* Verified badge */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .verified-badge.yes { color: #059669; }
+        .verified-badge.no  { color: #DC2626; }
+
+        /* Role select */
+        .role-select {
+            padding: 4px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            outline: none;
+            transition: border .2s;
+        }
+
+        .role-select:focus { border-color: var(--primary-red); }
+
+        .btn-save-role {
+            padding: 4px 12px;
+            background: var(--primary-red);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity .2s;
+            margin-left: 6px;
+        }
+
+        .btn-save-role:hover { opacity: .85; }
+        .btn-save-role:disabled { opacity: .5; cursor: default; }
+
+        /* Loading / empty state */
+        .table-loading {
+            text-align: center;
+            padding: 48px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .admin-topbar { padding: 0 16px; }
+            .admin-main { padding: 20px 12px; }
+            .table-card-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .table-search { width: 100%; }
+            .admin-table { font-size: 12px; }
+            .admin-table th, .admin-table td { padding: 10px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Defs -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="logo" viewBox="0 0 120 100">
+                <path d="M60 94 8 40C-2 24 8 6 26 6c14 0 24 8 34 22L60 94Z" fill="#E04545"/>
+                <path d="M60 28C70 12 90 4 104 14c14 12 12 30 0 44L60 94Z" fill="#1E8FCB"/>
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+                <path d="M22 54h18l8-24 12 40 10-34 8 18h42" fill="none" stroke="#1177B8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Top Bar -->
+    <header class="admin-topbar">
+        <a href="dashboard.html" class="admin-brand">
+            <svg viewBox="0 0 120 100" aria-label="HeartSync"><use href="#logo"/></svg>
+            <span class="admin-brand-name">HeartSync</span>
+            <span class="admin-badge">Admin</span>
+        </a>
+        <div class="admin-topbar-right">
+            <span class="admin-user-info">Halo, <strong id="adminName">-</strong></span>
+            <button class="btn-logout" id="logoutBtn">Keluar</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <h1 class="admin-heading">Panel Admin</h1>
+        <p class="admin-subheading">Kelola pengguna dan pengaturan aplikasi HeartSync.</p>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-card-label">Total Pengguna</span>
+                <span class="stat-card-value" id="statTotal">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card-label">Admin</span>
+                <span class="stat-card-value red" id="statAdmin">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card-label">User Biasa</span>
+                <span class="stat-card-value blue" id="statUser">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card-label">Sudah Verifikasi</span>
+                <span class="stat-card-value" id="statVerified">-</span>
+            </div>
+        </div>
+
+        <!-- User Table -->
+        <div class="table-card">
+            <div class="table-card-header">
+                <span class="table-card-title">Daftar Pengguna</span>
+                <input type="text" class="table-search" id="searchInput" placeholder="Cari nama / email...">
+            </div>
+            <div id="tableWrapper">
+                <div class="table-loading">⏳ Memuat data pengguna...</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/global.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // ── Cek autentikasi & role ──
+            const user = getCurrentUser();
+            if (!user || !localStorage.getItem('isLoggedIn')) {
+                alert('Anda harus login terlebih dahulu.');
+                window.location.href = 'login.html';
+                return;
+            }
+            if (user.role !== 'admin') {
+                alert('Akses ditolak. Halaman ini hanya untuk admin.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            document.getElementById('adminName').textContent = user.nama || user.name || user.email;
+
+            // ── Logout ──
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                if (!confirm('Yakin ingin keluar?')) return;
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                storage.remove('heartsync_user');
+                window.location.href = 'login.html';
+            });
+
+            // ── Load users ──
+            let allUsers = [];
+
+            async function loadUsers() {
+                try {
+                    const res = await fetch(getApiUrl('admin_users.php'));
+                    const data = await res.json();
+                    if (!data.success) throw new Error(data.message);
+                    allUsers = data.users;
+                    updateStats(allUsers);
+                    renderTable(allUsers);
+                } catch (err) {
+                    document.getElementById('tableWrapper').innerHTML =
+                        `<div class="table-loading" style="color:#DC2626">❌ Gagal memuat data: ${err.message}</div>`;
+                }
+            }
+
+            function updateStats(users) {
+                document.getElementById('statTotal').textContent   = users.length;
+                document.getElementById('statAdmin').textContent   = users.filter(u => u.role === 'admin').length;
+                document.getElementById('statUser').textContent    = users.filter(u => u.role === 'user').length;
+                document.getElementById('statVerified').textContent = users.filter(u => parseInt(u.is_verified) === 1).length;
+            }
+
+            function renderTable(users) {
+                if (!users.length) {
+                    document.getElementById('tableWrapper').innerHTML =
+                        '<div class="table-loading">Tidak ada pengguna ditemukan.</div>';
+                    return;
+                }
+
+                const rows = users.map(u => {
+                    const initials = (u.nama || u.email).charAt(0).toUpperCase();
+                    const verifiedHtml = parseInt(u.is_verified) === 1
+                        ? '<span class="verified-badge yes">✔ Terverifikasi</span>'
+                        : '<span class="verified-badge no">✘ Belum</span>';
+                    const roleBadge = `<span class="role-badge ${u.role}">${u.role === 'admin' ? '👑 Admin' : '👤 User'}</span>`;
+                    const createdAt = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'}) : '-';
+
+                    return `
+                    <tr>
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">${initials}</div>
+                                <div>
+                                    <div class="user-name">${escHtml(u.nama)}</div>
+                                    <div class="user-email">${escHtml(u.email)}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${roleBadge}</td>
+                        <td>${verifiedHtml}</td>
+                        <td>${createdAt}</td>
+                        <td>
+                            <select class="role-select" data-id="${u.id}" data-current="${u.role}">
+                                <option value="user"  ${u.role === 'user'  ? 'selected' : ''}>User</option>
+                                <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            </select>
+                            <button class="btn-save-role" data-id="${u.id}">Simpan</button>
+                        </td>
+                    </tr>`;
+                }).join('');
+
+                document.getElementById('tableWrapper').innerHTML = `
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Pengguna</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Bergabung</th>
+                                <th>Ubah Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>`;
+
+                // Event: tombol simpan role
+                document.querySelectorAll('.btn-save-role').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const userId = btn.dataset.id;
+                        const sel = document.querySelector(`.role-select[data-id="${userId}"]`);
+                        const newRole = sel.value;
+                        const currentRole = sel.dataset.current;
+
+                        if (newRole === currentRole) {
+                            alert('Role tidak berubah.');
+                            return;
+                        }
+
+                        if (!confirm(`Ubah role pengguna ini menjadi "${newRole}"?`)) return;
+
+                        btn.disabled = true;
+                        btn.textContent = '...';
+                        try {
+                            const res = await fetch(getApiUrl('admin_users.php'), {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ user_id: parseInt(userId), role: newRole })
+                            });
+                            const data = await res.json();
+                            if (data.success) {
+                                alert('Role berhasil diperbarui!');
+                                await loadUsers(); // refresh tabel
+                            } else {
+                                alert('Gagal: ' + data.message);
+                            }
+                        } catch (err) {
+                            alert('Error: ' + err.message);
+                        } finally {
+                            btn.disabled = false;
+                            btn.textContent = 'Simpan';
+                        }
+                    });
+                });
+            }
+
+            // Escape HTML helper
+            function escHtml(str) {
+                return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            }
+
+            // ── Search / Filter ──
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const q = e.target.value.trim().toLowerCase();
+                if (!q) { renderTable(allUsers); return; }
+                renderTable(allUsers.filter(u =>
+                    (u.nama || '').toLowerCase().includes(q) ||
+                    (u.email || '').toLowerCase().includes(q)
+                ));
+            });
+
+            // ── Load on start ──
+            await loadUsers();
+        });
+    </script>
+</body>
+</html>

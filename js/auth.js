@@ -86,7 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     id: result.user.id,
                     name: result.user.name || result.user.nama,
                     nama: result.user.nama || result.user.name,
-                    email: result.user.email
+                    email: result.user.email,
+                    role: result.user.role || 'user'
                 };
                 storage.set('heartsync_user', userData);
 
@@ -95,9 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
-                // Pengguna yang sudah pernah mengisi kuesioner langsung masuk Dashboard
-                // Pengguna baru yang belum pernah kuesioner diarahkan ke Landing (Selamat Datang)
-                if (result.has_quiz === false) {
+                // Routing berdasarkan role
+                if (userData.role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else if (result.has_quiz === false) {
                     window.location.href = 'landing.html';
                 } else {
                     window.location.href = 'dashboard.html';
@@ -241,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
             verifyEmailSpan.textContent = pendingEmail;
         }
 
-        // Auto-jump antar input
+        // Auto-jump antar input + paste support
         inputs.forEach((input, idx) => {
             input.addEventListener('input', () => {
                 input.value = input.value.replace(/\D/g, '');
@@ -255,6 +257,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     inputs[idx - 1].focus();
                 }
             });
+
+            // Paste pada input individual
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData)
+                    .getData('text').replace(/\D/g, '');
+                pasted.split('').forEach((digit, i) => {
+                    if (inputs[idx + i]) inputs[idx + i].value = digit;
+                });
+                // Fokus ke kotak terakhir yang terisi
+                const lastIdx = Math.min(idx + pasted.length - 1, inputs.length - 1);
+                if (lastIdx >= 0) inputs[lastIdx].focus();
+            });
+        });
+
+        // Paste pada container (jika user paste di luar input)
+        codesContainer.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData)
+                .getData('text').replace(/\D/g, '').substring(0, 5);
+            inputs.forEach((inp, i) => { inp.value = pasted[i] || ''; });
+            const lastFilled = Math.min(pasted.length, inputs.length) - 1;
+            if (lastFilled >= 0) inputs[lastFilled].focus();
         });
 
         if (verifyBtn) {
