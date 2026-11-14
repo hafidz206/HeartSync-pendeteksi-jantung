@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     name: result.user.name || result.user.nama,
                     nama: result.user.nama || result.user.name,
                     email: result.user.email,
+                    custom_email: result.user.custom_email || null,
                     role: result.user.role || 'user'
                 };
                 storage.set('heartsync_user', userData);
@@ -96,8 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 alert('Login berhasil! Selamat datang, ' + result.user.nama);
 
-                // Pembeda role murni dari email (@heartsync.com = Admin, lainnya = User biasa)
-                const isAdmin = (userData.email && userData.email.toLowerCase().endsWith('@heartsync.com')) || userData.role === 'admin';
+                // Pembeda role: cek role admin atau kepemilikan email custom / email utama @heartsync.com
+                const isAdmin = (userData.role === 'admin') ||
+                                (userData.email && userData.email.toLowerCase().endsWith('@heartsync.com')) ||
+                                (userData.custom_email && userData.custom_email.toLowerCase().endsWith('@heartsync.com'));
 
                 if (isAdmin) {
                     // Admin LANGSUNG masuk ke Dashboard Admin tanpa mengisi quiz/kuesioner
@@ -154,8 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (pass.length < 6) {
-                showError(errBox, 'Kata sandi minimal 6 karakter.');
+            if (pass.length < 8) {
+                showError(errBox, 'Kata sandi minimal 8 karakter.');
                 passInput.focus();
                 return;
             }

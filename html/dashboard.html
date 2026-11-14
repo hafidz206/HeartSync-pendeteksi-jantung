@@ -20,7 +20,8 @@
             try {
                 const u = JSON.parse(savedUserStr || '{}');
                 const em = (u.email || savedEmail || '').toLowerCase().trim();
-                const isAdmin = em.endsWith('@heartsync.com') || (u.role === 'admin');
+                const cem = (u.custom_email || '').toLowerCase().trim();
+                const isAdmin = em.endsWith('@heartsync.com') || cem.endsWith('@heartsync.com') || (u.role === 'admin');
                 if (isAdmin) {
                     // Admin otomatis diarahkan ke Dashboard Admin tanpa kuesioner
                     window.location.replace('admin.html');

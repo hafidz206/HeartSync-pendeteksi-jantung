@@ -18,6 +18,7 @@ try {
                 u.id, 
                 u.nama, 
                 u.email, 
+                u.custom_email,
                 u.role, 
                 u.is_verified, 
                 u.created_at,
@@ -95,20 +96,86 @@ try {
         exit;
     }
 
-    // POST: update role user
+    // POST: update role user dan/atau custom_email
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
-        $userId = (int)($data['user_id'] ?? 0);
-        $newRole = $data['role'] ?? '';
+        if (!is_array($data)) {
+            $data = $_POST;
+        }
 
-        if (!$userId || !in_array($newRole, ['admin', 'user'])) {
-            echo json_encode(['success' => false, 'message' => 'Parameter tidak valid.']);
+        $userId = (int)($data['user_id'] ?? 0);
+        if (!$userId) {
+            echo json_encode(['success' => false, 'message' => 'User ID wajib diisi.']);
             exit;
         }
 
-        $stmt = $pdo->prepare("UPDATE users SET role = ? WHERE id = ?");
-        $stmt->execute([$newRole, $userId]);
-        echo json_encode(['success' => true, 'message' => 'Role berhasil diperbarui.']);
+        // Ambil data user yang ada saat ini
+        $stmtCurr = $pdo->prepare("SELECT id, role, email, custom_email FROM users WHERE id = ?");
+        $stmtCurr->execute([$userId]);
+        $currUser = $stmtCurr->fetch(PDO::FETCH_ASSOC);
+
+        if (!$currUser) {
+            echo json_encode(['success' => false, 'message' => 'Pengguna tidak ditemukan.']);
+            exit;
+        }
+
+        $newRole = isset($data['role']) ? trim($data['role']) : $currUser['role'];
+        if (!in_array($newRole, ['admin', 'user'])) {
+            $newRole = 'user';
+        }
+
+        // Proses custom_email jika disediakan
+        $finalCustomEmail = $currUser['custom_email'];
+        if (array_key_exists('custom_email', $data) || array_key_exists('custom_username', $data)) {
+            $rawInput = trim($data['custom_email'] ?? $data['custom_username'] ?? '');
+
+            if ($rawInput === '') {
+                // Admin menghapus custom email
+                $finalCustomEmail = null;
+            } else {
+                // Jika hanya memasukkan username (misal 'hafidz'), tambahkan '@heartsync.com'
+                if (strpos($rawInput, '@') === false) {
+                    $finalCustomEmail = strtolower($rawInput) . '@heartsync.com';
+                } else {
+                    $finalCustomEmail = strtolower($rawInput);
+                    // Pastikan domainnya heartsync.com
+                    if (!preg_match('/@heartsync\.com$/i', $finalCustomEmail)) {
+                        echo json_encode(['success' => false, 'message' => 'Email custom wajib menggunakan domain @heartsync.com (contoh: username@heartsync.com).']);
+                        exit;
+                    }
+                }
+
+                // Cek apakah custom_email ini sudah dipakai oleh user lain (baik di kolom email maupun custom_email)
+                $stmtCheck = $pdo->prepare("
+                    SELECT id, nama FROM users 
+                    WHERE (email = ? OR custom_email = ?) AND id != ?
+                    LIMIT 1
+                ");
+                $stmtCheck->execute([$finalCustomEmail, $finalCustomEmail, $userId]);
+                $duplicate = $stmtCheck->fetch();
+
+                if ($duplicate) {
+                    echo json_encode([
+                        'success' => false, 
+                        'message' => "Email custom '$finalCustomEmail' sudah digunakan oleh pengguna lain ({$duplicate['nama']})."
+                    ]);
+                    exit;
+                }
+
+                // Jika diberi email custom @heartsync.com, otomatis jadikan role admin
+                $newRole = 'admin';
+            }
+        }
+
+        $stmtUpd = $pdo->prepare("UPDATE users SET role = ?, custom_email = ? WHERE id = ?");
+        $stmtUpd->execute([$newRole, $finalCustomEmail, $userId]);
+
+        echo json_encode([
+            'success'      => true,
+            'message'      => 'Data pengguna dan email custom berhasil diperbarui.',
+            'role'         => $newRole,
+            'custom_email' => $finalCustomEmail
+        ]);
         exit;
     }
 

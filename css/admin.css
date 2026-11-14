@@ -1234,6 +1234,85 @@ body.admin-body {
     font-weight: 600;
 }
 
+/* ── CUSTOM EMAIL STYLING ── */
+.user-cell-custom-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #FFF5F5;
+    border: 1px solid #FED7D7;
+    color: var(--primary-red);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    margin-top: 4px;
+}
+
+.custom-email-input-wrap {
+    display: flex;
+    align-items: center;
+    background: #FFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    width: 100%;
+    max-width: 280px;
+    transition: border-color 0.2s;
+}
+
+.custom-email-input-wrap:focus-within {
+    border-color: var(--primary-red);
+}
+
+.custom-username-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-main);
+    background: transparent;
+}
+
+.custom-domain-suffix {
+    background: var(--bg-subtle);
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-left: 1px solid var(--border-color);
+    user-select: none;
+}
+
+.modal-subtext {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-top: 4px;
+    display: block;
+}
+
+.custom-email-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FEE2E2;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.no-custom-email {
+    color: #9CA3AF;
+    font-size: 12px;
+    font-style: italic;
+}
+
 /* ── RESPONSIVE DESIGN ──────────────────────────────── */
 @media (max-width: 1024px) {
     .dash-grid {

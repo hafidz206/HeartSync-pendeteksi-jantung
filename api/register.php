@@ -28,8 +28,8 @@ if (strlen($password) < 6) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-    $stmt->execute([$email]);
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? OR custom_email = ?");
+    $stmt->execute([$email, $email]);
     if ($stmt->fetch()) {
         echo json_encode(['success' => false, 'message' => 'Email sudah terdaftar.']);
         exit;

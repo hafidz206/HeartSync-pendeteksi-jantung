@@ -21,8 +21,9 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
+    // Cari pengguna berdasarkan email utama (email) atau email custom (custom_email)
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? OR custom_email = ? LIMIT 1");
+    $stmt->execute([$email, $email]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
@@ -45,19 +46,22 @@ try {
         $stmtQuiz->execute([$user['email'], $user['id']]);
         $hasQuiz = $stmtQuiz->fetch() ? true : false;
 
-        // Pembeda role adalah email (domain @heartsync.com = admin, lainnya = user)
-        $userRole = (stripos($user['email'], '@heartsync.com') !== false || ($user['role'] ?? '') === 'admin') ? 'admin' : 'user';
+        // Pembeda role: jika memiliki custom_email @heartsync.com, email utama @heartsync.com, atau role admin
+        $hasCustomAdmin = !empty($user['custom_email']) && stripos($user['custom_email'], '@heartsync.com') !== false;
+        $hasMainAdmin   = !empty($user['email']) && stripos($user['email'], '@heartsync.com') !== false;
+        $userRole       = ($hasCustomAdmin || $hasMainAdmin || ($user['role'] ?? '') === 'admin') ? 'admin' : 'user';
 
         echo json_encode([
             'success'  => true,
             'message'  => 'Login berhasil.',
             'has_quiz' => $hasQuiz,
             'user'     => [
-                'id'    => $user['id'] ?? null,
-                'nama'  => $user['nama'],
-                'name'  => $user['nama'],
-                'email' => $user['email'],
-                'role'  => $userRole
+                'id'           => $user['id'] ?? null,
+                'nama'         => $user['nama'],
+                'name'         => $user['nama'],
+                'email'        => $user['email'],
+                'custom_email' => $user['custom_email'] ?? null,
+                'role'         => $userRole
             ]
         ]);
     } else {
