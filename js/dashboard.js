@@ -159,7 +159,7 @@ function renderHero(title, desc, userName, isExactImage = false) {
     if (isExactImage) {
         return `
         <div class="hero-banner hero-banner-exact">
-            <img class="hero-banner-img" src="img/banner-hero-exact.png" alt="Halo, ${userName} - Jaga Jantungmu, Mulai dari Sekarang!">
+            <img class="hero-banner-img" src="../img/banner-hero-exact.png" alt="Halo, ${userName} - Jaga Jantungmu, Mulai dari Sekarang!">
             <div class="sr-only">
                 <p>Halo, ${userName}</p>
                 <h2>${title}</h2>
@@ -175,7 +175,7 @@ function renderHero(title, desc, userName, isExactImage = false) {
             <h2 class="hero-title">${title}</h2>
             <p class="hero-desc">${desc}</p>
         </div>
-        <img class="hero-doc" src="img/doctor-banner-id.png" alt="Dokter HeartSync">
+        <img class="hero-doc" src="../img/doctor-banner-id.png" alt="Dokter HeartSync">
     </div>`;
 }
 
@@ -279,7 +279,6 @@ function initUserDashboard(user) {
         returnAdminBtn.remove();
     }
 
-    let user = getCurrentUser();
     let risk = storage.get('heartsync_risk', { lv: 'sedang', pct: 40 });
     let logs = getLogData();
 
@@ -313,7 +312,7 @@ function initUserDashboard(user) {
                     <span class="nav-user-name">${user.name || 'Nurrahmah'}</span>
                     <span class="nav-user-status">Resiko ${RISK_LABELS[risk.lv] || 'Rendah'}</span>
                 </div>
-                <img src="img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
+                <img src="../img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
                 <button id="logoutBtn" class="btn-logout" title="Keluar">Keluar</button>
             </div>
         `;
@@ -684,7 +683,7 @@ function initUserDashboard(user) {
         } else if (activeView === 'profil') {
             viewEl.innerHTML = renderSection('stat', 'Profil Pengguna', 'Informasi akun dan riwayat identifikasi kamu', `
                 <div class="dash-card profile-card">
-                    <img src="img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
+                    <img src="../img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
                     <h3 style="justify-content:center;color:#111827;font-size:20px;font-weight:700">${user.name || 'Nurrahmah'}</h3>
                     <p style="color:#6B7280;margin:4px 0 12px;font-size:13.5px" id="userEmailDisplay">${user.email || userEmail}</p>
                     <div style="background:#FFF5F6;border-radius:14px;padding:12px;margin:16px 0">
