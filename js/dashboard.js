@@ -187,7 +187,8 @@ function renderSection(iconKey, title, subtitle, content) {
         bulb: `<svg viewBox="0 0 24 24" fill="none" stroke="#EA3739" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M8 14c-2-1-3-3-3-5a7 7 0 0 1 14 0c0 2-1 4-3 5v1H8z"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="19.8" y1="4.2" x2="18.4" y2="5.6"/></svg>`,
         hist: `<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>`,
         stat: `<svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="8"/></svg>`,
-        med: `<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/><rect x="3" y="3" width="18" height="18" rx="5"/></svg>`
+        med: `<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/><rect x="3" y="3" width="18" height="18" rx="5"/></svg>`,
+        fork: `<svg viewBox="0 0 24 24" fill="none" stroke="#EA3739" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2v20M6 2v7a3 3 0 0 0 6 0V2M3 2v6a4 4 0 0 0 8 0V2"/></svg>`
     };
 
     return `
@@ -307,13 +308,12 @@ function initUserDashboard(user) {
                     </button>
                 `).join('')}
             </div>
-            <div class="nav-user">
+            <div class="nav-user" style="cursor:pointer" data-view="profil" title="Buka Profil">
                 <div class="nav-user-info">
                     <span class="nav-user-name">${user.name || 'Nurrahmah'}</span>
                     <span class="nav-user-status">Resiko ${RISK_LABELS[risk.lv] || 'Rendah'}</span>
                 </div>
-                <img src="../img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
-                <button id="logoutBtn" class="btn-logout" title="Keluar">Keluar</button>
+                <img src="../img/user-avatar-nurrahmah.png" class="nav-avatar-img" alt="${user.name || 'Nurrahmah'}" onerror="this.src='../img/doctor-banner-id.png'">
             </div>
         `;
     }
@@ -657,45 +657,223 @@ function initUserDashboard(user) {
                 renderSection('hist', 'Log Catatan Riwayat Kesehatan', 'Daftar entri pengukuran terbaru yang berhasil dicatat', logSectionHtml);
         } else if (activeView === 'rekomendasi') {
             viewEl.innerHTML = 
-                renderHero('Rekomendasi Personal,<br>Untuk Menjaga Jantung', `Saran makanan, olahraga, dan pola tidur berdasarkan estimasi risiko (${riskLabel}) dan data kesehatanmu.`, user.name || 'Nurrahmah') +
-                renderSection('bulb', 'Panduan Aktivitas Harian', 'Terapkan secara konsisten demi kesehatan jangka panjang', `
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:18px">
-                        ${[
-                            ['🍛 Pola Makan', recList.m],
-                            ['🚶 Aktivitas & Olahraga', recList.o],
-                            ['😴 Istirahat & Tidur', recList.t]
-                        ].map(col => `
-                            <div class="dash-card">
-                                <h6 style="font-size:16px;color:#EA3739;font-weight:700;margin-bottom:12px">${col[0]}</h6>
-                                <ul style="padding-left:18px;font-size:13px;color:#374151;line-height:1.6">
-                                    ${col[1].map(it => `<li style="margin-bottom:8px">${it}</li>`).join('')}
-                                </ul>
+                renderHero('Rekomendasi<br>Untukmu!', 'Lihat perkembangan grafik vitalitas tubuhmu secara teratur untuk keputusan pola hidup yang lebih tepat', user.name || 'Nurrahmah') +
+                renderSection('fork', 'Rekomendasi Makanan', 'Temukan pilihan makanan yang mendukung kesehatan jantungmu dan membangun pola hidup sehat.', `
+                    <div class="rekom-grid-3col">
+                        <!-- Card 1: Sarapan + Camilan -->
+                        <div class="dash-card rekom-card-modern">
+                            <span class="rekom-badge-label">Rekomendasi Makanan</span>
+                            <h4 class="rekom-title-main">Sarapan</h4>
+                            <div class="rekom-food-entry">
+                                <div class="rekom-circle-img-wrap">
+                                    <img src="../img/food-sarapan-fish.png" alt="Sarapan Sehat" class="rekom-circle-img">
+                                </div>
+                                <div class="rekom-bullets-wrap">
+                                    <ul class="rekom-bullets-list">
+                                        <li>● Ikan Tuna</li>
+                                        <li>● Telur</li>
+                                        <li>● Timun</li>
+                                        <li>● Selada</li>
+                                    </ul>
+                                    <div class="rekom-cal-text">300 kalori</div>
+                                </div>
                             </div>
-                        `).join('')}
+
+                            <h4 class="rekom-title-main" style="margin-top:22px">Camilan</h4>
+                            <div class="rekom-food-entry">
+                                <div class="rekom-circle-img-wrap">
+                                    <img src="../img/food-camilan-edamame.png" alt="Camilan Sehat" class="rekom-circle-img">
+                                </div>
+                                <div class="rekom-bullets-wrap">
+                                    <ul class="rekom-bullets-list">
+                                        <li>● Edamame</li>
+                                    </ul>
+                                    <div class="rekom-cal-text">110 kalori</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Makan Siang + Pepaya -->
+                        <div class="dash-card rekom-card-modern">
+                            <span class="rekom-badge-label">Rekomendasi Makanan</span>
+                            <h4 class="rekom-title-main">Makan siang</h4>
+                            <div class="rekom-food-entry">
+                                <div class="rekom-circle-img-wrap">
+                                    <img src="../img/food-siang-chicken.png" alt="Makan Siang Sehat" class="rekom-circle-img">
+                                </div>
+                                <div class="rekom-bullets-wrap">
+                                    <ul class="rekom-bullets-list">
+                                        <li>● Dada Ayam</li>
+                                        <li>● Telur</li>
+                                        <li>● Brokoli</li>
+                                        <li>● Jamur</li>
+                                        <li>● Tomat ceri</li>
+                                    </ul>
+                                    <div class="rekom-cal-text">350 Kalori</div>
+                                </div>
+                            </div>
+
+                            <div class="rekom-food-entry" style="margin-top:35px">
+                                <div class="rekom-circle-img-wrap">
+                                    <img src="../img/food-camilan-pepaya.png" alt="Pepaya" class="rekom-circle-img">
+                                </div>
+                                <div class="rekom-bullets-wrap">
+                                    <ul class="rekom-bullets-list">
+                                        <li>● Pepaya</li>
+                                    </ul>
+                                    <div class="rekom-cal-text">60 Kalori</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Makan Malam + Crackers -->
+                        <div class="dash-card rekom-card-modern">
+                            <span class="rekom-badge-label">Rekomendasi Makanan</span>
+                            <h4 class="rekom-title-main">Makan malam</h4>
+                            <div class="rekom-food-entry">
+                                <div class="rekom-circle-img-wrap">
+                                    <img src="../img/food-malam-soup.png" alt="Makan Malam Sehat" class="rekom-circle-img">
+                                </div>
+                                <div class="rekom-bullets-wrap">
+                                    <ul class="rekom-bullets-list">
+                                        <li>● Jamur</li>
+                                        <li>● Kembang Tahu</li>
+                                        <li>● Tomat</li>
+                                        <li>● Daun Bawang</li>
+                                    </ul>
+                                    <div class="rekom-cal-text">200 kalori</div>
+                                </div>
+                            </div>
+
+                            <div class="rekom-food-entry" style="margin-top:35px">
+                                <div class="rekom-circle-img-wrap">
+                                    <img src="../img/food-camilan-crackers.png" alt="Crackers" class="rekom-circle-img">
+                                </div>
+                                <div class="rekom-bullets-wrap">
+                                    <ul class="rekom-bullets-list">
+                                        <li>● Crackers</li>
+                                    </ul>
+                                    <div class="rekom-cal-text">60 kalori</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="margin-top:22px">
-                        ${renderSleepCard()}
+                `) +
+                renderSection('fork', 'Rekomendasi Olahraga', 'Dapatkan pilihan aktivitas fisik sesuai kemampuan untuk menjaga kebugaran dan mendukung kesehatan jantung', `
+                    <div class="rekom-grid-3col">
+                        <!-- Sport 1: Yoga -->
+                        <div class="dash-card rekom-card-modern">
+                            <span class="rekom-badge-label">Rekomendasi Olahraga</span>
+                            <h4 class="rekom-title-main">Yoga</h4>
+                            <div class="rekom-sport-entry">
+                                <div class="rekom-circle-img-wrap sport">
+                                    <img src="../img/sport-yoga.png" alt="Yoga" class="rekom-circle-img sport">
+                                </div>
+                                <p class="rekom-sport-desc">
+                                    Memadukan gerakan lambat dengan pernapasan terkontrol tekanan darah dan meredakan stres
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Sport 2: Bersepeda -->
+                        <div class="dash-card rekom-card-modern">
+                            <span class="rekom-badge-label">Rekomendasi Olahraga</span>
+                            <h4 class="rekom-title-main">Bersepeda santai</h4>
+                            <div class="rekom-sport-entry">
+                                <div class="rekom-circle-img-wrap sport">
+                                    <img src="../img/sport-sepeda.png" alt="Bersepeda" class="rekom-circle-img sport">
+                                </div>
+                                <p class="rekom-sport-desc">
+                                    Dapat dilakukan menggunakan sepeda biasa atau sepeda statis selama 15–30 menit per hari untuk memperkuat otot jantung
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Sport 3: Berjalan Santai -->
+                        <div class="dash-card rekom-card-modern">
+                            <span class="rekom-badge-label">Rekomendasi Olahraga</span>
+                            <h4 class="rekom-title-main">Berjalan Santai</h4>
+                            <div class="rekom-sport-entry">
+                                <div class="rekom-circle-img-wrap sport">
+                                    <img src="../img/sport-jalan.png" alt="Berjalan Santai" class="rekom-circle-img sport">
+                                </div>
+                                <p class="rekom-sport-desc">
+                                    Dilakukan selama minimal 30 menit per hari, 3 hingga 5 kali seminggu, untuk melancarkan sirkulasi darah tanpa membebani sendi
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <p style="font-size:12px;color:#6B7280;margin-top:18px;text-align:center">
-                        * Rekomendasi ini bersifat edukatif dan bukan pengganti diagnosis medis resmi dari dokter.
-                    </p>
                 `);
         } else if (activeView === 'profil') {
-            viewEl.innerHTML = renderSection('stat', 'Profil Pengguna', 'Informasi akun dan riwayat identifikasi kamu', `
-                <div class="dash-card profile-card">
-                    <img src="../img/asian-medical-doctor-woman-with-white-lab-coat-pink.jpg" class="nav-avatar-img" alt="${user.name}">
-                    <h3 style="justify-content:center;color:#111827;font-size:20px;font-weight:700">${user.name || 'Nurrahmah'}</h3>
-                    <p style="color:#6B7280;margin:4px 0 12px;font-size:13.5px" id="userEmailDisplay">${user.email || userEmail}</p>
-                    <div style="background:#FFF5F6;border-radius:14px;padding:12px;margin:16px 0">
-                        <span style="font-size:12px;color:#4B5563">Estimasi Resiko Terkini:</span>
-                        <b style="color:#EA3739;font-size:16px;display:block;margin-top:2px">${riskLabel} (${risk.pct}%)</b>
+            viewEl.innerHTML = `
+                <div class="profile-page-container">
+                    <div class="profile-hero-wrap">
+                        <div class="profile-hero-banner"></div>
+                        <div class="profile-user-strip">
+                            <div class="profile-avatar-box">
+                                <img src="../img/user-avatar-nurrahmah.png" alt="${user.name || 'Nurrahmah'}" class="profile-avatar-img" onerror="this.src='../img/doctor-banner-id.png'">
+                            </div>
+                            <div class="profile-meta-box">
+                                <h1 class="profile-name">${user.name || 'Nurrahmah'}</h1>
+                                <div class="profile-email">${user.email || 'nrrhmh@gmail.com'}</div>
+                                <div class="profile-badge">Member HeartSync</div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
-                        <button class="btn-primary" data-act="retake" style="padding:8px 22px;border-radius:9999px;font-size:13px">Isi Ulang Kuesioner</button>
-                        <button class="btn-outline-pill" id="logoutBtn" data-act="logout" style="padding:7px 22px">Keluar Akun</button>
+
+                    <div class="profile-grid-2col">
+                        <!-- AKUN SAYA -->
+                        <div class="dash-card profile-card-section">
+                            <div class="profile-section-heading">AKUN SAYA</div>
+                            <div class="profile-menu-list">
+                                <div class="profile-menu-item">
+                                    <div class="profile-menu-title">Data Diri</div>
+                                    <div class="profile-menu-desc">Nama gmail, jenis kelamin.</div>
+                                </div>
+                                <div class="profile-menu-item">
+                                    <div class="profile-menu-title">Data Kesehatan</div>
+                                    <div class="profile-menu-desc">Tinggi badan, berat badan, dan riwayat kesehatan</div>
+                                </div>
+                                <div class="profile-menu-item" style="cursor:pointer" data-view="data">
+                                    <div class="profile-menu-title">Hasil Klasifikasi</div>
+                                    <div class="profile-menu-desc">Melihat hasil klasifikasi sebelumnya</div>
+                                </div>
+                                <div class="profile-menu-item" style="cursor:pointer" data-view="rekomendasi">
+                                    <div class="profile-menu-title">Hasil Rekomendasi Saya</div>
+                                    <div class="profile-menu-desc">Melihat rekomendasi kesehat yang sesuai</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PENGATURAN -->
+                        <div class="dash-card profile-card-section">
+                            <div class="profile-section-heading">PENGATURAN</div>
+                            <div class="profile-menu-list">
+                                <div class="profile-menu-item">
+                                    <div class="profile-menu-title">Notifikasi</div>
+                                    <div class="profile-menu-desc">Pengingat aktivitas dan kebiasaan sehat</div>
+                                </div>
+                                <div class="profile-menu-item">
+                                    <div class="profile-menu-title">Privikasi dan Keamanan</div>
+                                    <div class="profile-menu-desc">Ubah kata sandi dan kelola data akun</div>
+                                </div>
+                                <div class="profile-menu-item">
+                                    <div class="profile-menu-title">Tentang</div>
+                                    <div class="profile-menu-desc">Informasi aplikasi dan tujuan penggunaannya</div>
+                                </div>
+                                <div class="profile-menu-item profile-item-logout" id="logoutBtn" style="cursor:pointer">
+                                    <div class="profile-menu-logout">Keluar dari akun</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            `);
+            `;
+        }
+
+        const footerEl = document.querySelector('.dash-footer');
+        if (footerEl) {
+            footerEl.style.display = (activeView === 'profil') ? 'none' : 'block';
         }
 
         window.scrollTo(0, 0);
