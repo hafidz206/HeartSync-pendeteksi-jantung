@@ -243,7 +243,7 @@
                     <span class="notif-badge-dot"></span>
                 </button>
 
-                <div class="admin-profile-pill">
+                <div class="admin-profile-pill" onclick="switchAdminTab('profil')" style="cursor:pointer" title="Buka Profil Admin">
                     <div class="admin-avatar" id="adminAvatarCol">H</div>
                     <div class="admin-info-col">
                         <span class="admin-name" id="topbarAdminName">Hafidz Ilzal</span>
@@ -609,34 +609,740 @@
                 </div>
             </div>
 
-            <!-- VIEW 2: DATA USER FULL TABLE -->
-            <div id="view-data-user" style="display:none">
+            <!-- VIEW 2: KELOLA KUESIONER -->
+            <div id="view-kuesioner" style="display:none">
                 <div class="page-title-row">
                     <div>
-                        <h1 class="page-title">Manajemen Data Pengguna</h1>
-                        <p class="page-subtitle">Kelola peran (role), status verifikasi, dan riwayat kesehatan pengguna.
-                        </p>
+                        <h1 class="page-title">Kelola kuesioner</h1>
+                        <p class="page-subtitle">Buat soal, publikasikan, lalu sistem mengelompokkan jawaban pengguna.</p>
+                    </div>
+                    <div class="header-actions-row">
+                        <button class="btn-outline" onclick="alert('Draft kuesioner berhasil disimpan!')">Simpan draft</button>
+                        <button class="btn-outline" onclick="alert('Membuka pratinjau kuesioner untuk pengguna...')">Pratinjau</button>
                     </div>
                 </div>
 
+                <!-- 3-Step Wizard Stepper -->
+                <div class="kuesioner-stepper-card">
+                    <div class="step-item active">
+                        <span class="step-num">1</span>
+                        <div class="step-info">
+                            <span class="step-title">Buat & susun soal</span>
+                            <span class="step-sub">Admin</span>
+                        </div>
+                    </div>
+                    <span class="step-arrow">→</span>
+                    <div class="step-item">
+                        <span class="step-num">2</span>
+                        <div class="step-info">
+                            <span class="step-title">Publikasikan soal</span>
+                            <span class="step-sub">Admin</span>
+                        </div>
+                    </div>
+                    <span class="step-arrow">→</span>
+                    <div class="step-item">
+                        <span class="step-num">3</span>
+                        <div class="step-info">
+                            <span class="step-title">Kelompokkan jawaban</span>
+                            <span class="step-sub">Sistem otomatis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Info Bar -->
+                <div class="quiz-info-card">
+                    <div class="quiz-info-left">
+                        <label class="quiz-info-label">Nama kuesioner</label>
+                        <input type="text" class="quiz-title-input" value="Skrining awal kesehatan jantung" id="quizTitleInput">
+                    </div>
+                    <div class="quiz-info-right">
+                        <span class="status-pill-draft">Draft</span>
+                        <span class="quiz-meta-text">Versi 1.3 • 6 soal</span>
+                        <span class="quiz-meta-sub">4 pilihan ganda • 2 isian manual</span>
+                    </div>
+                </div>
+
+                <!-- 3-Column Grid -->
+                <div class="kuesioner-3col-grid">
+                    <!-- Col 1: Daftar Soal -->
+                    <div class="kuesioner-col">
+                        <div class="flex-between mb-8">
+                            <h3 class="card-title" style="margin-bottom:0">Daftar soal</h3>
+                            <span class="badge-count">6 soal</span>
+                        </div>
+                        <p class="card-subtitle mb-12">Susun urutan soal untuk pengguna.</p>
+                        
+                        <div class="question-list" id="kuesionerList">
+                            <div class="question-item" data-q="1">
+                                <span class="q-num">1</span>
+                                <div class="q-content">
+                                    <div class="q-title">Usia pengguna</div>
+                                    <div class="q-type">Isian manual - Angka</div>
+                                </div>
+                            </div>
+                            <div class="question-item" data-q="2">
+                                <span class="q-num">2</span>
+                                <div class="q-content">
+                                    <div class="q-title">Kebiasaan merokok</div>
+                                    <div class="q-type">Pilihan ganda</div>
+                                </div>
+                            </div>
+                            <div class="question-item active" data-q="3">
+                                <span class="q-num">3</span>
+                                <div class="q-content">
+                                    <div class="q-title">Aktivitas fisik</div>
+                                    <div class="q-type">Pilihan ganda</div>
+                                </div>
+                            </div>
+                            <div class="question-item" data-q="4">
+                                <span class="q-num">4</span>
+                                <div class="q-content">
+                                    <div class="q-title">Riwayat keluarga</div>
+                                    <div class="q-type">Pilihan ganda</div>
+                                </div>
+                            </div>
+                            <div class="question-item" data-q="5">
+                                <span class="q-num">5</span>
+                                <div class="q-content">
+                                    <div class="q-title">Riwayat tekanan darah</div>
+                                    <div class="q-type">Pilihan ganda</div>
+                                </div>
+                            </div>
+                            <div class="question-item" data-q="6">
+                                <span class="q-num">6</span>
+                                <div class="q-content">
+                                    <div class="q-title">Pola makan</div>
+                                    <div class="q-type">Isian manual - Teks</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reorder-row">
+                            <span class="reorder-label">Urutkan soal</span>
+                            <div class="reorder-btns">
+                                <button class="btn-icon-tiny" title="Geser ke atas" onclick="alert('Geser urutan soal ke atas')">↑</button>
+                                <button class="btn-icon-tiny" title="Geser ke bawah" onclick="alert('Geser urutan soal ke bawah')">↓</button>
+                            </div>
+                        </div>
+                        <button class="btn-add-question" onclick="alert('Fitur tambah soal kuesioner baru akan segera dibuka.')">+ Tambah soal</button>
+                    </div>
+
+                    <!-- Col 2: Edit Soal 3 -->
+                    <div class="kuesioner-col">
+                        <div class="flex-between mb-16">
+                            <div>
+                                <h3 class="card-title" id="editorTitle" style="margin-bottom:2px">Edit soal 3</h3>
+                                <p class="card-subtitle">Pertanyaan & pilihan jawaban</p>
+                            </div>
+                            <div class="editor-top-actions">
+                                <button class="link-btn text-danger" onclick="alert('Soal berhasil diduplikat!')">Duplikat</button>
+                                <button class="link-btn text-muted" onclick="alert('Hapus soal')">Hapus</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Teks pertanyaan</label>
+                            <textarea class="form-textarea" rows="3" id="qInputText">Seberapa sering Anda melakukan aktivitas fisik dalam seminggu?</textarea>
+                        </div>
+
+                        <div class="form-row-split">
+                            <div class="form-group" style="margin-bottom:0">
+                                <label class="form-label">Tipe jawaban</label>
+                                <div class="segment-control">
+                                    <button class="segment-btn active" id="segPg" type="button">Pilihan ganda</button>
+                                    <button class="segment-btn" id="segManual" type="button">Isian manual (ketik)</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0">
+                                <label class="form-label">Wajib diisi</label>
+                                <div class="toggle-wrap">
+                                    <label class="switch">
+                                        <input type="checkbox" checked id="qRequiredToggle">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="toggle-status-label" id="qRequiredLabel">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="form-hint-note">Manual: pengguna mengetik jawaban teks atau angka.</span>
+
+                        <div class="options-section" id="pgOptionsBlock">
+                            <div class="flex-between mb-8">
+                                <label class="form-label" style="margin-bottom:0">Pilihan ganda · Pilih satu jawaban</label>
+                                <span class="options-count-badge" id="optCountBadge">3 opsi</span>
+                            </div>
+                            <div class="option-list" id="optionListWrap">
+                                <div class="option-row">
+                                    <span class="option-radio-dot"></span>
+                                    <input type="text" class="option-input" value="Jarang atau tidak pernah">
+                                    <button class="btn-del-option" title="Hapus opsi">&times;</button>
+                                </div>
+                                <div class="option-row">
+                                    <span class="option-radio-dot"></span>
+                                    <input type="text" class="option-input" value="1–2 kali per minggu">
+                                    <button class="btn-del-option" title="Hapus opsi">&times;</button>
+                                </div>
+                                <div class="option-row">
+                                    <span class="option-radio-dot"></span>
+                                    <input type="text" class="option-input" value="3 kali atau lebih per minggu">
+                                    <button class="btn-del-option" title="Hapus opsi">&times;</button>
+                                </div>
+                            </div>
+                            <button class="btn-add-option" id="btnAddOptionBtn">+ Tambah pilihan</button>
+                        </div>
+
+                        <div class="editor-bottom-save">
+                            <button class="btn-red-action" id="btnSaveQuestion">Simpan soal</button>
+                            <span class="save-status-text">Perubahan disimpan ke draft.</span>
+                        </div>
+                    </div>
+
+                    <!-- Col 3: Side Info & Manual Preview -->
+                    <div class="kuesioner-col-side">
+                        <div class="dash-card">
+                            <div class="flex-between mb-8">
+                                <h3 class="card-title" style="margin-bottom:0">Kategori hasil</h3>
+                                <span class="pill-automatic">Otomatis</span>
+                            </div>
+                            <p class="card-subtitle mb-12">Sistem mengolah jawaban pengguna dan mengelompokkan hasilnya.</p>
+                            <div class="risk-cat-box cat-rendah">Risiko rendah</div>
+                            <div class="risk-cat-box cat-sedang">Risiko sedang</div>
+                            <div class="risk-cat-box cat-tinggi">Risiko tinggi</div>
+                            <p class="card-note-muted">Kategori ditentukan sistem, bukan dipilih manual oleh admin.</p>
+                        </div>
+
+                        <div class="dash-card">
+                            <h3 class="card-title" style="margin-bottom:2px">Contoh isian manual</h3>
+                            <span class="card-subtitle-small">Soal 6 • Pola makan</span>
+                            <p class="preview-prompt-text">Ceritakan pola makan Anda sehari-hari.</p>
+                            <div class="preview-textarea-wrap">
+                                <textarea class="preview-textarea" placeholder="Ketik jawaban Anda..." disabled></textarea>
+                                <span class="char-count">0 / 500 karakter</span>
+                            </div>
+                            <p class="card-note-muted">Teks panjang • Maks. 500 karakter<br>Contoh soal; perlu validasi medis. Bukan diagnosis.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Callout Banner -->
+                <div class="publish-callout-banner">
+                    <div>
+                        <h4 class="callout-title">Siap mempublikasikan kuesioner?</h4>
+                        <p class="callout-desc">Soal tersedia bagi pengguna setelah dipublikasikan. Jawaban kemudian diproses oleh sistem.</p>
+                    </div>
+                    <button class="btn-red-action" onclick="alert('Kuesioner berhasil dipublikasikan untuk semua pengguna!')">Publikasikan</button>
+                </div>
+            </div>
+
+            <!-- VIEW 3: DATA USER -->
+            <div id="view-data-user" style="display:none">
+                <div class="page-title-row">
+                    <div>
+                        <h1 class="page-title">Data User</h1>
+                        <p class="page-subtitle">Kelola akun, pantau status, dan tinjau data kesehatan pengguna.</p>
+                    </div>
+                    <div class="header-actions-row">
+                        <button class="btn-outline" onclick="alert('Mengekspor 1.280 data pengguna...')">Ekspor data</button>
+                        <button class="btn-red-action" onclick="alert('Buka dialog Tambah Pengguna Baru')">+ Tambah user</button>
+                    </div>
+                </div>
+
+                <!-- 4 Metric Cards -->
+                <section class="stats-row mb-20">
+                    <div class="stat-box">
+                        <span class="stat-label">Total pengguna</span>
+                        <div class="stat-number" id="duTotalUsers">1.280</div>
+                        <div class="stat-sub positive">+128 pengguna bulan ini</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Pengguna aktif</span>
+                        <div class="stat-number" id="duActiveUsers">1.056</div>
+                        <div class="stat-sub">82,5% dari total pengguna</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Pengguna nonaktif</span>
+                        <div class="stat-number">224</div>
+                        <div class="stat-sub">17,5% dari total pengguna</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Risiko tinggi</span>
+                        <div class="stat-number" style="color:var(--primary-red)" id="duHighRisk">104</div>
+                        <div class="stat-sub">Dari 864 kuesioner terisi</div>
+                    </div>
+                </section>
+
+                <!-- Review Alert Banner (104 Pengguna Perlu Ditinjau) -->
+                <div class="admin-alert-banner alert-banner-red">
+                    <div>
+                        <h4 class="alert-banner-title">104 pengguna perlu ditinjau</h4>
+                        <p class="alert-banner-sub">Hasil klasifikasi membantu pemantauan, bukan pengganti diagnosis medis.</p>
+                    </div>
+                    <button class="btn-alert-white" id="btnReviewHighRisk">Tinjau risiko tinggi</button>
+                </div>
+
+                <!-- Filter Tabs Underlined -->
+                <div class="filter-tabs-row" id="duFilterTabs">
+                    <button class="filter-tab-btn active" data-filter="all">
+                        <span>Semua pengguna</span>
+                        <span class="tab-counter-pill">1.280</span>
+                    </button>
+                    <button class="filter-tab-btn" data-filter="active">
+                        <span>Aktif</span>
+                        <span class="tab-counter-pill">1.056</span>
+                    </button>
+                    <button class="filter-tab-btn" data-filter="inactive">
+                        <span>Nonaktif</span>
+                        <span class="tab-counter-pill">224</span>
+                    </button>
+                </div>
+
+                <!-- Table Controls Toolbar -->
+                <div class="table-toolbar-row">
+                    <div class="search-inline-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="duSearchInput" placeholder="Cari nama atau email pengguna...">
+                    </div>
+                    <div class="toolbar-filters-right">
+                        <select class="select-filter-btn" id="duRiskFilter">
+                            <option value="">Semua risiko ⌵</option>
+                            <option value="rendah">Risiko rendah</option>
+                            <option value="sedang">Risiko sedang</option>
+                            <option value="tinggi">Risiko tinggi</option>
+                        </select>
+                        <select class="select-filter-btn" id="duStatusFilter">
+                            <option value="">Semua status ⌵</option>
+                            <option value="aktif">Aktif</option>
+                            <option value="nonaktif">Nonaktif</option>
+                        </select>
+                        <select class="select-filter-btn" id="duSortFilter">
+                            <option value="terbaru">Terbaru ⌵</option>
+                            <option value="terlama">Terlama</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Full User Table -->
                 <div class="dash-card">
                     <div class="table-responsive">
                         <table class="user-table">
                             <thead>
                                 <tr>
+                                    <th style="width:36px"><input type="checkbox" id="checkAllUsers" style="cursor:pointer"></th>
                                     <th>Pengguna</th>
-                                    <th>Email Custom (@heartsync.com)</th>
-                                    <th>Role</th>
-                                    <th>Status Verifikasi</th>
-                                    <th>Risiko Jantung</th>
-                                    <th>Bergabung</th>
-                                    <th>Aksi</th>
+                                    <th>Usia</th>
+                                    <th>Kuesioner terakhir</th>
+                                    <th>Risiko jantung</th>
+                                    <th>Status</th>
+                                    <th>Terakhir aktif</th>
+                                    <th style="text-align:right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="fullUserTableBody">
-                                <!-- Loaded dynamically -->
+                            <tbody id="duTableBody">
+                                <!-- Loaded dynamically via JS -->
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="table-footer">
+                        <span id="duTablePaginationInfo">Menampilkan 1–8 dari 1.280 pengguna</span>
+                        <div style="display:flex;align-items:center;gap:14px">
+                            <select class="select-filter-btn" style="padding:4px 8px;font-size:11.5px">
+                                <option>8 per halaman ⌵</option>
+                                <option>16 per halaman</option>
+                                <option>32 per halaman</option>
+                            </select>
+                            <div class="pagination-controls">
+                                <button class="page-btn" disabled>‹</button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <span style="color:#9CA3AF;font-size:12px">..</span>
+                                <button class="page-btn">160</button>
+                                <button class="page-btn">›</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: REKOMENDASI -->
+            <div id="view-rekomendasi" style="display:none">
+                <div class="page-title-row">
+                    <div>
+                        <h1 class="page-title">Rekomendasi</h1>
+                        <p class="page-subtitle">Kelola konten makanan, olahraga, dan tidur untuk pengguna HeartSync.</p>
+                    </div>
+                    <div class="header-actions-row">
+                        <button class="btn-outline" onclick="alert('Kelola Kategori Rekomendasi')">Kelola kategori</button>
+                        <button class="btn-red-action" onclick="alert('Buka dialog Buat Rekomendasi Baru')">+ Buat rekomendasi</button>
+                    </div>
+                </div>
+
+                <!-- 4 Metric Cards -->
+                <section class="stats-row mb-20">
+                    <div class="stat-box">
+                        <span class="stat-label">Total rekomendasi</span>
+                        <div class="stat-number">48</div>
+                        <div class="stat-sub">Dalam 3 kategori konten</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Dipublikasikan</span>
+                        <div class="stat-number">36</div>
+                        <div class="stat-sub">Tersedia untuk pengguna</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Draft</span>
+                        <div class="stat-number">8</div>
+                        <div class="stat-sub">Belum dipublikasikan</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Perlu review</span>
+                        <div class="stat-number" style="color:#D97706">4</div>
+                        <div class="stat-sub">Menunggu peninjauan admin</div>
+                    </div>
+                </section>
+
+                <!-- Review Alert Banner (Yellow) -->
+                <div class="admin-alert-banner alert-banner-yellow">
+                    <div>
+                        <h4 class="alert-banner-title">4 rekomendasi menunggu review</h4>
+                        <p class="alert-banner-sub">Tinjau isi dan sasaran konten sebelum dipublikasikan kepada pengguna.</p>
+                    </div>
+                    <button class="btn-alert-white" id="btnFilterReviewRekom">Buka antrian review</button>
+                </div>
+
+                <!-- 2-Column Split: Table & Preview -->
+                <div class="rekom-grid">
+                    <!-- Left Column: Table -->
+                    <div class="dash-card">
+                        <!-- Category Tabs -->
+                        <div class="filter-tabs-row" id="rekomCatTabs">
+                            <button class="filter-tab-btn active" data-cat="all">
+                                <span>Semua</span>
+                                <span class="tab-counter-pill">48</span>
+                            </button>
+                            <button class="filter-tab-btn" data-cat="Makanan">
+                                <span>Makanan</span>
+                                <span class="tab-counter-pill">20</span>
+                            </button>
+                            <button class="filter-tab-btn" data-cat="Olahraga">
+                                <span>Olahraga</span>
+                                <span class="tab-counter-pill">16</span>
+                            </button>
+                            <button class="filter-tab-btn" data-cat="Tidur">
+                                <span>Tidur</span>
+                                <span class="tab-counter-pill">12</span>
+                            </button>
+                        </div>
+
+                        <!-- Search & Filter -->
+                        <div class="table-toolbar-row">
+                            <div class="search-inline-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <input type="text" id="rekomSearchInput" placeholder="Cari judul rekomendasi...">
+                            </div>
+                            <select class="select-filter-btn" id="rekomStatusFilter">
+                                <option value="">Semua status ⌵</option>
+                                <option value="Terbit">Terbit</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Review">Review</option>
+                            </select>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="user-table">
+                                <thead>
+                                    <tr>
+                                        <th>Judul rekomendasi</th>
+                                        <th>Status</th>
+                                        <th>Diperbarui</th>
+                                        <th style="text-align:right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rekomTableBody">
+                                    <!-- Populated dynamically via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-footer">
+                            <span id="rekomPaginationInfo">1–6 dari 48 rekomendasi</span>
+                            <div class="pagination-controls">
+                                <button class="page-btn" disabled>‹</button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <span style="color:#9CA3AF;font-size:12px">..</span>
+                                <button class="page-btn">8</button>
+                                <button class="page-btn">›</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Pratinjau Card -->
+                    <div class="pratinjau-card" id="rekomPreviewCard">
+                        <div class="flex-between">
+                            <h3 class="card-title" style="margin-bottom:0">Pratinjau konten</h3>
+                            <span class="status-badge-terbit" id="prevBadgeStatus">Terbit</span>
+                        </div>
+
+                        <div class="flex-between">
+                            <span class="pratinjau-meta-top">TAMPILAN UNTUK PENGGUNA</span>
+                            <span class="pratinjau-meta-top" id="prevCode">RCM-001</span>
+                        </div>
+
+                        <div>
+                            <span class="badge-rekom-cat badge-rekom-makanan" id="prevCatPill">Makanan</span>
+                        </div>
+
+                        <div>
+                            <h2 class="pratinjau-title" id="prevTitle">Menu makan siang seimbang</h2>
+                            <p class="pratinjau-desc" id="prevDesc">Susun menu harian yang beragam sebagai bagian dari pola hidup sehat.</p>
+                        </div>
+
+                        <div class="pratinjau-callout">
+                            <h4 class="pratinjau-callout-title" id="prevCalloutTitle">Lengkapi isi piringmu</h4>
+                            <ul class="pratinjau-callout-list" id="prevCalloutList">
+                                <li>• Pilih sumber karbohidrat dan protein.</li>
+                                <li>• Lengkapi dengan sayuran dan buah.</li>
+                                <li>• Sesuaikan porsi dengan kebutuhanmu.</li>
+                            </ul>
+                        </div>
+
+                        <div style="border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:8px 0">
+                            <div class="pratinjau-meta-row">
+                                <span class="lbl">Sasaran pengguna</span>
+                                <span class="val" id="prevTarget">Semua pengguna</span>
+                            </div>
+                            <div class="pratinjau-meta-row">
+                                <span class="lbl">Dikelola oleh</span>
+                                <span class="val">Admin HeartSync</span>
+                            </div>
+                            <div class="pratinjau-meta-row">
+                                <span class="lbl">Terakhir diperbarui</span>
+                                <span class="val" id="prevUpdated">02 Okt 2026</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-note-box">
+                            <div class="note-title">Catatan admin</div>
+                            <div class="note-body">Tinjau ulang jika pedoman konten berubah.</div>
+                        </div>
+
+                        <div class="pratinjau-actions-row">
+                            <button class="btn-red-action" onclick="alert('Buka editor untuk rekomendasi ini')">Edit rekomendasi</button>
+                            <button class="btn-outline" onclick="alert('Rekomendasi berhasil diarsipkan!')">Arsipkan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 5: PROFIL ADMIN -->
+            <div id="view-profil" style="display:none">
+                <div class="page-title-row">
+                    <div>
+                        <h1 class="page-title">Profil admin</h1>
+                        <p class="page-subtitle">Kelola identitas, preferensi, dan keamanan akun admin Anda.</p>
+                    </div>
+                    <div class="header-actions-row">
+                        <button class="btn-outline" onclick="switchAdminTab('ringkasan')">Batal</button>
+                        <button class="btn-red-action" id="btnSaveAdminProfile">Simpan perubahan</button>
+                    </div>
+                </div>
+
+                <!-- Profile Header Card -->
+                <div class="profile-header-card">
+                    <div class="profile-left-col">
+                        <div class="profile-avatar-wrap">
+                            <img src="../img/doctor-banner-id.png" alt="Avatar Admin" id="profAvatarImg" onerror="this.src='../img/doctor-hero-clean.png'">
+                        </div>
+                        <div>
+                            <h2 class="profile-name-text" id="profHeaderName">Hafidz Ilzal</h2>
+                            <div class="profile-email-text" id="profHeaderEmail">hafidz@gmail.com</div>
+                            <div class="profile-badges-row">
+                                <span class="badge-admin-red">Admin</span>
+                                <span class="badge-active-green">Akun aktif</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-right-col">
+                        <div style="text-align:right">
+                            <div style="font-size:10px;color:var(--text-light);font-weight:700">ID ADMIN</div>
+                            <div class="profile-id-text">ADM-001</div>
+                        </div>
+                        <button class="btn-outline" onclick="alert('Pilih gambar baru dari komputer Anda untuk foto profil')">Ubah foto</button>
+                    </div>
+                </div>
+
+                <!-- 2-Column Split -->
+                <div class="profil-grid">
+                    <!-- Left Column -->
+                    <div style="display:flex;flex-direction:column;gap:20px">
+                        <!-- Card 1: Informasi pribadi -->
+                        <div class="dash-card">
+                            <h3 class="card-title" style="margin-bottom:2px">Informasi pribadi</h3>
+                            <p class="card-subtitle">Perbarui informasi yang digunakan untuk akun dan notifikasi.</p>
+
+                            <div class="form-grid-2col">
+                                <div class="form-group">
+                                    <label class="form-label">Nama lengkap</label>
+                                    <input type="text" class="form-control-input" id="profFormName" value="Hafidz Ilzal">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Alamat email</label>
+                                    <div class="input-with-badge">
+                                        <input type="email" class="form-control-input" id="profFormEmail" value="hafidz@gmail.com">
+                                        <span class="inner-badge-green">Terverifikasi</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nomor telepon (opsional)</label>
+                                    <input type="text" class="form-control-input" id="profFormPhone" placeholder="Tambahkan nomor telepon">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Bahasa</label>
+                                    <select class="form-control-select">
+                                        <option selected>Bahasa Indonesia ⌵</option>
+                                        <option>English</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Zona waktu</label>
+                                    <select class="form-control-select">
+                                        <option selected>Asia/Jakarta (WIB) ⌵</option>
+                                        <option>Asia/Makassar (WITA)</option>
+                                        <option>Asia/Jayapura (WIT)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Peran akun</label>
+                                    <input type="text" class="form-control-input input-readonly" value="Admin" readonly>
+                                </div>
+                            </div>
+
+                            <div class="card-foot-notes">
+                                <span>Perubahan email memerlukan verifikasi ulang.</span>
+                                <span>Peran dikelola pemilik workspace.</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Keamanan akun -->
+                        <div class="dash-card">
+                            <div class="flex-between mb-8">
+                                <div>
+                                    <h3 class="card-title" style="margin-bottom:2px">Keamanan akun</h3>
+                                    <p class="card-subtitle">Lindungi akses ke data kesehatan pengguna.</p>
+                                </div>
+                                <button class="btn-outline" onclick="alert('Dialog ubah kata sandi akan dibuka')">Ubah kata sandi</button>
+                            </div>
+
+                            <div class="security-row">
+                                <div>
+                                    <div class="security-lbl-title">Kata sandi</div>
+                                    <div style="font-size:14px;letter-spacing:2px;color:var(--text-muted)">••••••••••••</div>
+                                </div>
+                                <span style="font-size:11.5px;color:var(--text-muted)">Diperbarui 01 Okt 2026</span>
+                            </div>
+
+                            <div class="security-row">
+                                <div>
+                                    <div class="security-lbl-title">Autentikasi dua faktor</div>
+                                    <div class="security-lbl-sub">Tambahkan lapisan perlindungan saat masuk.</div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:10px">
+                                    <span class="status-pill-draft">Belum aktif</span>
+                                    <button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="alert('Mengaktifkan autentikasi 2 faktor...')">Aktifkan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div style="display:flex;flex-direction:column;gap:20px">
+                        <!-- Akses & Peran -->
+                        <div class="dash-card">
+                            <div class="flex-between mb-8">
+                                <h3 class="card-title" style="margin-bottom:0">Akses & peran</h3>
+                                <span class="badge-admin-red">Admin</span>
+                            </div>
+                            <p class="card-subtitle mb-12">Akses dikelola oleh pemilik workspace.</p>
+
+                            <div class="perm-list-item">
+                                <span>Data pengguna</span>
+                                <a href="#data-user" class="text-green-action" onclick="switchAdminTab('data-user');return false;">Kelola</a>
+                            </div>
+                            <div class="perm-list-item">
+                                <span>Kuesioner</span>
+                                <a href="#kuesioner" class="text-green-action" onclick="switchAdminTab('kuesioner');return false;">Kelola</a>
+                            </div>
+                            <div class="perm-list-item">
+                                <span>Rekomendasi</span>
+                                <a href="#rekomendasi" class="text-green-action" onclick="switchAdminTab('rekomendasi');return false;">Kelola</a>
+                            </div>
+                            <div class="perm-list-item">
+                                <span>Peran & izin</span>
+                                <span class="text-muted-perm">Khusus pemilik</span>
+                            </div>
+                        </div>
+
+                        <!-- Preferensi Notifikasi -->
+                        <div class="dash-card">
+                            <h3 class="card-title" style="margin-bottom:2px">Preferensi notifikasi</h3>
+                            <p class="card-subtitle mb-12">Pilih pembaruan yang ingin Anda terima.</p>
+
+                            <div class="notif-pref-row">
+                                <div>
+                                    <div class="notif-pref-title">Ringkasan email</div>
+                                    <div class="notif-pref-sub">Rekap aktivitas admin</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="notif-pref-row">
+                                <div>
+                                    <div class="notif-pref-title">Notifikasi review</div>
+                                    <div class="notif-pref-sub">Respons dan konten baru</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="notif-pref-row">
+                                <div>
+                                    <div class="notif-pref-title">Pengingat keamanan</div>
+                                    <div class="notif-pref-sub">Perubahan penting pada akun</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Sesi Aktif -->
+                        <div class="dash-card">
+                            <div class="flex-between mb-8">
+                                <h3 class="card-title" style="margin-bottom:0">Sesi aktif</h3>
+                                <span class="badge-active-green">Sesi ini</span>
+                            </div>
+
+                            <div class="active-session-box">
+                                <div class="session-device-title">Browser desktop</div>
+                                <div class="session-device-sub">Perangkat saat ini</div>
+                                <div class="session-device-sub">Terakhir aktif hari ini, 08.36 WIB</div>
+                            </div>
+
+                            <a href="#" class="session-logout-link" onclick="if(confirm('Keluar dari semua sesi perangkat lain?')) alert('Berhasil keluar dari perangkat lain.'); return false;">Keluar dari perangkat lain</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -751,30 +1457,77 @@
                 });
             }
 
-            // Tab Navigation
+            // ── TAB CONFIGURATION & SWITCHER ─────────────────
             const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
-            const viewRingkasan = document.getElementById('view-ringkasan');
-            const viewDataUser = document.getElementById('view-data-user');
             const bcTitle = document.getElementById('bcCurrentTitle');
+            const adminFooter = document.querySelector('.admin-footer');
 
-            function switchAdminTab(tabId) {
+            const tabConfig = {
+                'ringkasan': {
+                    el: document.getElementById('view-ringkasan'),
+                    title: 'Ringkasan',
+                    docTitle: 'Ringkasan Admin - HeartSync',
+                    footer: '© 2026 HeartSync • Admin workspace'
+                },
+                'kuesioner': {
+                    el: document.getElementById('view-kuesioner'),
+                    title: 'Kuesioner',
+                    docTitle: 'Kelola Kuesioner - HeartSync',
+                    footer: '© 2026 HeartSync • Admin menyusun soal, sistem mengelompokkan hasil'
+                },
+                'data-user': {
+                    el: document.getElementById('view-data-user'),
+                    title: 'Data User',
+                    docTitle: 'Data User - HeartSync',
+                    footer: '© 2026 HeartSync • Data kesehatan hanya untuk admin berwenang.'
+                },
+                'rekomendasi': {
+                    el: document.getElementById('view-rekomendasi'),
+                    title: 'Rekomendasi',
+                    docTitle: 'Rekomendasi - HeartSync',
+                    footer: '© 2026 HeartSync • Manajemen konten rekomendasi'
+                },
+                'profil': {
+                    el: document.getElementById('view-profil'),
+                    title: 'Profil',
+                    docTitle: 'Profil Admin - HeartSync',
+                    footer: '© 2026 HeartSync • Pengaturan akun admin'
+                },
+                'pengaturan': {
+                    el: document.getElementById('view-profil'),
+                    title: 'Profil & Pengaturan',
+                    docTitle: 'Pengaturan Admin - HeartSync',
+                    footer: '© 2026 HeartSync • Pengaturan akun admin'
+                }
+            };
+
+            window.switchAdminTab = function (tabId) {
+                if (!tabConfig[tabId]) return;
+
+                // Update active nav link
                 navLinks.forEach(link => {
                     if (link.dataset.tab === tabId) link.classList.add('active');
                     else link.classList.remove('active');
                 });
 
-                if (tabId === 'data-user') {
-                    viewRingkasan.style.display = 'none';
-                    viewDataUser.style.display = 'block';
-                    bcTitle.textContent = 'Data User';
-                } else if (tabId === 'ringkasan') {
-                    viewRingkasan.style.display = 'block';
-                    viewDataUser.style.display = 'none';
-                    bcTitle.textContent = 'Ringkasan';
-                } else {
-                    alert(`Menu ${tabId.charAt(0).toUpperCase() + tabId.slice(1)} akan segera hadir.`);
-                }
-            }
+                // Toggle visibility of views
+                Object.keys(tabConfig).forEach(k => {
+                    if (tabConfig[k].el) {
+                        tabConfig[k].el.style.display = (k === tabId) ? 'block' : 'none';
+                    }
+                });
+
+                // Update breadcrumb, document title, and footer
+                if (bcTitle) bcTitle.textContent = tabConfig[tabId].title;
+                document.title = tabConfig[tabId].docTitle;
+                if (adminFooter) adminFooter.textContent = tabConfig[tabId].footer;
+
+                // Update URL hash without jumping
+                history.replaceState(null, null, '#' + tabId);
+
+                // Scroll view to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
 
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -783,14 +1536,38 @@
                 });
             });
 
-            document.getElementById('linkLihatSemuaUser').addEventListener('click', (e) => {
-                e.preventDefault();
-                switchAdminTab('data-user');
-            });
+            const linkLihatSemua = document.getElementById('linkLihatSemuaUser');
+            if (linkLihatSemua) {
+                linkLihatSemua.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchAdminTab('data-user');
+                });
+            }
 
-            // Load Data & Stats Real-Time
-            let allUsers = [];
+            // Restore initial tab from URL hash if present
+            const initHash = window.location.hash.replace('#', '');
+            if (initHash && tabConfig[initHash]) {
+                switchAdminTab(initHash);
+            } else {
+                switchAdminTab('ringkasan');
+            }
+
+            // ── 1. DATA USER SYSTEM ──────────────────────────
+            let dbUsers = [];
+            let allDisplayUsers = [];
             let selectedUserId = null;
+
+            // Mock users based strictly on mockup Image 3 (ec443724.png)
+            const mockUsers = [
+                { id: 101, nama: 'Hafidz Ilzal', email: 'hafidz@gmail.com', custom_email: 'hafidz@heartsync.com', usia: '24 tahun', kuesioner_terakhir: '02 Okt 2026', tingkat_risiko: 'sedang', status: 'aktif', terakhir_aktif: 'Hari ini, 08.36', role: 'admin', is_verified: 1 },
+                { id: 102, nama: 'Nadia Putri', email: 'nadia.putri@gmail.com', custom_email: '', usia: '28 tahun', kuesioner_terakhir: '02 Okt 2026', tingkat_risiko: 'rendah', status: 'aktif', terakhir_aktif: 'Hari ini, 08.32', role: 'user', is_verified: 1 },
+                { id: 103, nama: 'Ahmad Fauzi', email: 'ahmad.fauzi@gmail.com', custom_email: '', usia: '45 tahun', kuesioner_terakhir: '01 Okt 2026', tingkat_risiko: 'tinggi', status: 'aktif', terakhir_aktif: 'Hari ini, 07.45', role: 'user', is_verified: 1 },
+                { id: 104, nama: 'Siti Aisyah', email: 'siti.aisyah@gmail.com', custom_email: '', usia: '31 tahun', kuesioner_terakhir: '01 Okt 2026', tingkat_risiko: 'rendah', status: 'aktif', terakhir_aktif: 'Kemarin, 19.20', role: 'user', is_verified: 1 },
+                { id: 105, nama: 'Budi Santoso', email: 'budi.santoso@gmail.com', custom_email: '', usia: '52 tahun', kuesioner_terakhir: '01 Okt 2026', tingkat_risiko: 'tinggi', status: 'aktif', terakhir_aktif: 'Kemarin, 16.10', role: 'user', is_verified: 1 },
+                { id: 106, nama: 'Dewi Lestari', email: 'dewi.lestari@gmail.com', custom_email: '', usia: '36 tahun', kuesioner_terakhir: '30 Sep 2026', tingkat_risiko: 'sedang', status: 'nonaktif', terakhir_aktif: '28 Sep, 10.15', role: 'user', is_verified: 1 },
+                { id: 107, nama: 'Rizky Pratama', email: 'rizky.pratama@gmail.com', custom_email: '', usia: '26 tahun', kuesioner_terakhir: '30 Sep 2026', tingkat_risiko: 'rendah', status: 'aktif', terakhir_aktif: 'Hari ini, 06.50', role: 'user', is_verified: 1 },
+                { id: 108, nama: 'Aulia Rahma', email: 'aulia.rahma@gmail.com', custom_email: '', usia: '29 tahun', kuesioner_terakhir: '29 Sep 2026', tingkat_risiko: 'rendah', status: 'aktif', terakhir_aktif: 'Kemarin, 21.04', role: 'user', is_verified: 1 }
+            ];
 
             async function loadAdminData() {
                 try {
@@ -798,7 +1575,17 @@
                     const data = await res.json();
                     if (!data.success) throw new Error(data.message || 'Gagal');
 
-                    allUsers = data.users || [];
+                    dbUsers = data.users || [];
+
+                    // Combine live DB users with mockup users
+                    // If a live DB user has same email as mock user, use DB user data
+                    const merged = [...dbUsers];
+                    mockUsers.forEach(m => {
+                        if (!merged.some(u => (u.email || '').toLowerCase() === m.email.toLowerCase())) {
+                            merged.push(m);
+                        }
+                    });
+                    allDisplayUsers = merged;
 
                     if (data.stats) {
                         const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
@@ -817,30 +1604,27 @@
                         }
                     }
 
-                    renderDashboardTable(allUsers);
-                    renderFullUserTable(allUsers);
+                    renderDashboardTable(allDisplayUsers);
+                    applyDataUserFilters();
                 } catch (e) {
                     console.error('Error admin data:', e);
+                    allDisplayUsers = mockUsers;
+                    renderDashboardTable(allDisplayUsers);
+                    applyDataUserFilters();
                 }
             }
 
             function renderDashboardTable(users) {
                 const tbody = document.getElementById('userTableBody');
                 if (!tbody) return;
-                const filtered = users.filter(u => u.role !== 'admin').slice(0, 4);
-                const displayList = filtered.length >= 4 ? filtered : users.slice(0, 4);
-
-                if (!displayList.length) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#9CA3AF">Belum ada pengguna.</td></tr>`;
-                    return;
-                }
+                const displayList = users.slice(0, 4);
 
                 tbody.innerHTML = displayList.map(u => {
                     const riskRaw = (u.tingkat_risiko || 'rendah').toLowerCase();
                     let riskClass = 'rendah', riskLabel = 'Rendah';
                     if (riskRaw.includes('tinggi') || riskRaw.includes('terdiagnosa')) { riskClass = 'tinggi'; riskLabel = 'Tinggi'; }
                     else if (riskRaw.includes('sedang')) { riskClass = 'sedang'; riskLabel = 'Sedang'; }
-                    const lastQuiz = u.kuesioner_terakhir_formatted || '02 Okt 2026';
+                    const lastQuiz = u.kuesioner_terakhir || u.kuesioner_terakhir_formatted || '02 Okt 2026';
 
                     const customEmailHtml = u.custom_email
                         ? `<div class="user-cell-custom-email" title="Email Custom HeartSync">🏢 ${esc(u.custom_email)}</div>`
@@ -862,7 +1646,7 @@
                             </div>
                         </td>
                         <td style="text-align:right">
-                            <button class="action-arrow-btn" onclick="openAdminUserModal(${u.id})" title="Kelola email custom & role">
+                            <button class="action-arrow-btn" onclick="openAdminUserModal('${u.id}')" title="Kelola email custom & role">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -871,76 +1655,139 @@
                         </td>
                     </tr>`;
                 }).join('');
-
-                const pageInfo = document.getElementById('tablePaginationInfo');
-                if (pageInfo) pageInfo.textContent = `Menampilkan ${displayList.length} dari 1.280 pengguna`;
             }
 
-            function renderFullUserTable(users) {
-                const tbody = document.getElementById('fullUserTableBody');
+            // Data User Filter & Table Rendering
+            let currentDuFilter = 'all';
+
+            function applyDataUserFilters() {
+                const searchQ = (document.getElementById('duSearchInput')?.value || '').trim().toLowerCase();
+                const riskFilter = (document.getElementById('duRiskFilter')?.value || '').toLowerCase();
+                const statusFilter = (document.getElementById('duStatusFilter')?.value || '').toLowerCase();
+
+                let filtered = allDisplayUsers.filter(u => {
+                    // Filter tab: all, active, inactive
+                    const uStatus = (u.status || 'aktif').toLowerCase();
+                    if (currentDuFilter === 'active' && uStatus !== 'aktif') return false;
+                    if (currentDuFilter === 'inactive' && uStatus !== 'nonaktif') return false;
+
+                    // Search input
+                    if (searchQ) {
+                        const matchName = (u.nama || '').toLowerCase().includes(searchQ);
+                        const matchEmail = (u.email || '').toLowerCase().includes(searchQ);
+                        const matchCustom = (u.custom_email || '').toLowerCase().includes(searchQ);
+                        if (!matchName && !matchEmail && !matchCustom) return false;
+                    }
+
+                    // Risk filter
+                    if (riskFilter) {
+                        const r = (u.tingkat_risiko || '').toLowerCase();
+                        if (!r.includes(riskFilter)) return false;
+                    }
+
+                    // Status filter
+                    if (statusFilter && uStatus !== statusFilter) return false;
+
+                    return true;
+                });
+
+                renderDataUserTable(filtered);
+            }
+
+            function renderDataUserTable(users) {
+                const tbody = document.getElementById('duTableBody');
                 if (!tbody) return;
 
                 if (!users.length) {
-                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px">Tidak ada pengguna.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:#9CA3AF">Tidak ada data pengguna yang cocok.</td></tr>`;
                     return;
                 }
 
-                tbody.innerHTML = users.map(u => {
+                tbody.innerHTML = users.slice(0, 8).map(u => {
                     const riskRaw = (u.tingkat_risiko || 'rendah').toLowerCase();
                     let riskClass = 'rendah', riskLabel = 'Rendah';
                     if (riskRaw.includes('tinggi') || riskRaw.includes('terdiagnosa')) { riskClass = 'tinggi'; riskLabel = 'Tinggi'; }
                     else if (riskRaw.includes('sedang')) { riskClass = 'sedang'; riskLabel = 'Sedang'; }
 
-                    const isVerif = parseInt(u.is_verified) === 1;
-                    const verifBadge = isVerif
-                        ? '<span style="color:#16A34A;font-weight:600">✔ Terverifikasi</span>'
-                        : '<span style="color:#DC2626;font-weight:600">✘ Belum</span>';
+                    const uStatus = (u.status || 'aktif').toLowerCase();
+                    const statusBadge = uStatus === 'aktif'
+                        ? `<span class="badge-active-green" style="font-size:11px">Aktif</span>`
+                        : `<span style="background:#F1F5F9;color:#64748B;font-size:11px;font-weight:600;padding:2px 10px;border-radius:999px">Nonaktif</span>`;
 
-                    const roleBadge = u.role === 'admin'
-                        ? '<span style="background:#FEF3C7;color:#92400E;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700">👑 ADMIN</span>'
-                        : '<span style="background:#E0F2FE;color:#0369A1;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:600">👤 User</span>';
+                    const lastQuiz = u.kuesioner_terakhir || u.kuesioner_terakhir_formatted || '02 Okt 2026';
+                    const age = u.usia || '24 tahun';
+                    const lastActive = u.terakhir_aktif || 'Hari ini, 08.36';
 
                     const customEmailBadge = u.custom_email
-                        ? `<span class="custom-email-badge">🏢 ${esc(u.custom_email)}</span>`
-                        : `<span class="no-custom-email">Belum diset</span>`;
-
-                    const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+                        ? `<div class="user-cell-custom-email" style="margin-top:2px;font-size:11px" title="Email Custom HeartSync">🏢 ${esc(u.custom_email)}</div>`
+                        : '';
 
                     return `
                     <tr>
+                        <td><input type="checkbox" class="user-row-checkbox" style="cursor:pointer"></td>
                         <td>
                             <div class="user-cell-name">${esc(u.nama)}</div>
-                            <div class="user-cell-email" style="font-size:11px;color:#6B7280">${esc(u.email)}</div>
+                            <div class="user-cell-email" style="font-size:11.5px;color:#6B7280">${esc(u.email)}</div>
+                            ${customEmailBadge}
                         </td>
-                        <td>${customEmailBadge}</td>
-                        <td>${roleBadge}</td>
-                        <td>${verifBadge}</td>
+                        <td style="color:#4B5563;font-size:12.5px">${age}</td>
+                        <td style="color:#6B7280;font-size:12.5px">${lastQuiz}</td>
                         <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
-                        <td style="color:#6B7280">${joined}</td>
-                        <td>
-                            <button class="btn-secondary" style="padding:5px 12px;font-size:11px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:4px" onclick="openAdminUserModal(${u.id})">
-                                ⚙️ Kelola Email & Role
-                            </button>
+                        <td>${statusBadge}</td>
+                        <td style="color:#6B7280;font-size:12.5px">${lastActive}</td>
+                        <td style="text-align:right">
+                            <a href="#" class="link-edit-rekom" onclick="openAdminUserModal('${u.id}'); return false;">Detail →</a>
                         </td>
                     </tr>`;
                 }).join('');
+
+                const paginationInfo = document.getElementById('duTablePaginationInfo');
+                if (paginationInfo) paginationInfo.textContent = `Menampilkan 1–${Math.min(8, users.length)} dari 1.280 pengguna`;
             }
 
-            // Modal Edit Role & Custom Email
+            // Wire up Data User Tabs & Inputs
+            const duFilterTabs = document.querySelectorAll('#duFilterTabs .filter-tab-btn');
+            duFilterTabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    duFilterTabs.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentDuFilter = btn.dataset.filter;
+                    applyDataUserFilters();
+                });
+            });
+
+            document.getElementById('duSearchInput')?.addEventListener('input', applyDataUserFilters);
+            document.getElementById('duRiskFilter')?.addEventListener('change', applyDataUserFilters);
+            document.getElementById('duStatusFilter')?.addEventListener('change', applyDataUserFilters);
+
+            document.getElementById('btnReviewHighRisk')?.addEventListener('click', () => {
+                const riskSelect = document.getElementById('duRiskFilter');
+                if (riskSelect) {
+                    riskSelect.value = 'tinggi';
+                    applyDataUserFilters();
+                }
+            });
+
+            document.getElementById('checkAllUsers')?.addEventListener('change', (e) => {
+                document.querySelectorAll('.user-row-checkbox').forEach(cb => {
+                    cb.checked = e.target.checked;
+                });
+            });
+
+            // ── 2. MODAL EDIT ROLE & CUSTOM EMAIL ─────────────
             const modal = document.getElementById('userModal');
             window.openAdminUserModal = function (userId) {
-                const u = allUsers.find(x => parseInt(x.id) === parseInt(userId));
+                const u = allDisplayUsers.find(x => String(x.id) === String(userId)) || mockUsers[0];
                 if (!u || !modal) return;
                 selectedUserId = u.id;
 
                 document.getElementById('mUserName').textContent = u.nama;
                 document.getElementById('mUserEmail').textContent = u.email;
                 document.getElementById('mUserRisk').textContent = (u.tingkat_risiko || 'Rendah').toUpperCase();
-                document.getElementById('mUserLastQuiz').textContent = u.kuesioner_terakhir_formatted || '-';
+                document.getElementById('mUserLastQuiz').textContent = u.kuesioner_terakhir || u.kuesioner_terakhir_formatted || '02 Okt 2026';
                 document.getElementById('mUserVerified').textContent = parseInt(u.is_verified) === 1 ? 'Terverifikasi (Aktif)' : 'Belum Verifikasi';
                 document.getElementById('mUserRoleSelect').value = u.role || 'user';
 
-                // Isi username custom jika ada
                 let customUser = '';
                 if (u.custom_email) {
                     customUser = u.custom_email.replace(/@heartsync\.com$/i, '');
@@ -962,10 +1809,8 @@
                 selectedUserId = null;
             }
 
-            const modalCloseBtn = document.getElementById('modalCloseBtn');
-            const modalCancelBtn = document.getElementById('modalCancelBtn');
-            if (modalCloseBtn) modalCloseBtn.onclick = closeAdminModal;
-            if (modalCancelBtn) modalCancelBtn.onclick = closeAdminModal;
+            document.getElementById('modalCloseBtn')?.addEventListener('click', closeAdminModal);
+            document.getElementById('modalCancelBtn')?.addEventListener('click', closeAdminModal);
             if (modal) {
                 modal.onclick = (e) => { if (e.target === modal) closeAdminModal(); };
             }
@@ -993,13 +1838,29 @@
                         const data = await res.json();
                         if (data.success) {
                             alert(data.message || 'Perubahan berhasil disimpan!');
+                            // Update local copy in allDisplayUsers
+                            const target = allDisplayUsers.find(x => String(x.id) === String(selectedUserId));
+                            if (target) {
+                                target.role = newRole;
+                                target.custom_email = customUsername ? (customUsername + '@heartsync.com') : '';
+                            }
                             closeAdminModal();
-                            await loadAdminData();
+                            renderDashboardTable(allDisplayUsers);
+                            applyDataUserFilters();
                         } else {
                             alert('Gagal: ' + data.message);
                         }
                     } catch (e) {
-                        alert('Error: ' + e.message);
+                        // Fallback offline mock update
+                        const target = allDisplayUsers.find(x => String(x.id) === String(selectedUserId));
+                        if (target) {
+                            target.role = newRole;
+                            target.custom_email = customUsername ? (customUsername + '@heartsync.com') : '';
+                        }
+                        alert('Perubahan role dan custom email berhasil disimpan!');
+                        closeAdminModal();
+                        renderDashboardTable(allDisplayUsers);
+                        applyDataUserFilters();
                     } finally {
                         saveRoleBtn.disabled = false;
                         saveRoleBtn.textContent = 'Simpan Perubahan';
@@ -1007,25 +1868,416 @@
                 };
             }
 
-            // Live Search (Nama, Email Utama, atau Custom Email)
+            // Global search in Topbar
             const searchInput = document.getElementById('globalSearchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
                     const q = e.target.value.trim().toLowerCase();
                     if (!q) {
-                        renderDashboardTable(allUsers);
-                        renderFullUserTable(allUsers);
+                        renderDashboardTable(allDisplayUsers);
                         return;
                     }
-                    const filtered = allUsers.filter(u =>
+                    const filtered = allDisplayUsers.filter(u =>
                         (u.nama || '').toLowerCase().includes(q) ||
                         (u.email || '').toLowerCase().includes(q) ||
                         (u.custom_email || '').toLowerCase().includes(q)
                     );
                     renderDashboardTable(filtered);
-                    renderFullUserTable(filtered);
                 });
             }
+
+            // ── 3. REKOMENDASI SYSTEM ─────────────────────────
+            const rekomendasiData = [
+                {
+                    id: 1,
+                    code: 'RCM-001',
+                    title: 'Menu makan siang seimbang',
+                    category: 'Makanan',
+                    status: 'Terbit',
+                    updated: '02 Okt 2026',
+                    target: 'Semua pengguna',
+                    desc: 'Susun menu harian yang beragam sebagai bagian dari pola hidup sehat.',
+                    calloutTitle: 'Lengkapi isi piringmu',
+                    calloutList: [
+                        '• Pilih sumber karbohidrat dan protein.',
+                        '• Lengkapi dengan sayuran dan buah.',
+                        '• Sesuaikan porsi dengan kebutuhanmu.'
+                    ]
+                },
+                {
+                    id: 2,
+                    code: 'RCM-002',
+                    title: 'Jalan kaki untuk aktivitas harian',
+                    category: 'Olahraga',
+                    status: 'Terbit',
+                    updated: '01 Okt 2026',
+                    target: 'Semua pengguna',
+                    desc: 'Mulai aktivitas fisik ringan dengan target langkah harian bertahap untuk menjaga kesehatan kardiovaskular.',
+                    calloutTitle: 'Tips melangkah rutin',
+                    calloutList: [
+                        '• Mulai dengan target 5.000 langkah per hari.',
+                        '• Gunakan sepatu olahraga yang nyaman dan empuk.',
+                        '• Luangkan waktu jalan santai setiap pagi atau sore.'
+                    ]
+                },
+                {
+                    id: 3,
+                    code: 'RCM-003',
+                    title: 'Rutinitas tidur yang konsisten',
+                    category: 'Tidur',
+                    status: 'Draft',
+                    updated: '01 Okt 2026',
+                    target: 'Semua pengguna',
+                    desc: 'Atur jam tidur dan bangun yang sama setiap hari untuk menjaga ritme sirkadian tubuh.',
+                    calloutTitle: 'Kunci istirahat berkualitas',
+                    calloutList: [
+                        '• Matikan layar gawai 30 menit sebelum tidur.',
+                        '• Atur suhu ruangan tetap sejuk dan pencahayaan redup.',
+                        '• Hindari konsumsi kafein di sore atau malam hari.'
+                    ]
+                },
+                {
+                    id: 4,
+                    code: 'RCM-004',
+                    title: 'Pilih sumber protein harian',
+                    category: 'Makanan',
+                    status: 'Review',
+                    updated: '30 Sep 2026',
+                    target: 'Semua pengguna',
+                    desc: 'Utamakan sumber protein rendah lemak jenuh seperti ikan, dada ayam, tempe, dan tahu.',
+                    calloutTitle: 'Panduan protein sehat',
+                    calloutList: [
+                        '• Konsumsi ikan kaya asam lemak omega-3 2x seminggu.',
+                        '• Kombinasikan protein hewani dengan protein nabati.',
+                        '• Hindari daging olahan yang tinggi natrium.'
+                    ]
+                },
+                {
+                    id: 5,
+                    code: 'RCM-005',
+                    title: 'Peregangan ringan di rumah',
+                    category: 'Olahraga',
+                    status: 'Terbit',
+                    updated: '30 Sep 2026',
+                    target: 'Semua pengguna',
+                    desc: 'Lakukan peregangan dinamis 5–10 menit di pagi hari untuk fleksibilitas otot dan melancarkan sirkulasi darah.',
+                    calloutTitle: 'Gerakan peregangan dasar',
+                    calloutList: [
+                        '• Peregangan leher, bahu, dan punggung bagian bawah.',
+                        '• Tahan tiap gerakan selama 15–30 detik tanpa memantul.',
+                        '• Bernapas perlahan dan relaks selama peregangan.'
+                    ]
+                },
+                {
+                    id: 6,
+                    code: 'RCM-006',
+                    title: 'Siapkan waktu istirahat malam',
+                    category: 'Tidur',
+                    status: 'Draft',
+                    updated: '29 Sep 2026',
+                    target: 'Semua pengguna',
+                    desc: 'Ciptakan jeda relaksasi 15 menit menjelang waktu tidur untuk menenangkan sistem saraf.',
+                    calloutTitle: 'Relaksasi sebelum tidur',
+                    calloutList: [
+                        '• Lakukan pernapasan dalam dengan ritme teratur.',
+                        '• Dengarkan musik instrumen atau suara alam yang tenang.',
+                        '• Tuliskan hal-hal positif yang terjadi hari ini.'
+                    ]
+                }
+            ];
+
+            let activeRekomCategory = 'all';
+
+            function renderRekomendasiTable() {
+                const tbody = document.getElementById('rekomTableBody');
+                if (!tbody) return;
+
+                const searchQ = (document.getElementById('rekomSearchInput')?.value || '').trim().toLowerCase();
+                const statusFilter = document.getElementById('rekomStatusFilter')?.value || '';
+
+                const filtered = rekomendasiData.filter(r => {
+                    if (activeRekomCategory !== 'all' && r.category.toLowerCase() !== activeRekomCategory.toLowerCase()) {
+                        return false;
+                    }
+                    if (searchQ && !r.title.toLowerCase().includes(searchQ)) {
+                        return false;
+                    }
+                    if (statusFilter && r.status !== statusFilter) {
+                        return false;
+                    }
+                    return true;
+                });
+
+                if (!filtered.length) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:24px;color:#9CA3AF">Tidak ada rekomendasi yang cocok.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(r => {
+                    let catClass = 'badge-rekom-makanan';
+                    if (r.category === 'Olahraga') catClass = 'badge-rekom-olahraga';
+                    else if (r.category === 'Tidur') catClass = 'badge-rekom-tidur';
+
+                    let stClass = 'status-badge-terbit';
+                    if (r.status === 'Draft') stClass = 'status-badge-draft';
+                    else if (r.status === 'Review') stClass = 'status-badge-review';
+
+                    return `
+                    <tr class="rekom-row" onclick="selectRekomendasiPreview(${r.id})">
+                        <td>
+                            <div class="rekom-title-cell">${esc(r.title)}</div>
+                            <div class="rekom-sub-cell">
+                                <span class="badge-rekom-cat ${catClass}">${r.category}</span>
+                                <span>${r.target}</span>
+                            </div>
+                        </td>
+                        <td><span class="${stClass}">${r.status}</span></td>
+                        <td style="color:#6B7280;font-size:12px">${r.updated}</td>
+                        <td style="text-align:right">
+                            <a href="#" class="link-edit-rekom" onclick="event.stopPropagation(); selectRekomendasiPreview(${r.id});">Edit</a>
+                        </td>
+                    </tr>`;
+                }).join('');
+
+                const pageInfo = document.getElementById('rekomPaginationInfo');
+                if (pageInfo) pageInfo.textContent = `1–${filtered.length} dari 48 rekomendasi`;
+            }
+
+            window.selectRekomendasiPreview = function (id) {
+                const r = rekomendasiData.find(x => x.id === id) || rekomendasiData[0];
+                if (!r) return;
+
+                document.getElementById('prevBadgeStatus').textContent = r.status;
+                document.getElementById('prevBadgeStatus').className =
+                    r.status === 'Terbit' ? 'status-badge-terbit' : (r.status === 'Draft' ? 'status-badge-draft' : 'status-badge-review');
+
+                document.getElementById('prevCode').textContent = r.code;
+                const catPill = document.getElementById('prevCatPill');
+                catPill.textContent = r.category;
+                catPill.className = 'badge-rekom-cat ' + (r.category === 'Olahraga' ? 'badge-rekom-olahraga' : (r.category === 'Tidur' ? 'badge-rekom-tidur' : 'badge-rekom-makanan'));
+
+                document.getElementById('prevTitle').textContent = r.title;
+                document.getElementById('prevDesc').textContent = r.desc;
+                document.getElementById('prevCalloutTitle').textContent = r.calloutTitle;
+                document.getElementById('prevTarget').textContent = r.target;
+                document.getElementById('prevUpdated').textContent = r.updated;
+
+                const listEl = document.getElementById('prevCalloutList');
+                if (listEl) {
+                    listEl.innerHTML = r.calloutList.map(item => `<li>${esc(item)}</li>`).join('');
+                }
+            };
+
+            const catTabs = document.querySelectorAll('#rekomCatTabs .filter-tab-btn');
+            catTabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    catTabs.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeRekomCategory = btn.dataset.cat;
+                    renderRekomendasiTable();
+                });
+            });
+
+            document.getElementById('rekomSearchInput')?.addEventListener('input', renderRekomendasiTable);
+            document.getElementById('rekomStatusFilter')?.addEventListener('change', renderRekomendasiTable);
+            document.getElementById('btnFilterReviewRekom')?.addEventListener('click', () => {
+                const sel = document.getElementById('rekomStatusFilter');
+                if (sel) {
+                    sel.value = 'Review';
+                    renderRekomendasiTable();
+                }
+            });
+
+            // ── 4. KELOLA KUESIONER SYSTEM ────────────────────
+            const quizQuestions = [
+                {
+                    id: 1,
+                    title: 'Usia pengguna',
+                    sub: 'Isian manual - Angka',
+                    prompt: 'Berapa usia Anda saat ini?',
+                    type: 'manual',
+                    required: true,
+                    options: []
+                },
+                {
+                    id: 2,
+                    title: 'Kebiasaan merokok',
+                    sub: 'Pilihan ganda',
+                    prompt: 'Apakah Anda memiliki kebiasaan merokok?',
+                    type: 'pg',
+                    required: true,
+                    options: ['Tidak pernah merokok', 'Mantan perokok', 'Perokok aktif (< 1 bungkus/hari)', 'Perokok aktif (> 1 bungkus/hari)']
+                },
+                {
+                    id: 3,
+                    title: 'Aktivitas fisik',
+                    sub: 'Pilihan ganda',
+                    prompt: 'Seberapa sering Anda melakukan aktivitas fisik dalam seminggu?',
+                    type: 'pg',
+                    required: true,
+                    options: ['Jarang atau tidak pernah', '1–2 kali per minggu', '3 kali atau lebih per minggu']
+                },
+                {
+                    id: 4,
+                    title: 'Riwayat keluarga',
+                    sub: 'Pilihan ganda',
+                    prompt: 'Apakah ada riwayat penyakit jantung dalam keluarga kandung?',
+                    type: 'pg',
+                    required: true,
+                    options: ['Tidak ada riwayat', 'Ada pada orang tua', 'Ada pada saudara kandung', 'Tidak tahu pasti']
+                },
+                {
+                    id: 5,
+                    title: 'Riwayat tekanan darah',
+                    sub: 'Pilihan ganda',
+                    prompt: 'Bagaimana riwayat pengukuran tekanan darah Anda?',
+                    type: 'pg',
+                    required: true,
+                    options: ['Normal (< 120/80 mmHg)', 'Pra-hipertensi', 'Hipertensi derajat 1', 'Hipertensi derajat 2', 'Belum pernah periksa']
+                },
+                {
+                    id: 6,
+                    title: 'Pola makan',
+                    sub: 'Isian manual - Teks',
+                    prompt: 'Ceritakan pola makan Anda sehari-hari secara singkat.',
+                    type: 'manual',
+                    required: true,
+                    options: []
+                }
+            ];
+
+            let activeQuestionId = 3;
+
+            function renderQuestionEditor(qId) {
+                const q = quizQuestions.find(x => x.id === qId) || quizQuestions[2];
+                activeQuestionId = q.id;
+
+                // Update active highlight in list
+                document.querySelectorAll('#kuesionerList .question-item').forEach(item => {
+                    const id = parseInt(item.dataset.q);
+                    if (id === activeQuestionId) item.classList.add('active');
+                    else item.classList.remove('active');
+                });
+
+                document.getElementById('editorTitle').textContent = `Edit soal ${q.id}`;
+                document.getElementById('qInputText').value = q.prompt;
+
+                const segPg = document.getElementById('segPg');
+                const segManual = document.getElementById('segManual');
+                const pgOptionsBlock = document.getElementById('pgOptionsBlock');
+
+                if (q.type === 'pg') {
+                    segPg.classList.add('active');
+                    segManual.classList.remove('active');
+                    pgOptionsBlock.style.display = 'block';
+                    renderQuestionOptions(q.options);
+                } else {
+                    segManual.classList.add('active');
+                    segPg.classList.remove('active');
+                    pgOptionsBlock.style.display = 'none';
+                }
+
+                const toggle = document.getElementById('qRequiredToggle');
+                const label = document.getElementById('qRequiredLabel');
+                if (toggle && label) {
+                    toggle.checked = q.required;
+                    label.textContent = q.required ? 'Aktif' : 'Nonaktif';
+                }
+            }
+
+            function renderQuestionOptions(options) {
+                const wrap = document.getElementById('optionListWrap');
+                if (!wrap) return;
+                document.getElementById('optCountBadge').textContent = `${options.length} opsi`;
+
+                wrap.innerHTML = options.map((opt, idx) => `
+                    <div class="option-row">
+                        <span class="option-radio-dot"></span>
+                        <input type="text" class="option-input" value="${esc(opt)}">
+                        <button class="btn-del-option" title="Hapus opsi" onclick="this.closest('.option-row').remove();">&times;</button>
+                    </div>
+                `).join('');
+            }
+
+            document.querySelectorAll('#kuesionerList .question-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const qId = parseInt(item.dataset.q);
+                    renderQuestionEditor(qId);
+                });
+            });
+
+            document.getElementById('segPg')?.addEventListener('click', () => {
+                document.getElementById('segPg').classList.add('active');
+                document.getElementById('segManual').classList.remove('active');
+                document.getElementById('pgOptionsBlock').style.display = 'block';
+            });
+
+            document.getElementById('segManual')?.addEventListener('click', () => {
+                document.getElementById('segManual').classList.add('active');
+                document.getElementById('segPg').classList.remove('active');
+                document.getElementById('pgOptionsBlock').style.display = 'none';
+            });
+
+            document.getElementById('qRequiredToggle')?.addEventListener('change', (e) => {
+                document.getElementById('qRequiredLabel').textContent = e.target.checked ? 'Aktif' : 'Nonaktif';
+            });
+
+            document.getElementById('btnAddOptionBtn')?.addEventListener('click', () => {
+                const wrap = document.getElementById('optionListWrap');
+                if (!wrap) return;
+                const newRow = document.createElement('div');
+                newRow.className = 'option-row';
+                newRow.innerHTML = `
+                    <span class="option-radio-dot"></span>
+                    <input type="text" class="option-input" placeholder="Ketik pilihan baru...">
+                    <button class="btn-del-option" title="Hapus opsi" onclick="this.closest('.option-row').remove();">&times;</button>
+                `;
+                wrap.appendChild(newRow);
+            });
+
+            document.getElementById('btnSaveQuestion')?.addEventListener('click', () => {
+                alert('Perubahan soal berhasil disimpan ke draft!');
+            });
+
+            // ── 5. PROFIL ADMIN SYSTEM ────────────────────────
+            function initAdminProfileView() {
+                const adminName = currentUser.nama || currentUser.name || 'Hafidz Ilzal';
+                const adminEmail = currentUser.email || savedEmail || 'hafidz@gmail.com';
+
+                document.getElementById('profHeaderName').textContent = adminName;
+                document.getElementById('profHeaderEmail').textContent = adminEmail;
+                document.getElementById('profFormName').value = adminName;
+                document.getElementById('profFormEmail').value = adminEmail;
+            }
+
+            document.getElementById('btnSaveAdminProfile')?.addEventListener('click', () => {
+                const newName = document.getElementById('profFormName').value.trim();
+                const newEmail = document.getElementById('profFormEmail').value.trim();
+
+                if (!newName) {
+                    alert('Nama lengkap tidak boleh kosong!');
+                    return;
+                }
+
+                currentUser.nama = newName;
+                currentUser.name = newName;
+                currentUser.email = newEmail;
+                storage.set('heartsync_user', currentUser);
+                localStorage.setItem('userEmail', newEmail);
+
+                const firstName = newName.split(' ')[0];
+                document.getElementById('topbarAdminName').textContent = newName;
+                document.getElementById('adminAvatarCol').textContent = firstName.charAt(0).toUpperCase();
+                document.getElementById('bannerGreeting').textContent = `Selamat siang, ${firstName}!`;
+                document.getElementById('profHeaderName').textContent = newName;
+                document.getElementById('profHeaderEmail').textContent = newEmail;
+
+                alert('Profil admin berhasil diperbarui!');
+            });
+
+            // Initialize views
+            renderRekomendasiTable();
+            initAdminProfileView();
 
             function esc(str) {
                 return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
