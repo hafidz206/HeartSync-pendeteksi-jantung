@@ -184,7 +184,7 @@
             </div>
 
             <div class="sidebar-bottom-links">
-                <a href="#pengaturan" class="nav-link" data-tab="pengaturan">
+                <a href="#profil" class="nav-link" data-tab="profil" id="navPengaturan">
                     <svg viewBox="0 0 24 24">
                         <use href="#icon-gear" />
                     </svg>
@@ -1492,12 +1492,6 @@
                     title: 'Profil',
                     docTitle: 'Profil Admin - HeartSync',
                     footer: '© 2026 HeartSync • Pengaturan akun admin'
-                },
-                'pengaturan': {
-                    el: document.getElementById('view-profil'),
-                    title: 'Profil & Pengaturan',
-                    docTitle: 'Pengaturan Admin - HeartSync',
-                    footer: '© 2026 HeartSync • Pengaturan akun admin'
                 }
             };
 
@@ -1510,11 +1504,14 @@
                     else link.classList.remove('active');
                 });
 
-                // Toggle visibility of views
+                // Toggle visibility — use a Set to avoid double-toggling shared elements
+                const activeEl = tabConfig[tabId].el;
+                const seenEls = new Set();
                 Object.keys(tabConfig).forEach(k => {
-                    if (tabConfig[k].el) {
-                        tabConfig[k].el.style.display = (k === tabId) ? 'block' : 'none';
-                    }
+                    const el = tabConfig[k].el;
+                    if (!el || seenEls.has(el)) return;
+                    seenEls.add(el);
+                    el.style.display = (el === activeEl) ? 'block' : 'none';
                 });
 
                 // Update breadcrumb, document title, and footer
