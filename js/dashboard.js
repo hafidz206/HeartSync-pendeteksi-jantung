@@ -90,12 +90,12 @@ function generateLineChart(series, colors, ymin = 30, ymax = 120, height = 180, 
     // Custom ticks support (e.g. 140, 130... 50 for Data view)
     const ticks = customTicks || [120, 90, 60, 30];
     let svg = `<svg viewBox="0 0 ${W} ${height}" style="width:100%;height:auto;display:block">`;
-    
+
     // Grid Lines
     ticks.forEach(v => {
         const y = getY(v);
         svg += `<line x1="${L}" x2="${W - 6}" y1="${y}" y2="${y}" stroke="#ECECEC" stroke-width="1"/>` +
-               `<text x="${L - 8}" y="${y + 3.5}" font-size="9" text-anchor="end" fill="#9CA3AF" font-family="Poppins, sans-serif">${v}</text>`;
+            `<text x="${L - 8}" y="${y + 3.5}" font-size="9" text-anchor="end" fill="#9CA3AF" font-family="Poppins, sans-serif">${v}</text>`;
     });
 
     // Days Label
@@ -109,7 +109,7 @@ function generateLineChart(series, colors, ymin = 30, ymax = 120, height = 180, 
         const pts = s.slice(0, n).reverse();
         const pl = pts.map((v, i) => `${getX(i + n - pts.length)},${getY(Math.min(ymax, Math.max(ymin, v)))}`).join(' ');
         svg += `<polyline points="${pl}" fill="none" stroke="${colors[k]}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>` +
-               pts.map((v, i) => `<circle cx="${getX(i + n - pts.length)}" cy="${getY(Math.min(ymax, Math.max(ymin, v)))}" r="3" fill="${colors[k]}"/>`).join('');
+            pts.map((v, i) => `<circle cx="${getX(i + n - pts.length)}" cy="${getY(Math.min(ymax, Math.max(ymin, v)))}" r="3" fill="${colors[k]}"/>`).join('');
     });
 
     svg += '</svg>';
@@ -334,8 +334,8 @@ function initUserDashboard(user) {
                 </thead>
                 <tbody>
                     ${logs.slice(0, 10).map(r => {
-                        const [s, c] = getVitalStatus(r);
-                        return `
+            const [s, c] = getVitalStatus(r);
+            return `
                         <tr>
                             <td>${r.t}</td>
                             <td>${r.hr} bpm</td>
@@ -344,7 +344,7 @@ function initUserDashboard(user) {
                             <td>${r.wt} kg</td>
                             <td><span class="badge-status ${c}">${s}</span></td>
                         </tr>`;
-                    }).join('')}
+        }).join('')}
                 </tbody>
             </table>
         </div>`;
@@ -378,7 +378,7 @@ function initUserDashboard(user) {
         const recList = RECOMMENDATIONS[risk.lv] || RECOMMENDATIONS.sedang;
 
         if (activeView === 'beranda') {
-            viewEl.innerHTML = 
+            viewEl.innerHTML =
                 renderHero('Jaga Jantungmu,<br>Mulai dari Sekarang!', 'Yuk mulai langkah kecil untuk menjaga kesehatan jantungmu. Kenali kondisi tubuhmu, terapkan pola hidup sehat, dan temukan rekomendasi aktivitas yang sesuai untukmu.', user.name || 'Nurrahmah', true) +
                 renderSection('pulse', 'Ringkasan Kesehatan', 'Pantau Indikator kesehatanmu dalam satu tempat', renderVitalsGrid(latest)) +
                 renderSection('chart', 'Rekap Data Kesehatan', 'Lihat perkembangan kesehatanmu dari waktu ke waktu', `
@@ -586,7 +586,7 @@ function initUserDashboard(user) {
                 ${renderLogTable()}
             `;
 
-            viewEl.innerHTML = 
+            viewEl.innerHTML =
                 renderHero('Rekam dan Pantau,<br>Riwayat Kesehatanmu!', 'Lihat perkembangan grafik vitalitas tubuhmu secara teratur untuk keputusan pola hidup yang lebih tepat', user.name || 'Nurrahmah') +
                 renderSection('chart', 'Rekap Data Kesehatan', 'Pantau grafik, tren dan log riwayat vitalitas tubuh anda secara aktual', toolbarHtml + chartsHtml) +
                 renderSection('hist', 'Log Catatan Riwayat Kesehatan', 'Daftar entri pengukuran terbaru yang berhasil dicatat', logSectionHtml);
@@ -647,7 +647,7 @@ function initUserDashboard(user) {
                 ${renderLogTable()}
             `;
 
-            viewEl.innerHTML = 
+            viewEl.innerHTML =
                 renderHero(
                     'Rekam dan Pantau,<br>Riwayat Kesehatanmu!',
                     'Lihat perkembangan grafik vitalitas tubuhmu secara teratur untuk keputusan pola hidup yang lebih tepat',
@@ -656,7 +656,7 @@ function initUserDashboard(user) {
                 renderSection('med', 'Status dan Diagnosis Kesehatan', 'Evaluasi komprehensif indikator vital, skor risiko, dan tren kebugaran', diagContentHtml) +
                 renderSection('hist', 'Log Catatan Riwayat Kesehatan', 'Daftar entri pengukuran terbaru yang berhasil dicatat', logSectionHtml);
         } else if (activeView === 'rekomendasi') {
-            viewEl.innerHTML = 
+            viewEl.innerHTML =
                 renderHero('Rekomendasi<br>Untukmu!', 'Lihat perkembangan grafik vitalitas tubuhmu secara teratur untuk keputusan pola hidup yang lebih tepat', user.name || 'Nurrahmah') +
                 renderSection('fork', 'Rekomendasi Makanan', 'Temukan pilihan makanan yang mendukung kesehatan jantungmu dan membangun pola hidup sehat.', `
                     <div class="rekom-grid-3col">
@@ -1289,7 +1289,7 @@ function initAdminDashboard(currentUser) {
                 ? '<span style="background:#FEF3C7;color:#92400E;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700">👑 ADMIN</span>'
                 : '<span style="background:#E0F2FE;color:#0369A1;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:600">👤 User</span>';
 
-            const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'}) : '-';
+            const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
 
             return `
             <tr>
@@ -1312,7 +1312,7 @@ function initAdminDashboard(currentUser) {
 
     // Modal Edit Role
     const modal = document.getElementById('userModal');
-    window.openAdminUserModal = function(userId) {
+    window.openAdminUserModal = function (userId) {
         const u = allUsers.find(x => parseInt(x.id) === parseInt(userId));
         if (!u || !modal) return;
         selectedUserId = u.id;
@@ -1385,7 +1385,7 @@ function initAdminDashboard(currentUser) {
     }
 
     function esc(str) {
-        return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
     loadAdminData();
@@ -1414,7 +1414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let user = getCurrentUser() || {};
-    
+
     // PEMBEDA UTAMA: EMAIL
     // Jika email berakhiran @heartsync.com atau memiliki role 'admin', tampilkan Admin Workspace.
     // Jika email biasa (misal @gmail.com), tampilkan User Dashboard biasa.
